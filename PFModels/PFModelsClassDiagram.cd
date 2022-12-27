@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access" MembersFormat="NameAndType">
+  <Class Name="PFModels.Data.DiagramInfo" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="27.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAABAAAAAAAIAAAAAQAgAAAABAAAAAAAAAAABA=</HashCode>
+      <FileName>Data\DiagramInfo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PFModels.Data.FileIPAddressList">
+    <Position X="15.75" Y="6.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQBIAAAgAAAgAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Data\FileIPAddressList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PFModels.Data.HostName">
+    <Position X="8.25" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAABoAAAgAQAgAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\HostName.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PFModels.Data.Interface">
+    <Position X="10.75" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAgAAAFoAAAgAQAgAAAAIAAAAAAAAAAABA=</HashCode>
+      <FileName>Data\Interface.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PFModels.Data.IPAddress">
+    <Position X="17" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\IPAddress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PFModels.Data.IPv4Address">
+    <Position X="18.25" Y="6.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAFAAAAgAAAAAAAAACAAAAACAAAAIA=</HashCode>
+      <FileName>Data\IPv4Address.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PFModels.Data.Macro">
+    <Position X="23.25" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAgAAAAABoAAAgAQAgAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Macro.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PFModels.Data.MacroContent">
+    <Position X="14" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\MacroContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PFModels.Data.NegatedMacroContent">
+    <Position X="4.75" Y="4.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAABoAAAgAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\NegatedMacroContent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PFModels.Data.Option" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAQAIAAAAABAgAAAAIAAAAAgAAAAAAA=</HashCode>
+      <FileName>Data\Option.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PFModels.Data.PFList">
+    <Position X="13.25" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAABIAAAgAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\PFList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PFModels.Data.PortValue">
+    <Position X="20.75" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgFIAAAgAAAiAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\PortValue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PFModels.Data.QM" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAJgAAAAAAgAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Data\QM.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PFModels.Data.OldQueue" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="29.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAIAAAAQBQAAAEIIABAAQEgEAAAAAAAAEAAABAAAI=</HashCode>
+      <FileName>Data\Queue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PFModels.Data.Queue" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="27.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAgAAAAABIAgAAAQAgAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Data\Queue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PFModels.Data.BandwidthValue" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AJAAAAAAAAAAAAAEIAAAAAAAgAAAAAAAAAAgAAAAAAI=</HashCode>
+      <FileName>Data\QueueContent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PFModels.Data.QueueContent">
+    <Position X="6.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\QueueContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PFModels.Data.TrippleData" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="29.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAwAAAAIAAAAAAIAEAACAAgAAAABAAAAAABAAAAAA=</HashCode>
+      <FileName>Data\QueueContent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PFModels.Data.HFSCContent">
+    <Position X="4.25" Y="10.75" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Protected" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AQgABAAAAAABAAAEIAAAAABEgBAAAQAgBAGAAAAAAEA=</HashCode>
+      <FileName>Data\QueueContent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PFModels.Data.CBQContent">
+    <Position X="6.75" Y="10.75" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Protected" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAQAEIAAEAABEgAAAAAAABAEAAAAAAAA=</HashCode>
+      <FileName>Data\QueueContent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PFModels.Data.PriQContent">
+    <Position X="9.25" Y="10.75" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Protected" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAEIAAAAABAgAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>Data\QueueContent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PFModels.Data.Scheduler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="33" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAACAQAIAAAAAAAgIAAAAAAAQAABAAAAAA=</HashCode>
+      <FileName>Data\Scheduler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PFModels.Data.Table" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAgECAAABIAAAAAQAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Table.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PFModels.Data.Validation.Rules.InterfaceNameValidator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="29.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Validation\Rules\InterfaceNameValidator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PFModels.Data.Validation.Rules.IPv4SubnetValidator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Validation\Rules\IPv4SubnetValidator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PFModels.Data.Validation.Rules.MacroNameValidator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="33" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Validation\Rules\MacroNameValidator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PFModels.Data.Validation.Rules.NonEmptyTextValidator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Validation\Rules\NonEmptyTextValidator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PFModels.Data.Validation.Rules.NonNegativeIntValidator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="27.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Validation\Rules\NonNegativeIntValidator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PFModels.Data.Validation.Rules.PositveIntValidator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="33" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Validation\Rules\PositveIntValidator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PFModels.Data.Validation.Rules.QueueNameValidator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="29.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Validation\Rules\QueueNameValidator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PFModels.Data.Validation.Rules.RangedIntValidator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABCAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Validation\Rules\RangedIntValidator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PFModels.Data.Validation.Rules.TextValidator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="27.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Validation\Rules\TextValidator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PFModels.Data.Validation.Validator">
+    <Position X="31.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Validation\Validator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PFModels.Data.Validation.ValidatorFactory">
+    <Position X="32.5" Y="8" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Validation\ValidatorFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="PFModels.Data.Validation.Rules.IValidator">
+    <Position X="32.5" Y="6.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Validation\Rules\IValidator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="PFModels.Data.QMMode" Collapsed="true">
+    <Position X="27.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Data\QM.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PFModels.Data.SchedulerType" Collapsed="true">
+    <Position X="29.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAgAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Data\Queue.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PFModels.Data.BandwidthUnit" Collapsed="true">
+    <Position X="26" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAQAAAAAAAAAAAAAAAAARCAAAAAA=</HashCode>
+      <FileName>Data\QueueContent.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,73 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	x:Class="PFConsole.NewInterfaceWindow"
+	x:Name="Window"
+	Title="New Interface"
+	Width="550" Height="340" Style="{DynamicResource ArtChildWindowStyle}">
+    <Window.CommandBindings>
+        <CommandBinding Command="Close" Executed="CloseCommand_Executed" />
+        <CommandBinding Command="Save" CanExecute="SaveCommand_CanExecute" Executed="SaveCommand_Executed" />
+        <CommandBinding Command="SaveAs" CanExecute="SaveCommand_CanExecute" Executed="SaveAsCommand_Executed" />
+    </Window.CommandBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64.8"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <DockPanel Margin="30,0,0,0" LastChildFill="True">
+            <TextBlock Text="New Interface" FontSize="16" DockPanel.Dock="Top"/>
+            <ScrollViewer Margin="10,0,0,0" VerticalScrollBarVisibility="Auto">
+                <TextBlock FontSize="12" FontWeight="Light" TextWrapping="Wrap" Text="Enter the name for the new interface. You can assign a macro to it now or later." />
+            </ScrollViewer>
+        </DockPanel>
+        <Border BorderThickness="0,0.7,0,0" BorderBrush="Gray" Grid.Row="1" Background="#FFFAFAFA">
+            <Grid Margin="5" DataContext="{Binding ElementName=Window, Path=InterfaceModel}">
+                <StackPanel VerticalAlignment="Top">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="54*"/>
+                            <ColumnDefinition Width="199*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Name" FontSize="16" />
+                        <TextBox x:Name="_TB_Name" FontSize="16" Width="245" HorizontalAlignment="Left"
+			                                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1"/>
+                    </Grid>
+                    <Grid Margin="0,2,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="54*"/>
+                            <ColumnDefinition Width="199*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Description" FontSize="16" />
+                        <TextBox x:Name="_TB_Description" FontSize="16" Width="245" HorizontalAlignment="Left"
+			                                     Text="{Binding Description}" Grid.Column="1"/>
+                    </Grid>
+                    <Grid Margin="0,2,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="54*"/>
+                            <ColumnDefinition Width="199*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Assign Macro" FontSize="16" />
+                        <TextBox x:Name="_TB_MacroName" FontSize="16" Width="245" HorizontalAlignment="Left" Padding="12,0,0,0"
+			                                     Grid.Column="1"/>
+                        <TextBlock Text="$" Foreground="#FF424242" FontSize="16" Grid.Column="1" HorizontalAlignment="Left" Margin="3,0,0,0" />
+                    </Grid>
+                    <Grid Margin="0,2,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="54*"/>
+                            <ColumnDefinition Width="199*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                    <TextBlock Margin="110,10,0,0" Foreground="DarkRed" VerticalAlignment="Top" x:Name="_ErrorBlock" Visibility="Collapsed"><Italic ><Run Text="Error:" /></Italic><Run Text=" "/><Run x:Name="_ErrorText" /></TextBlock>
+
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                    <Button Content="Save &amp; Clear" Margin="0,0,5,0" Style="{DynamicResource FlatButton}" Command="SaveAs" CommandTarget="{Binding ElementName=_Window}"/>
+                    <Button Content="Save" Margin="0,0,5,0" Style="{DynamicResource FlatButton}" IsDefault="True" Command="Save" CommandTarget="{Binding ElementName=_Window}"/>
+                    <Button Content="Cancel" Style="{DynamicResource FlatButton}" IsCancel="True" Command="Close" CommandTarget="{Binding ElementName=_Window}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>

@@ -1,0 +1,600 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{12674014-F291-42A8-8586-F410D8986FC9}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PFConsole</RootNamespace>
+    <AssemblyName>PFConsole</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <ExpressionBlendVersion>12.0.51020.0</ExpressionBlendVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="InfragisticsWPF4.Controls.Charts.XamDiagram.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <EmbedAssembly>true</EmbedAssembly>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamMaskedInput.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <EmbedAssembly>true</EmbedAssembly>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamPropertyGrid.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <EmbedAssembly>true</EmbedAssembly>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DataVisualization.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <EmbedAssembly>true</EmbedAssembly>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DockManager.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Program FilesX\Dev\Infragistics 2015\2015.1\WPF\CLR4.0\Bin\InfragisticsWPF4.DockManager.v15.1.dll</HintPath>
+      <Private>False</Private>
+      <EmbedAssembly>true</EmbedAssembly>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DragDrop.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <EmbedAssembly>true</EmbedAssembly>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Ribbon.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <EmbedAssembly>true</EmbedAssembly>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Themes.Office2013.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Program FilesX\Dev\Infragistics 2015\2015.1\WPF\CLR4.0\Bin\InfragisticsWPF4.Themes.Office2013.v15.1.dll</HintPath>
+      <Private>False</Private>
+      <EmbedAssembly>true</EmbedAssembly>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Undo.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <EmbedAssembly>true</EmbedAssembly>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <EmbedAssembly>true</EmbedAssembly>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <EmbedAssembly>true</EmbedAssembly>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions" />
+    <Reference Include="System" />
+    <Reference Include="System.Windows.Interactivity" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="ArtWindow\ArtDictionary.xaml.cs">
+      <DependentUpon>ArtDictionary.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ArtWindow\Converters\DoubleToTopMarginConverter.cs" />
+    <Compile Include="ArtWindow\Converters\SolidBrushToColorConverter.cs" />
+    <Compile Include="ChildWindows\AssignMacroWindow.xaml.cs">
+      <DependentUpon>AssignMacroWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChildWindows\CreateTableWindow.xaml.cs">
+      <DependentUpon>CreateTableWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChildWindows\ModifyOptionWindow.xaml.cs">
+      <DependentUpon>ModifyOptionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChildWindows\NewInterfaceWindow.xaml.cs">
+      <DependentUpon>NewInterfaceWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChildWindows\NewProjectWindow.xaml.cs">
+      <DependentUpon>NewProjectWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChildWindows\RemoveMacroPrompt.xaml.cs">
+      <DependentUpon>RemoveMacroPrompt.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ContentPages\ContentPagesRegistery.cs" />
+    <Compile Include="ContentPages\DashboardPage.xaml.cs">
+      <DependentUpon>DashboardPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ContentPages\PFDiagramPage.xaml.cs">
+      <DependentUpon>PFDiagramPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ContentPages\ViewOptionsPage.xaml.cs">
+      <DependentUpon>ViewOptionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BusyIcon.xaml.cs">
+      <DependentUpon>BusyIcon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ListInput.xaml.cs">
+      <DependentUpon>ListInput.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SelectiveInput.xaml.cs">
+      <DependentUpon>SelectiveInput.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\SampleConverter.cs" />
+    <Compile Include="Converters\ToAbsolutePathConverter.cs" />
+    <Compile Include="Logs\FileLogger.cs" />
+    <Compile Include="Logs\ILogger.cs" />
+    <Compile Include="Logs\Logger.cs" />
+    <Compile Include="Project\DataHelpers\ExistingMacroHelper.cs" />
+    <Compile Include="Project\DataHelpers\TraverseMacroHelper.cs" />
+    <Compile Include="Project\InterfaceRepository.cs" />
+    <Compile Include="Project\MacroRepository.cs" />
+    <Compile Include="Project\OptionsRepository.cs" />
+    <Compile Include="Project\PFProject.cs" />
+    <Compile Include="Project\TableRepository.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="SplashWindow.xaml.cs">
+      <DependentUpon>SplashWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Util\AttributeHelper.cs" />
+    <Compile Include="Util\BinarySerializer.cs" />
+    <Compile Include="Util\Diagram\ConfigurableAttribute.cs" />
+    <Compile Include="Util\Diagram\DiagramItemPropertyGenerator.cs" />
+    <Compile Include="Util\TextSerializer.cs" />
+    <Compile Include="ViewModels\Diagram\ActionNodeVM.cs" />
+    <Compile Include="ViewModels\Diagram\DEFNodeVM.cs" />
+    <Compile Include="ViewModels\Diagram\DiagramVMBase.cs" />
+    <Compile Include="ViewModels\Diagram\InterfaceSelectorVM.cs" />
+    <Compile Include="ViewModels\Diagram\FilterNodeVM.cs" />
+    <Compile Include="ViewModels\Diagram\LogNodeVM.cs" />
+    <Compile Include="ViewModels\Diagram\MarkNodeVM.cs" />
+    <Compile Include="ViewModels\Diagram\QMNodeVM.cs" />
+    <Compile Include="ViewModels\Diagram\QueueNodeVM.cs" />
+    <Compile Include="ViewModels\Diagram\ServerNodeVM.cs" />
+    <Compile Include="ViewModels\Diagram\ShaperNodeVM.cs" />
+    <Compile Include="ViewModels\Diagram\STONodeVM.cs" />
+    <Compile Include="ViewModels\FlagListVM.cs" />
+    <Compile Include="ViewModels\OptionVM.cs" />
+    <Compile Include="Views\DiagramItems\ActionNodeItem.xaml.cs">
+      <DependentUpon>ActionNodeItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DiagramItems\DEFNodeItem.xaml.cs">
+      <DependentUpon>DEFNodeItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DiagramItems\InterfaceItem.xaml.cs">
+      <DependentUpon>InterfaceItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DiagramItems\FilterNodeItem.xaml.cs">
+      <DependentUpon>FilterNodeItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DiagramItems\LogNodeItem.xaml.cs">
+      <DependentUpon>LogNodeItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DiagramItems\MarkNodeItem.xaml.cs">
+      <DependentUpon>MarkNodeItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DiagramItems\QMNodeItem.xaml.cs">
+      <DependentUpon>QMNodeItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DiagramItems\QueueNodeItem.xaml.cs">
+      <DependentUpon>QueueNodeItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DiagramItems\ServerNodeItem.xaml.cs">
+      <DependentUpon>ServerNodeItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DiagramItems\ShaperNodeItem.xaml.cs">
+      <DependentUpon>ShaperNodeItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DiagramItems\STONodeItem.xaml.cs">
+      <DependentUpon>STONodeItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LogNodeItem.xaml.cs">
+      <DependentUpon>LogNodeItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MacroContentView.xaml.cs">
+      <DependentUpon>MacroContentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Macros\MacroUIElementSelector.cs" />
+    <Compile Include="Views\Nodes\FileNodeView.xaml.cs">
+      <DependentUpon>FileNodeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Nodes\HostNodeView.xaml.cs">
+      <DependentUpon>HostNodeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Nodes\InterfaceNodeView.xaml.cs">
+      <DependentUpon>InterfaceNodeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Nodes\IPAddressNodeView.xaml.cs">
+      <DependentUpon>IPAddressNodeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Nodes\MacroNodeView.xaml.cs">
+      <DependentUpon>MacroNodeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Nodes\NegatedMacroNodeView.xaml.cs">
+      <DependentUpon>NegatedMacroNodeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Nodes\PFListNodeView.xaml.cs">
+      <DependentUpon>PFListNodeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Nodes\PortNumberNodeView.xaml.cs">
+      <DependentUpon>PortNumberNodeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Nodes\TableNodeView.xaml.cs">
+      <DependentUpon>TableNodeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VisualResources\Behaviors\ProjectTreeStyles.cs" />
+    <Compile Include="VisualResources\DiagramManager.cs" />
+    <Compile Include="VisualResources\JMessageBox.xaml.cs">
+      <DependentUpon>JMessageBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VisualResources\ThemeManager.cs" />
+    <Compile Include="VisualResources\WindowManager.cs" />
+    <Page Include="ArtWindow\ArtDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ChildWindows\AssignMacroWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ChildWindows\CreateTableWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ChildWindows\ModifyOptionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ChildWindows\NewInterfaceWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ChildWindows\NewProjectWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ChildWindows\RemoveMacroPrompt.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ContentPages\DashboardPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ContentPages\PFDiagramPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ContentPages\ViewOptionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BusyIcon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ListInput.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SelectiveInput.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DiagramItems\ActionNodeItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DiagramItems\DEFNodeItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DiagramItems\InterfaceItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DiagramItems\FilterNodeItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DiagramItems\LogNodeItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DiagramItems\MarkNodeItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DiagramItems\QMNodeItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DiagramItems\QueueNodeItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DiagramItems\ServerNodeItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DiagramItems\ShaperNodeItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DiagramItems\STONodeItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LogNodeItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VisualResources\DiagramStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="SplashWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MacroContentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Nodes\FileNodeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Nodes\HostNodeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Nodes\InterfaceNodeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Nodes\IPAddressNodeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Nodes\MacroNodeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Nodes\NegatedMacroNodeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Nodes\PFListNodeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Nodes\PortNumberNodeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Nodes\TableNodeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VisualResources\ControlStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VisualResources\Images\Ribbon\Options_Gallery\OptionsGalleryDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VisualResources\JMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VisualResources\ListboxStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VisualResources\ProjectTreeStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\ProjectIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Ribbon_Options_View.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Ribbon_Options_Add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Options_Gallery\Ribbon_Options_Gallery_BlockPolicy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Options_Gallery\Ribbon_Options_Gallery_DebugLevel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Options_Gallery\Ribbon_Options_Gallery_FingerPrints.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Options_Gallery\Ribbon_Options_Gallery_Frags.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Options_Gallery\Ribbon_Options_Gallery_Src-Nodes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Options_Gallery\Ribbon_Options_Gallery_States.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Options_Gallery\Ribbon_Options_Gallery_Tables.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Options_Gallery\Ribbon_Options_Gallery_Table-Entries.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Options_Gallery\Ribbon_Options_Gallery_Loginterface.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Options_Gallery\Ribbon_Options_Gallery_Optimization.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Options_Gallery\Ribbon_Options_Gallery_Ruleset-Optimization.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Options_Gallery\Ribbon_Options_Gallery_SkipOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Options_Gallery\Ribbon_Options_Gallery_StatePolicy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Options_Gallery\Ribbon_Options_Gallery_Interval.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Options_Gallery\Ribbon_Options_Gallery_Frag.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Options_Gallery\Ribbon_Options_Gallery_SrcTrack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PFModels\PFModels.csproj">
+      <Project>{852e6662-af0b-41c2-8d5a-a1cd8e33ed12}</Project>
+      <Name>PFModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Ribbon_Options_OptionSets.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Ribbon_Options_FontSize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Ribbon_Options_DisplayMode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Ribbon_Options_GrouppingMode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Ribbon_Macros_Add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Commands\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Ribbon_Tables_Create.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Ribbon_Filtering_NewDiagram.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Diagram_Tools\Ribbon_Diagram_Tools_Redo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Diagram_Tools\Ribbon_Diagram_Tools_Undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Diagram_Tools\Ribbon_Diagram_Tools_Paste.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Diagram_Tools\Ribbon_Diagram_Tools_Cut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Diagram_Tools\Ribbon_Diagram_Tools_Copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Diagram_Tools\Ribbon_Diagram_Tools_Delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Diagram_Tools\Ribbon_Diagram_Tools_Edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Diagram_Tools\Ribbon_Diagram_Tools_BringForward.png" />
+    <Resource Include="VisualResources\Images\Ribbon\Diagram_Tools\Ribbon_Diagram_Tools_SendBackward.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Diagram_Tools\Ribbon_Diagram_Tools_BringToFront.png" />
+    <Resource Include="VisualResources\Images\Ribbon\Diagram_Tools\Ribbon_Diagram_Tools_SendToBack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Diagram_Tools\Ribbon_Diagram_Tools_SelectTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Diagram_Tools\Ribbon_Diagram_Tools_ConnectTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualResources\Images\Ribbon\Diagram_Tools\Ribbon_Diagram_Tools_DragNone.png" />
+    <Resource Include="VisualResources\Images\Ribbon\Diagram_Tools\Ribbon_Diagram_Tools_DragPan.png" />
+    <Resource Include="VisualResources\Images\Ribbon\Diagram_Tools\Ribbon_Diagram_Tools_DragSelect.png" />
+    <Resource Include="VisualResources\Images\Ribbon\Diagram_Tools\Ribbon_Diagram_Tools_DragZoom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image1.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

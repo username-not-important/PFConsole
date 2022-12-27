@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ribbon="http://infragistics.com/Ribbon">
+    <Style TargetType="ribbon:GalleryItemPresenter" >
+        <Setter Property="LayoutTransform" >
+            <Setter.Value>
+                <ScaleTransform ScaleX="0.35" ScaleY="0.35" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FontSize" Value="35" />
+    </Style>
+</ResourceDictionary>

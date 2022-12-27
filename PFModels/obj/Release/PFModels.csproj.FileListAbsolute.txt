@@ -1,0 +1,6 @@
+C:\Users\Alireza\Documents\Visual Studio 2013\Projects\PFConsole\PFModels\bin\Release\PFModels.dll
+C:\Users\Alireza\Documents\Visual Studio 2013\Projects\PFConsole\PFModels\bin\Release\PFModels.pdb
+C:\Users\Alireza\Documents\Visual Studio 2013\Projects\PFConsole\PFModels\obj\Release\PFModels.Properties.Resources.resources
+C:\Users\Alireza\Documents\Visual Studio 2013\Projects\PFConsole\PFModels\obj\Release\PFModels.csproj.GenerateResource.Cache
+C:\Users\Alireza\Documents\Visual Studio 2013\Projects\PFConsole\PFModels\obj\Release\PFModels.dll
+C:\Users\Alireza\Documents\Visual Studio 2013\Projects\PFConsole\PFModels\obj\Release\PFModels.pdb

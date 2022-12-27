@@ -1,0 +1,119 @@
+﻿using System;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using Infragistics.Controls.Charts;
+using Infragistics.Controls.Editors;
+using Infragistics.Themes;
+using Infragistics.Windows.Controls;
+using PFConsole.ViewModels.Diagram;
+using PFConsole.VisualResources;
+using ThemeManager = Infragistics.Themes.ThemeManager;
+
+namespace PFConsole.ContentPages
+{
+    /// <summary>
+    ///     Interaction logic for PFDiagramPage.xaml
+    /// </summary>
+    public partial class PFDiagramPage : Page
+    {
+        private static PFDiagramPage _activeInstance;
+        public static PFDiagramPage ActiveInstance
+        {
+            get { return _activeInstance; }
+        }
+
+        public static event EventHandler ActiveInstanceChanged;
+
+        protected void onActiveInstanceChanged()
+        {
+            if (ActiveInstanceChanged != null)
+                ActiveInstanceChanged(this, new EventArgs());
+        }
+
+        public PFDiagramPage()
+        {
+            InitializeComponent();
+
+            var theme = new Office2013Theme();
+
+            ThemeManager.SetTheme(_Diagram, theme);
+
+            _Diagram.UndoManager.UndoLimit = 5;
+        }
+
+        #region ActiveInstanceStuff
+
+        private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            _activeInstance = ((bool) e.NewValue) ? this : null;
+            onActiveInstanceChanged();
+        }
+
+        private void PFDiagramPage_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            _activeInstance = null;
+            onActiveInstanceChanged();
+        }
+
+        private void PFDiagramPage_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            _activeInstance = this;
+            onActiveInstanceChanged();
+        }
+
+        private void PFDiagramPage_OnGotMouseCapture(object sender, MouseEventArgs e)
+        {
+            _activeInstance = this;
+            onActiveInstanceChanged();
+        }
+
+        #endregion
+
+        private void _Diagram_ConnectionConnected(object sender, DiagramConnectionConnectedEventArgs e)
+        {
+            if (e.Connection.StartNode == null || e.Connection.EndNode == null)
+                _Diagram.Items.Remove(e.Connection);
+
+            if (Equals(e.Connection.StartNode, e.Connection.EndNode))
+                _Diagram.Items.Remove(e.Connection);
+
+            if (!DiagramManager.Instance.IsValidConnection(e.Connection.StartNodeConnectionPointName, e.Connection.EndNodeConnectionPointName))
+                _Diagram.Items.Remove(e.Connection);
+        }
+
+        private void _Diagram_ConnectionConnecting(object sender, DiagramConnectionConnectingEventArgs e)
+        {}
+
+        private void _Diagram_EditModeEntering(object sender, DiagramEditModeEnteringEventArgs e)
+        {
+            e.Cancel = true;
+        }
+
+        private void _Diagram_OnItemAdded(object sender, DiagramItemAddedEventArgs e)
+        {
+            var tag = e.Item.Tag;
+            if (tag == null)
+                return;
+
+            var cons = Assembly.GetExecutingAssembly().GetType("PFConsole.ViewModels.Diagram." + tag + "VM").GetConstructor(new Type[0]);
+            e.Item.Content = cons.Invoke(new object[0]);
+        }
+
+        private void _Diagram_OnItemAdding(object sender, DiagramItemAddingEventArgs e)
+        {
+            if (e.Item as DiagramConnection != null)
+            {
+                e.Item.Stroke = new SolidColorBrush(Color.FromRgb(66,66,66));
+                e.Item.StrokeThickness = 1;
+            }
+        }
+
+        private void _Diagram_OnSelectionChanged(object sender, DiagramSelectionChangedEventArgs e)
+        {
+            DiagramManager.Instance.SelectedDiagramItem = e.AddedItems.Length != 1 ? null : e.AddedItems[0].Content;
+        }
+    }
+}

@@ -1,0 +1,77 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:Controls="clr-namespace:PFConsole.Controls" x:Class="PFConsole.ChildWindows.AssignMacroWindow"
+        x:Name="Window"
+	Title="Assign Macro"
+	Width="550" Height="600" Style="{DynamicResource ArtChildWindowStyle}" ResizeMode="CanResizeWithGrip">
+    <Window.CommandBindings>
+        <CommandBinding Command="Close" Executed="CloseCommand_Executed"/>
+        <CommandBinding Command="Save" CanExecute="SaveCommand_CanExecute" Executed="SaveCommand_Executed"/>
+        <CommandBinding Command="SaveAs" CanExecute="SaveCommand_CanExecute" Executed="SaveAsCommand_Executed"/>
+    </Window.CommandBindings>
+    <Grid DataContext="{Binding OptionModel, ElementName=_Window}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64.8"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <DockPanel Margin="30,0,0,0" LastChildFill="True">
+            <TextBlock Text="Assign Macro" FontSize="16" DockPanel.Dock="Top"/>
+            <ScrollViewer Margin="10,0,0,0" VerticalScrollBarVisibility="Auto">
+                <TextBlock FontSize="12" FontWeight="Light" TextWrapping="Wrap" Text="Choose a macro name and a type, then assign a content to that macro." />
+            </ScrollViewer>
+        </DockPanel>
+        <Border BorderThickness="0,0.7,0,0" BorderBrush="Gray" Grid.Row="1" Background="#FFFAFAFA">
+            <Grid Margin="5" DataContext="{Binding InterfaceModel, ElementName=Window}">
+                <DockPanel VerticalAlignment="Stretch" Margin="0,0,0,30">
+                    <Grid DockPanel.Dock="Top" Margin="0,2,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="54*"/>
+                            <ColumnDefinition Width="199*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Macro Name" FontSize="16" />
+                        <TextBox x:Name="_TB_MacroName" FontSize="16" Width="320" HorizontalAlignment="Left" Padding="12,0,0,0"
+							Grid.Column="1"/>
+                        <TextBlock Text="$" Foreground="#FF424242" FontSize="16" Grid.Column="1" HorizontalAlignment="Left" Margin="3,0,0,0"/>
+                    </Grid>
+
+                    <TextBlock DockPanel.Dock="Top" Margin="110,2,0,2" Foreground="DarkRed" VerticalAlignment="Top" x:Name="_ErrorBlock" Visibility="Collapsed"><Italic ><Run Text="Error:" /></Italic><Run Text=" "/><Run x:Name="_ErrorText" /></TextBlock>
+
+                    <Grid DockPanel.Dock="Top" Margin="0,2,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="54*"/>
+                            <ColumnDefinition Width="199*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Content Type" FontSize="16" />
+                        <ComboBox x:Name="_TB_Type" FontSize="16" Width="320" HorizontalAlignment="Left" SelectedIndex="-1" SelectionChanged="_TB_Type_OnSelectionChanged"
+							Text="{Binding Description}" Grid.Column="1">
+                            <system:String>Interface(s)</system:String>
+                            <system:String>IP Address(es)</system:String>
+                            <system:String>Port Value(s)</system:String>
+                            <system:String>Host Name(s)</system:String>
+                        </ComboBox>
+                    </Grid>
+                    <Grid DockPanel.Dock="Top" Margin="0,2,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="108*"/>
+                            <ColumnDefinition Width="318*"/>
+                            <ColumnDefinition Width="79*"/>
+                        </Grid.ColumnDefinitions>
+                        <Controls:ListInput MinHeight="300" InputType="{Binding ElementName=_TB_Type, Path=Text, UpdateSourceTrigger=PropertyChanged}" x:Name="_ListInput" 
+                                                    Grid.Column="1"/>
+
+                    </Grid>
+
+
+                </DockPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                    <Button Content="Save &amp; Clear" Margin="0,0,5,0" Style="{DynamicResource FlatButton}" Command="SaveAs" CommandTarget="{Binding ElementName=_Window}"/>
+                    <Button Content="Save" Margin="0,0,5,0" Style="{DynamicResource FlatButton}" IsDefault="True" Command="Save" CommandTarget="{Binding ElementName=_Window}"/>
+                    <Button Content="Cancel" Style="{DynamicResource FlatButton}" IsCancel="True" Command="Close" CommandTarget="{Binding ElementName=_Window}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>

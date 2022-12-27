@@ -1,0 +1,307 @@
+﻿using System;
+using System.ComponentModel;
+using System.IO;
+using System.Text;
+using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Input;
+using Infragistics.Controls.Charts;
+using Infragistics.Themes;
+using Infragistics.Windows.Ribbon;
+using Infragistics.Windows.Ribbon.Events;
+using Microsoft.Win32;
+using PFConsole.Annotations;
+using PFConsole.ChildWindows;
+using PFConsole.ContentPages;
+using PFConsole.Logs;
+using PFConsole.Project;
+using PFConsole.Properties;
+using PFConsole.VisualResources;
+using ThemeManager = Infragistics.Themes.ThemeManager;
+
+namespace PFConsole
+{
+    /// <summary>
+    ///     Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : INotifyPropertyChanged
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+
+            WindowManager.Instance.DocumentsPane = _MainContentPane;
+            ThemeManager.SetTheme(_Prop, new Office2013Theme());
+
+            PFDiagramPage.ActiveInstanceChanged += (sender, args) =>
+            {
+                if (_DiagramContextualGroup.IsVisible)
+                {
+                    _Ribbon.SelectedTab = _DiagramContextualGroup.Tabs[0];
+                    _Pane_Toolbox.Visibility = Visibility.Visible;
+                    _Pane_Properties.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    _Pane_Toolbox.Visibility = Visibility.Collapsed;
+                    _Pane_Properties.Visibility = Visibility.Collapsed;
+                }
+            };
+
+            DiagramManager.Instance.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "SelectedDiagramItem")
+                    _Prop.SelectedObject = DiagramManager.Instance.SelectedDiagramItem;
+            };
+
+            Logger.Instance.LogInProgress += InstanceOnLogInProgress;
+            Logger.Instance.Log("PF Console Main Window Loaded.");
+
+            _DiagramToolbox.Categories.RemoveAt(0);
+            _DiagramToolbox.Categories.RemoveAt(0);
+        }
+
+        private void _Window_ContentRendered(object sender, EventArgs e)
+        {
+            App.splashScreen.LoadComplete();
+        }
+
+        private void _Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            string layoutpath = Environment.CurrentDirectory + "\\" + Settings.Default.LAYOUT_FILE;
+            if (!File.Exists(layoutpath))
+                return;
+
+            string layout = File.ReadAllText(layoutpath);
+            MemoryStream stream = new MemoryStream();
+
+            try
+            {
+                StreamWriter sw = new StreamWriter(stream, Encoding.UTF8);
+                sw.Write(layout);
+                sw.Flush();
+                stream.Position = 0;
+
+                _DockManager.LoadLayout(stream);
+                _Pane_Toolbox.Visibility= Visibility.Collapsed;
+                _Pane_Properties.Visibility = Visibility.Collapsed;
+            }
+            catch (NotImplementedException)
+            {}
+            finally
+            {
+                stream.Close();
+            }
+
+            App.splashScreen.AddMessage("Layout Loaded...");
+        }
+
+        private void _Window_Closing(object sender, CancelEventArgs e)
+        {
+            MemoryStream stream = new MemoryStream();
+
+            try
+            {
+                _DockManager.SaveLayout(stream);
+
+                stream.Position = 0;
+                StreamReader sr = new StreamReader(stream);
+                string layout = sr.ReadToEnd();
+
+                File.WriteAllText(Environment.CurrentDirectory + "\\" + Settings.Default.LAYOUT_FILE, layout, Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Log("Exception during layout Save:" + Environment.NewLine + ex.Message);
+            }
+            finally
+            {
+                stream.Close();
+            }
+        }
+
+        private void InstanceOnLogInProgress(object sender, string time, string feedback)
+        {
+            Paragraph p = new Paragraph();
+            p.Inlines.Add(new Italic(new Run(time)));
+            p.Inlines.Add(new Run(feedback));
+
+            _OutputBox.Document.Blocks.Add(p);
+        }
+
+        private bool PromptSave()
+        {
+            if (PFProject.Instance.RequiresSave)
+            {
+                var prompt = JMessageBox.Show("Save Changes to project before closing it?", "Save Changes", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                if (prompt == MessageBoxResult.Cancel) return false;
+                if (prompt == MessageBoxResult.Yes)
+                    PFProject.Save();
+
+                return true;
+            }
+
+            return true;
+        }
+
+        #region FileCommands
+
+        private void CloseCommand_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (PromptSave())
+            {
+                PFProject.Close();
+                Close();
+            }
+        }
+
+        private void NewCommand_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (!PromptSave())
+                return;
+
+            PFProject.Close();
+            NewProjectWindow win = new NewProjectWindow();
+            win.ShowDialog();
+        }
+
+        private void SaveCommand_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            PFProject.Save();
+        }
+
+        private void OpenCommand_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (!PromptSave())
+                return;
+
+            PFProject.Close();
+            OpenFileDialog dialog = new OpenFileDialog {CheckPathExists = true, Filter = "PF Project files (*.pfp)|*.pfp"};
+            var dialogresult = dialog.ShowDialog();
+
+            if (dialogresult != null && dialogresult == true)
+                PFProject.Load(dialog.FileName);
+        }
+
+        #endregion
+
+        #region Ribbon
+
+        private void Ribbon_Options_FontSize_ItemClicked(object sender, RoutedEventArgs e)
+        {
+            double baseSize = Double.Parse((sender as ButtonTool).Tag.ToString());
+
+            ViewOptionsPage.SetFontBase(baseSize);
+        }
+
+        private void Ribbon_Options_DisplayMode_ItemClicked(object sender, RoutedEventArgs e)
+        {
+            string mode = (sender as ButtonTool).Tag.ToString();
+
+            ViewOptionsPage.SetDisplayMode(mode);
+        }
+
+        private void Ribbon_Options_GrouppingMode_ItemClicked(object sender, RoutedEventArgs e)
+        {
+            string mode = (sender as ButtonTool).Tag.ToString();
+
+            ViewOptionsPage.SetGrouppingMode(mode);
+        }
+
+        private void _Button_ViewOptions_Clicked(object sender, RoutedEventArgs e)
+        {
+            WindowManager.CreateDocument<ViewOptionsPage>(true, null);
+        }
+
+        private void _ModifyOption_ItemClicked(object sender, GalleryItemEventArgs e)
+        {
+            WindowManager.CreateWindow<ModifyOptionWindow>(true, e.Item.Key);
+        }
+
+        #endregion
+
+        private void _MenuItem_AddInterface_Clicked(object sender, RoutedEventArgs e)
+        {
+            WindowManager.CreateWindow<NewInterfaceWindow>(true, null);
+        }
+
+        private void _FirewallExplorer_Options_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            WindowManager.CreateDocument<ViewOptionsPage>(true, 0);
+        }
+
+        private void _Button_OutputClear_Click(object sender, RoutedEventArgs e)
+        {
+            _OutputBox.Document.Blocks.Clear();
+        }
+
+        private void _Button_CloseProject(object sender, RoutedEventArgs e)
+        {
+            if (PromptSave())
+                PFProject.Close();
+        }
+
+        private void _Button_AssignMacro_Clicked(object sender, RoutedEventArgs e)
+        {
+            WindowManager.CreateWindow<AssignMacroWindow>(false, null);
+        }
+
+        #region INPC
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
+        private void _Button_CreateTable_Clicked(object sender, RoutedEventArgs e)
+        {
+            WindowManager.CreateWindow<CreateTableWindow>(false, null);
+        }
+
+        private void SaveCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = PFProject.Instance.ProjectLoaded;
+        }
+
+        private void _Button_NewDiagram_Click(object sender, RoutedEventArgs e)
+        {
+            WindowManager.CreateDocument<PFDiagramPage>(true, null);
+        }
+
+        private void Ribbon_DiagramTools_ToolChanged(object sender, RoutedEventArgs e)
+        {
+            if (DiagramManager.Instance.ActiveDiagram != null)
+            {
+                DiagramManager.Instance.ActiveDiagram.Tool = ((RadioButtonTool) sender).Tag.ToString() == "Select" ? DiagramTool.Pointer : DiagramTool.Connector;
+            }
+        }
+
+        private void Ribbon_DiagramTools_DragInteractionChanged(object sender, RoutedEventArgs e)
+        {
+            if (DiagramManager.Instance.ActiveDiagram == null) return;
+
+            switch (((RadioButtonTool)sender).Caption)
+            {
+                case "Select":
+                    DiagramManager.Instance.ActiveDiagram.DefaultDragInteraction = DiagramDragInteraction.Select;
+                    break;
+                case "Pan":
+                    DiagramManager.Instance.ActiveDiagram.DefaultDragInteraction = DiagramDragInteraction.Pan;
+                    break;
+                case "Zoom":
+                    DiagramManager.Instance.ActiveDiagram.DefaultDragInteraction = DiagramDragInteraction.Zoom;
+                    break;
+                case "None":
+                    DiagramManager.Instance.ActiveDiagram.DefaultDragInteraction = DiagramDragInteraction.None;
+                    break;
+            }
+        }
+
+    }
+}

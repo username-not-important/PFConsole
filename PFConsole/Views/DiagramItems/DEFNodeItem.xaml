@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="PFConsole.Views.DiagramItems.DEFNodeItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Name="_Control"
+             ToolTip="Action Node"
+             Height="45" Width="45">
+    <Border Padding="3" BorderBrush="#424242" BorderThickness="1" Background="White">
+        <Grid>
+            <Viewbox Margin="4" VerticalAlignment="Top">
+                <Canvas Width="55.7034" Height="55.7034">
+                    <Path Width="55.7034" Height="55.7034" Canvas.Left="9.53674e-007" Canvas.Top="0" Stretch="Fill" Fill="#FF424242" Data="F1 M 54.5686,0L 1.13474,0C 0.507543,0 9.53674e-007,0.5075 9.53674e-007,1.13479L 9.53674e-007,54.5686C 9.53674e-007,55.1958 0.507543,55.7034 1.13474,55.7034L 54.5686,55.7034C 55.1959,55.7034 55.7034,55.1958 55.7034,54.5686L 55.7034,1.13479C 55.7034,0.5075 55.1959,0 54.5686,0 Z M 53.4338,53.4339L 2.26953,53.4339L 2.26953,2.26957L 53.4338,2.26957L 53.4338,53.4339 Z "/>
+                    <Viewbox Width="38.2903" Height="16.0133" Canvas.Left="8.77309" Canvas.Top="19.9402">
+                        <Canvas Width="38.2903" Height="16.0133">
+                            <Path Width="14.204" Height="16.0133" Canvas.Left="-1.90735e-006" Canvas.Top="-3.8147e-006" Stretch="Fill" Fill="#FF424242" Data="F1 M -1.90735e-006,16.0133L -1.90735e-006,-3.8147e-006L 5.67268,-3.8147e-006C 11.3601,-3.8147e-006 14.204,2.60196 14.204,7.80561C 14.204,10.2999 13.4278,12.2911 11.8756,13.7798C 10.3235,15.2689 8.25574,16.0133 5.67268,16.0133L -1.90735e-006,16.0133 Z M 3.60666,2.93687L 3.60666,13.0875L 5.39345,13.0875C 6.95685,13.0875 8.18321,12.6187 9.07287,11.6807C 9.96236,10.7427 10.4073,9.46564 10.4073,7.85024C 10.4073,6.32429 9.96626,5.12375 9.08392,4.24899C 8.20184,3.37423 6.96399,2.93687 5.37113,2.93687L 3.60666,2.93687 Z "/>
+                            <Path Width="9.6034" Height="16.0133" Canvas.Left="16.8616" Canvas.Top="-3.8147e-006" Stretch="Fill" Fill="#FF424242" Data="F1 M 26.465,16.0133L 16.8616,16.0133L 16.8616,-3.8147e-006L 26.0967,-3.8147e-006L 26.0967,2.93687L 20.4687,2.93687L 20.4687,6.49913L 25.7059,6.49913L 25.7059,9.42469L 20.4687,9.42469L 20.4687,13.0875L 26.465,13.0875L 26.465,16.0133 Z "/>
+                            <Path Width="9.25699" Height="16.0133" Canvas.Left="29.0334" Canvas.Top="-3.8147e-006" Stretch="Fill" Fill="#FF424242" Data="F1 M 38.2903,2.93687L 32.6402,2.93687L 32.6402,6.86758L 37.8324,6.86758L 37.8324,9.79319L 32.6402,9.79319L 32.6402,16.0133L 29.0334,16.0133L 29.0334,-3.8147e-006L 38.2903,-3.8147e-006L 38.2903,2.93687 Z "/>
+                        </Canvas>
+                    </Viewbox>
+                </Canvas>
+
+            </Viewbox>
+
+        </Grid>
+    </Border>
+</UserControl>

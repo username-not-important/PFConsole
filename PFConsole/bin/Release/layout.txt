@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xamDockManager version="15.2.20152.1000">
+  <contentPanes>
+    <contentPane name="_Pane_FirewallExplorer" location="Unpinned" lastDockableState="Docked" lastActivatedTime="2016-02-02T17:18:07.4180319Z" unpinnedOrder="0" />
+    <contentPane name="_Pane_Dashboard" location="Document" lastActivatedTime="2016-02-02T17:16:16.8785301Z" />
+    <contentPane name="_Pane_Toolbox" location="Unpinned" lastDockableState="Docked" lastActivatedTime="2016-02-02T17:15:32.7412986Z" visibility="Collapsed" unpinnedOrder="1" />
+    <contentPane name="_Pane_Properties" location="DockedRight" visibility="Collapsed" />
+    <contentPane name="_Pane_Output" location="DockedBottom" />
+    <contentPane name="_Pane_Preview" location="DockedBottom" />
+  </contentPanes>
+  <panes>
+    <splitPane name="Z9af6d004206c42079aba744c67ce7f56" splitterOrientation="Vertical" location="DockedLeft">
+      <contentPane name="_Pane_FirewallExplorer" />
+      <contentPane name="_Pane_Toolbox" />
+    </splitPane>
+    <splitPane name="Z9c9cd987a66c4dbeaa411972b32d6225" splitterOrientation="Vertical" location="DockedRight" extent="250">
+      <contentPane name="_Pane_Properties" />
+    </splitPane>
+    <splitPane name="Z7d03dd581e5f4940ac691b78ad8fae0f" splitterOrientation="Horizontal" location="DockedBottom">
+      <tabGroup name="Zdc4686039fd3425081362ffc0983a811" selectedIndex="0">
+        <contentPane name="_Pane_Output" />
+        <contentPane name="_Pane_Preview" />
+      </tabGroup>
+    </splitPane>
+  </panes>
+  <documents splitterOrientation="Vertical">
+    <splitPane name="Z2bfce0274181445f8ba3065d4ccea7c5" splitterOrientation="Vertical">
+      <tabGroup name="_MainContentPane" selectedIndex="0">
+        <contentPane name="_Pane_Dashboard" />
+      </tabGroup>
+    </splitPane>
+  </documents>
+</xamDockManager>

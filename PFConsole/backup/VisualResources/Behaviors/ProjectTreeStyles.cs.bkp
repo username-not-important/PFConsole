@@ -1,0 +1,212 @@
+﻿using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using Infragistics.DragDrop;
+using PFConsole.Controls;
+using PFConsole.Logs;
+using PFConsole.Project;
+using PFConsole.Views;
+using PFModels.Data;
+using MacroNodeView = PFConsole.Views.Nodes.MacroNodeView;
+
+namespace PFConsole.VisualResources.Behaviors
+{
+    public partial class ProjectTreeStyles : ResourceDictionary
+    {
+        // A border with a tag as SelectiveInput.Tag = tag
+        private bool SelectiveInputMatch(UIElement element, params string[] tags)
+        {
+            var border = element as Border;
+
+            if (border == null) return false;
+
+            if (border.Tag as SelectiveInput == null) return false;
+
+            return tags.Contains((string) (border.Tag as SelectiveInput).Tag);
+        }
+
+        private void _OnDragLeave(object sender, DragDropEventArgs e)
+        {
+            e.OperationType = OperationType.DropNotAllowed;
+        }
+
+        #region Drag&Drop Interface
+
+        private void Interface_OnDragEnd(object sender, DragDropEventArgs e)
+        {
+            if (e.OperationType == OperationType.DropNotAllowed)
+                return;
+
+            if (SelectiveInputMatch(e.DropTarget, "ModifyOption", "AssignMacro"))
+            {
+                Interface source = (e.DragSource as Border).Tag as Interface;
+                if (source == null)
+                {
+                    e.OperationType = OperationType.DropNotAllowed;
+                    return;
+                }
+
+                SelectiveInput destination = (e.DropTarget as Border).Tag as SelectiveInput;
+
+                string value = source.Name;
+
+                var findMacro = PFProject.Instance.Macros[source];
+                if (findMacro != null)
+                {
+                    var prompt = JMessageBox.Show(String.Format("Macro ${0} found with the value of {1}, do you want to set the Macro name as your Input?", findMacro.Name, value),
+                        "Macro Found", MessageBoxButton.YesNoCancel);
+
+                    if (prompt == MessageBoxResult.Yes)
+                        value = "$" + findMacro.Name;
+                    else if (prompt == MessageBoxResult.Cancel)
+                        return;
+                }
+
+                destination.Text = value;
+            }
+            else if (OptionListItemMatch(e.DropTarget))
+            {
+                Interface source = (e.DragSource as Border).Tag as Interface;
+                if (source == null)
+                {
+                    e.OperationType = OperationType.DropNotAllowed;
+                    return;
+                }
+
+                Option destination = (e.DropTarget as Border).Tag as Option;
+
+                var option = PFProject.Instance.Options[destination.Key];
+                string value = source.Name;
+
+                var findMacro = PFProject.Instance.Macros[source];
+                if (findMacro != null)
+                    value = "$" + findMacro.Name;
+
+                option.Value = value;
+
+                Logger.Instance.Log(string.Format("Option {0} Changed to {1}.", option.Meta.Text, option.Value));
+
+                PFProject.Instance.RequiresSave = true;
+            }
+        }
+
+        private void Interface_OnDragEnter(object sender, DragDropCancelEventArgs e)
+        {
+            if (OptionListItemMatch(e.DropTarget))
+            {
+                Option option = (e.DropTarget as Border).Tag as Option;
+                if (option.Meta.Group == "Interfaces")
+                    e.OperationType = OperationType.Move;
+                else
+                    e.OperationType = OperationType.DropNotAllowed;
+            }
+            else
+                e.OperationType = OperationType.Move;
+        }
+
+        // A border with a tag as Option
+        private bool OptionListItemMatch(UIElement element)
+        {
+            var border = element as Border;
+
+            if (border == null) return false;
+
+            if (border.Tag as Option == null) return false;
+            return true;
+        }
+
+        #endregion
+
+        #region Drag&Drop Macro
+
+        private void Macro_OnDragEnd(object sender, DragDropEventArgs e)
+        {
+            if (e.OperationType == OperationType.DropNotAllowed)
+                return;
+
+            if (SelectiveInputMatch(e.DropTarget, "AssignMacro"))
+            {
+                Macro source = (e.DragSource as Border).Tag as Macro;
+                if (source == null)
+                {
+                    e.OperationType = OperationType.DropNotAllowed;
+                    return;
+                }
+
+                SelectiveInput destination = (e.DropTarget as Border).Tag as SelectiveInput;
+
+                destination.Text = "$" + source.Name;
+            }
+        }
+
+        private void Macro_OnDragEnter(object sender, DragDropCancelEventArgs e)
+        {
+            if (SelectiveInputMatch(e.DropTarget, "AssignMacro"))
+            {
+                DropTarget target = DragDropManager.GetDropTarget(e.DropTarget);
+                if (target.DropChannels.Contains("InterfaceDrag"))
+                {
+                    e.OperationType = OperationType.Move;
+                    return;
+                }
+
+                e.OperationType = OperationType.DropNotAllowed;
+            }
+
+            e.OperationType = OperationType.DropNotAllowed;
+        }
+
+        private void Macro_OnDragStart(object sender, DragDropStartEventArgs e)
+        {
+            if (!((e.DragSource as Border).Child as MacroNodeView).IsExpanded)
+            {
+                e.Cancel = true;
+                ((e.DragSource as Border).Child as MacroNodeView).IsExpanded = true;
+            }
+        }
+
+        #endregion
+
+        private void _Interface_RemoveClick(object sender, RoutedEventArgs e)
+        {
+            Interface target = (sender as MenuItem).Tag as Interface;
+
+            var prompt = JMessageBox.Show("Do you really want to delete Interface " + target.Name + "?", "Delete Interface", MessageBoxButton.YesNo);
+            if (prompt == MessageBoxResult.No)
+                return;
+
+            PFProject.Instance.Interfaces.RemoveInterface(target);
+        }
+
+        private void _Interface_EditClick(object sender, RoutedEventArgs e)
+        {
+            Interface target = (sender as MenuItem).Tag as Interface;
+        }
+
+        private void _Macro_EditClick(object sender, RoutedEventArgs e)
+        {}
+
+        private void _Macro_RemoveClick(object sender, RoutedEventArgs e)
+        {
+            Macro target = (sender as MenuItem).Tag as Macro;
+
+            var prompt = JMessageBox.Show("Do you really want to delete Macro " + target.Name + "?", "Delete Macro", MessageBoxButton.YesNo);
+            if (prompt == MessageBoxResult.No)
+                return;
+
+            PFProject.Instance.Macros.RemoveMacro(target);
+        }
+
+        private void _MacroNodeView_Loaded(object sender, RoutedEventArgs e)
+        {
+            //var dc = (sender as Control).DataContext;
+            //if (dc is Macro && (dc as Macro).Content is Interface)
+            //{
+            //    DragSource source = DragDropManager.GetDragSource((sender as Control).Parent as UIElement);
+
+            //    source.DragChannels.Add("InterfaceDrag");
+            //}
+        }
+    }
+}

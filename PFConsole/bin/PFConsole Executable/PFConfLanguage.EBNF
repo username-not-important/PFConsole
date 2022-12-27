@@ -1,0 +1,29 @@
+?
+<Grammar Name="PFConf File Language" StartSymbol="RootContent">
+	<TerminalSymbolReference Name="NewLineToken"/> 
+	<TerminalSymbolReference Name="WhitespaceToken"/> 
+	<TerminalSymbol Name="digit" Value="[0123456789]+" Comparison="RegularExpression" LanguageElementName="digit"/> 
+	<TerminalSymbol Name="keyword" value="(\s|\r|\n)(set|default|none|log|in|out|quick|flags|fastroute|pass|block|queue|from|to|any|table|ecn|borrow|red|rio|priq[\(]|hfsc|cbq|bandwidth|b|Mb|Gb|%)(\s|\r|\n)" Comparison="RegularExpression" LanguageElementName="keyword">
+	</TerminalSymbol>
+	<TerminalSymbol Name="macro" value="(\s|\r|\n)(\$\S+)(\s|\r|\n)" Comparison="RegularExpression" LanguageElementName="macro">
+	</TerminalSymbol>
+	<TerminalSymbol Name="COMMENT_START" Value="#" LanguageElementName="Comment"> 
+		<LexerState Name="Comment"> 
+			<TerminalSymbol Name="COMMENT_TEXT" Value="[^\n\r]+" Comparison="RegularExpression" LanguageElementName="Comment"/> 
+			<TerminalSymbolReference Name="NewLineToken" IsExitSymbol="true"/> 
+			<TerminalSymbolReference Name="WhitespaceToken" IsExitSymbol="true"/> 
+		</LexerState>
+	</TerminalSymbol>
+	<TerminalSymbol Name="DoubleQuote" Value="&quot;" LanguageElementName="StringLiteral">
+        <LexerState Name="StringLiteral">
+            <TerminalSymbol Name="StringLiteralContent" Value="([^&quot;\\\r\n]|(\\[^\r\n]))+" Comparison="RegularExpression" LanguageElementName="StringLiteral" />
+            <TerminalSymbolReference Name="NewLineToken" IsExitSymbol="true" />
+            <TerminalSymbolReference Name="DoubleQuote" IsExitSymbol="true" />
+        </LexerState>
+    </TerminalSymbol>
+</Grammar>
+?
+
+RootContent = Content, $;
+
+Content = {"~"};

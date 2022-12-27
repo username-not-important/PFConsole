@@ -1,0 +1,14 @@
+﻿<UserControl x:Class="PFConsole.Views.Nodes.NegatedMacroNodeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:views="clr-namespace:PFConsole.Views"
+             mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="25">
+    <Grid>
+        <Path Stretch="Fill" Fill="#FFA82929" Data="F1 M 61.418,14.5807C 55.2396,8.40228 47.0129,5.00001 38.2539,5.00001C 29.4935,5.00001 21.2669,8.40228 15.0885,14.5807C 8.91014,20.7591 5.50774,28.9856 5.50774,37.7461C 5.50774,46.5052 8.91014,54.7317 15.0885,60.9101C 21.2669,67.0885 29.4948,70.4921 38.2591,70.4921C 47.0183,70.4921 55.2435,67.0899 61.4205,60.9128C 67.5989,54.7344 71.0013,46.5077 71,37.7461C 71,28.9856 67.5963,20.7591 61.418,14.5807 Z M 17.7448,17.2369C 23.1523,11.8292 30.354,8.85134 38.0236,8.85134C 45.2639,8.85134 52.0683,11.5347 57.3591,16.3823L 16.8903,56.8511C 12.0425,51.5604 9.35907,44.756 9.35907,37.5159C 9.35907,29.8461 12.3371,22.6445 17.7448,17.2369 Z M 58.7639,58.2561C 53.3565,63.6635 46.1573,66.6401 38.4892,66.6401L 38.4879,66.6401C 31.2444,66.6401 24.4389,63.9556 19.148,59.1079L 59.6159,18.64C 64.4636,23.9309 67.148,30.7363 67.148,37.9776C 67.1492,45.6471 64.1713,52.8487 58.7639,58.2561 Z " Width="16" Height="16" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,4,0,0"/>
+        <StackPanel Orientation="Horizontal" Margin="22,2,0,0">
+            <views:MacroContentView MacroContentModel="{Binding Content}" VerticalAlignment="Center"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

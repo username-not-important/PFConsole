@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="PFConsole.Views.FlagCheckMaskView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             MinHeight="50"
+             Name="_Control"
+             Foreground="#424242"
+             d:DesignHeight="50" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border BorderBrush="#424242" BorderThickness="0.5">
+            <TextBlock Text="Check" VerticalAlignment="Center" HorizontalAlignment="Right" FontFamily="Segoe UI Semibold"  Margin="0,0,5,0" />
+        </Border>
+        <Border BorderBrush="#424242" BorderThickness="0.5" Grid.Row="1" Grid.Column="0">
+            <TextBlock Text="Mask" VerticalAlignment="Center" HorizontalAlignment="Right" FontFamily="Segoe UI Semibold"  Margin="0,0,5,0" />
+        </Border>
+
+        <Border BorderBrush="#424242" BorderThickness="0.5" Grid.Row="0" Grid.Column="1">
+            <CheckBox Content="F" FontFamily="Segoe UI Semibold" Style="{DynamicResource FlatCheckbox}" ToolTip="FIN" IsChecked="{Binding Value.Check.F}"/>
+        </Border>
+        <Border BorderBrush="#424242" BorderThickness="0.5" Grid.Row="0" Grid.Column="2">
+            <CheckBox Content="S" FontFamily="Segoe UI Semibold" Style="{DynamicResource FlatCheckbox}" ToolTip="SYN" IsChecked="{Binding Value.Check.S}"/>
+        </Border>
+        <Border BorderBrush="#424242" BorderThickness="0.5" Grid.Row="0" Grid.Column="3">
+            <CheckBox Content="R" FontFamily="Segoe UI Semibold" Style="{DynamicResource FlatCheckbox}" ToolTip="RST" IsChecked="{Binding Value.Check.R}"/>
+        </Border>
+        <Border BorderBrush="#424242" BorderThickness="0.5" Grid.Row="0" Grid.Column="4">
+            <CheckBox Content="P" FontFamily="Segoe UI Semibold" Style="{DynamicResource FlatCheckbox}" ToolTip="PUSH" IsChecked="{Binding Value.Check.P}"/>
+        </Border>
+        <Border BorderBrush="#424242" BorderThickness="0.5" Grid.Row="0" Grid.Column="5">
+            <CheckBox Content="A" FontFamily="Segoe UI Semibold" Style="{DynamicResource FlatCheckbox}" ToolTip="ACK" IsChecked="{Binding Value.Check.A}"/>
+        </Border>
+        <Border BorderBrush="#424242" BorderThickness="0.5" Grid.Row="0" Grid.Column="6">
+            <CheckBox Content="E" FontFamily="Segoe UI Semibold" Style="{DynamicResource FlatCheckbox}" ToolTip="ECE" IsChecked="{Binding Value.Check.E}"/>
+        </Border>
+        <Border BorderBrush="#424242" BorderThickness="0.5" Grid.Row="0" Grid.Column="7">
+            <CheckBox Content="U" FontFamily="Segoe UI Semibold" Style="{DynamicResource FlatCheckbox}" ToolTip="URG" IsChecked="{Binding Value.Check.U}"/>
+        </Border>
+        <Border BorderBrush="#424242" BorderThickness="0.5" Grid.Row="0" Grid.Column="8">
+            <CheckBox Content="W" FontFamily="Segoe UI Semibold" Style="{DynamicResource FlatCheckbox}" ToolTip="CWR" IsChecked="{Binding Value.Check.W}"/>
+        </Border>
+        <Border BorderBrush="#424242" BorderThickness="0.5" Grid.Row="1" Grid.Column="1">
+            <CheckBox Content="F" FontFamily="Segoe UI Semibold" Style="{DynamicResource FlatCheckbox}" ToolTip="FIN" IsChecked="{Binding Value.Mask.F}"/>
+        </Border>
+        <Border BorderBrush="#424242" BorderThickness="0.5" Grid.Row="1" Grid.Column="2">
+            <CheckBox Content="S" FontFamily="Segoe UI Semibold" Style="{DynamicResource FlatCheckbox}" ToolTip="SYN" IsChecked="{Binding Value.Mask.S}"/>
+        </Border>
+        <Border BorderBrush="#424242" BorderThickness="0.5" Grid.Row="1" Grid.Column="3">
+            <CheckBox Content="R" FontFamily="Segoe UI Semibold" Style="{DynamicResource FlatCheckbox}" ToolTip="RST" IsChecked="{Binding Value.Mask.R}"/>
+        </Border>
+        <Border BorderBrush="#424242" BorderThickness="0.5" Grid.Row="1" Grid.Column="4">
+            <CheckBox Content="P" FontFamily="Segoe UI Semibold" Style="{DynamicResource FlatCheckbox}" ToolTip="PUSH" IsChecked="{Binding Value.Mask.P}"/>
+        </Border>
+        <Border BorderBrush="#424242" BorderThickness="0.5" Grid.Row="1" Grid.Column="5">
+            <CheckBox Content="A" FontFamily="Segoe UI Semibold" Style="{DynamicResource FlatCheckbox}" ToolTip="ACK" IsChecked="{Binding Value.Mask.A}"/>
+        </Border>
+        <Border BorderBrush="#424242" BorderThickness="0.5" Grid.Row="1" Grid.Column="6">
+            <CheckBox Content="E" FontFamily="Segoe UI Semibold" Style="{DynamicResource FlatCheckbox}" ToolTip="ECE" IsChecked="{Binding Value.Mask.E}"/>
+        </Border>
+        <Border BorderBrush="#424242" BorderThickness="0.5" Grid.Row="1" Grid.Column="7">
+            <CheckBox Content="U" FontFamily="Segoe UI Semibold" Style="{DynamicResource FlatCheckbox}" ToolTip="URG" IsChecked="{Binding Value.Mask.U}"/>
+        </Border>
+        <Border BorderBrush="#424242" BorderThickness="0.5" Grid.Row="1" Grid.Column="8">
+            <CheckBox Content="W" FontFamily="Segoe UI Semibold" Style="{DynamicResource FlatCheckbox}" ToolTip="CWR" IsChecked="{Binding Value.Mask.W}"/>
+        </Border>
+    </Grid>
+</UserControl>

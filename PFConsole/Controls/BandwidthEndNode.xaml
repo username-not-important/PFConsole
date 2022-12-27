@@ -1,0 +1,114 @@
+﻿<UserControl x:Class="PFConsole.Controls.BandwidthEndNode"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" Foreground="#424242"
+             Name="_Control" SnapsToDevicePixels="False"
+             Height="20" Width="90">
+	<UserControl.Resources>
+		<Storyboard x:Key="MainAnimation" RepeatBehavior="Forever">
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[1].(GradientStop.Offset)" Storyboard.TargetName="rectangle">
+				<EasingDoubleKeyFrame KeyTime="0" Value="0.164"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="0.98393649441710063">
+					<EasingDoubleKeyFrame.EasingFunction>
+						<SineEase EasingMode="EaseIn"/>
+					</EasingDoubleKeyFrame.EasingFunction>
+				</EasingDoubleKeyFrame>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="1">
+					<EasingDoubleKeyFrame.EasingFunction>
+						<SineEase EasingMode="EaseOut"/>
+					</EasingDoubleKeyFrame.EasingFunction>
+				</EasingDoubleKeyFrame>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[2].(GradientStop.Offset)" Storyboard.TargetName="rectangle">
+				<EasingDoubleKeyFrame KeyTime="0" Value="0.082"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="0.88918628577185865">
+					<EasingDoubleKeyFrame.EasingFunction>
+						<SineEase EasingMode="EaseIn"/>
+					</EasingDoubleKeyFrame.EasingFunction>
+				</EasingDoubleKeyFrame>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="0.905">
+					<EasingDoubleKeyFrame.EasingFunction>
+						<SineEase EasingMode="EaseOut"/>
+					</EasingDoubleKeyFrame.EasingFunction>
+				</EasingDoubleKeyFrame>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[0].(GradientStop.Offset)" Storyboard.TargetName="rectangle">
+				<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="0.79934000352863277">
+					<EasingDoubleKeyFrame.EasingFunction>
+						<SineEase EasingMode="EaseIn"/>
+					</EasingDoubleKeyFrame.EasingFunction>
+				</EasingDoubleKeyFrame>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="0.815">
+					<EasingDoubleKeyFrame.EasingFunction>
+						<SineEase EasingMode="EaseOut"/>
+					</EasingDoubleKeyFrame.EasingFunction>
+				</EasingDoubleKeyFrame>
+			</DoubleAnimationUsingKeyFrames>
+			<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[2].(GradientStop.Color)" Storyboard.TargetName="rectangle">
+				<EasingColorKeyFrame KeyTime="0" Value="sc#0, 0.0027317428, 0.0027317428, 0.0027317428"/>
+				<EasingColorKeyFrame KeyTime="0:0:0.2" Value="sc#1, 0.0027317428, 0.0027317428, 0.0027317428"/>
+				<EasingColorKeyFrame KeyTime="0:0:0.7" Value="sc#1, 0.0027317428, 0.0027317428, 0.0027317428">
+					<EasingColorKeyFrame.EasingFunction>
+						<SineEase EasingMode="EaseIn"/>
+					</EasingColorKeyFrame.EasingFunction>
+				</EasingColorKeyFrame>
+				<EasingColorKeyFrame KeyTime="0:0:0.8" Value="#FF090909">
+					<EasingColorKeyFrame.EasingFunction>
+						<SineEase EasingMode="EaseOut"/>
+					</EasingColorKeyFrame.EasingFunction>
+				</EasingColorKeyFrame>
+				<EasingColorKeyFrame KeyTime="0:0:1" Value="#00090909"/>
+			</ColorAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ellipse">
+				<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="0"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:1" Value="1">
+					<EasingDoubleKeyFrame.EasingFunction>
+						<CubicEase EasingMode="EaseOut"/>
+					</EasingDoubleKeyFrame.EasingFunction>
+				</EasingDoubleKeyFrame>
+				<EasingDoubleKeyFrame KeyTime="0:0:1.3" Value="0"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:1.6" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+			<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[1].(GradientStop.Color)" Storyboard.TargetName="rectangle">
+				<EasingColorKeyFrame KeyTime="0" Value="Transparent"/>
+				<EasingColorKeyFrame KeyTime="0:0:0.2" Value="Transparent"/>
+				<EasingColorKeyFrame KeyTime="0:0:0.7" Value="Transparent">
+					<EasingColorKeyFrame.EasingFunction>
+						<SineEase EasingMode="EaseIn"/>
+					</EasingColorKeyFrame.EasingFunction>
+				</EasingColorKeyFrame>
+				<EasingColorKeyFrame KeyTime="0:0:0.8" Value="Black"/>
+				<EasingColorKeyFrame KeyTime="0:0:1" Value="Transparent"/>
+			</ColorAnimationUsingKeyFrames>
+		</Storyboard>
+	</UserControl.Resources>
+	<UserControl.Triggers>
+		<EventTrigger RoutedEvent="FrameworkElement.Loaded">
+			<BeginStoryboard Storyboard="{StaticResource MainAnimation}"/>
+		</EventTrigger>
+	</UserControl.Triggers>
+    <Grid>
+        <TextBlock x:Name="textBlock" Text="{Binding ElementName=_Control, Path=Label}" Margin="20,-12,0,0" FontWeight="SemiBold" FontSize="15" />
+        <Grid VerticalAlignment="Center">
+            <Grid>
+                <Rectangle VerticalAlignment="Center" Height="1.1" Fill="{Binding ElementName=_Control, Path=Foreground}" Margin="0,0,7.5,0" />
+                <Ellipse HorizontalAlignment="Right" VerticalAlignment="Center" Width="10" Height="10" Margin="0,0,-2.5,0" Fill="{Binding ElementName=_Control, Path=Foreground}" />
+            </Grid>
+            <Grid>
+                <Rectangle x:Name="rectangle" VerticalAlignment="Center" Height="1.1" Fill="#FF5B9BD5" Margin="0,0,7.5,0">
+                	<Rectangle.OpacityMask>
+                		<LinearGradientBrush EndPoint="1,0">
+                			<GradientStop Color="#00000000" Offset="0"/>
+                			<GradientStop Offset="0.103"/>
+                			<GradientStop Color="#FF090909" Offset="0.047"/>
+                		</LinearGradientBrush>
+                	</Rectangle.OpacityMask></Rectangle>
+                <Ellipse x:Name="ellipse" HorizontalAlignment="Right" VerticalAlignment="Center" Width="10" Height="10" Margin="0,0,-2.5,0" Fill="#FF5B9BD5" />
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

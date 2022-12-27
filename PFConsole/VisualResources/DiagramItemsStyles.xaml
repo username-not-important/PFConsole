@@ -1,0 +1,182 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ig="http://schemas.infragistics.com/xaml">
+    <Style TargetType="ig:DiagramNode" x:Key="InterfaceSelectorItemStyle">
+        <Setter Property="DisplayTemplate" Value="{StaticResource InterfaceSelectorTemplate}" />
+        <Setter Property="ConnectionPoints">
+            <Setter.Value>
+                <ig:DiagramConnectionPointCollection>
+                    <ig:DiagramConnectionPoint Name="InterfaceIN*" Position="1,0.3" />
+                    <ig:DiagramConnectionPoint Name="InterfaceOUT*" Position="1,0.7" />
+                    <ig:DiagramConnectionPoint Name="*InterfaceIN" Position="0,0.3" />
+                    <ig:DiagramConnectionPoint Name="*InterfaceOUT" Position="0,0.7" />
+                </ig:DiagramConnectionPointCollection>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ShapeType" Value="None" />
+        <Setter Property="Tag" Value="InterfaceSelector" />
+        <Setter Property="MinHeight" Value="42" />
+        <Setter Property="MinWidth" Value="150" />
+    </Style>
+
+    <Style TargetType="ig:DiagramNode" x:Key="FilterNodeItemStyle">
+        <Setter Property="DisplayTemplate" Value="{StaticResource FilterNodeTemplate}" />
+        <Setter Property="ConnectionPoints">
+            <Setter.Value>
+                <ig:DiagramConnectionPointCollection>
+                    <ig:DiagramConnectionPoint Name="*Filter" Position="0,0.5" />
+                    <ig:DiagramConnectionPoint Name="Filter*" Position="1,0.5" />
+                </ig:DiagramConnectionPointCollection>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ShapeType" Value="None" />
+        <Setter Property="Tag" Value="FilterNode" />
+        <Setter Property="MinHeight" Value="50" />
+        <Setter Property="MinWidth" Value="50" />
+    </Style>
+
+    <Style TargetType="ig:DiagramNode" x:Key="ActionNodeItemStyle">
+        <Setter Property="DisplayTemplate" Value="{StaticResource ActionNodeTemplate}" />
+        <Setter Property="ConnectionPoints">
+            <Setter.Value>
+                <ig:DiagramConnectionPointCollection>
+                    <ig:DiagramConnectionPoint Name="*Action" Position="0,0.5" />
+                    <ig:DiagramConnectionPoint Name="*ActionSTO" Position="0.5,0" />
+                    <ig:DiagramConnectionPoint Name="ActionLog*" Position="0.5,1" />
+                    <ig:DiagramConnectionPoint Name="Action*" Position="1,0.5" />
+                </ig:DiagramConnectionPointCollection>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ShapeType" Value="None" />
+        <Setter Property="Tag" Value="ActionNode" />
+        <Setter Property="MinHeight" Value="50" />
+        <Setter Property="MinWidth" Value="50" />
+    </Style>
+
+    <Style TargetType="ig:DiagramNode" x:Key="STONodeItemStyle">
+        <Setter Property="DisplayTemplate" Value="{StaticResource STONodeTemplate}" />
+        <Setter Property="ConnectionPoints">
+            <Setter.Value>
+                <ig:DiagramConnectionPointCollection>
+                    <ig:DiagramConnectionPoint Name="STO*" Position="0.5,1" />
+                </ig:DiagramConnectionPointCollection>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ShapeType" Value="None" />
+        <Setter Property="Tag" Value="STONode" />
+        <Setter Property="MinHeight" Value="50" />
+        <Setter Property="MinWidth" Value="50" />
+    </Style>
+
+    <Style TargetType="ig:DiagramNode" x:Key="LogNodeItemStyle">
+        <Setter Property="DisplayTemplate" Value="{StaticResource LogNodeTemplate}" />
+        <Setter Property="ConnectionPoints">
+            <Setter.Value>
+                <ig:DiagramConnectionPointCollection>
+                    <ig:DiagramConnectionPoint Name="*Log" Position="0.5,0" />
+                </ig:DiagramConnectionPointCollection>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ShapeType" Value="None" />
+        <Setter Property="Tag" Value="LogNode" />
+        <Setter Property="MinHeight" Value="50" />
+        <Setter Property="MinWidth" Value="50" />
+    </Style>
+
+    <Style TargetType="ig:DiagramNode" x:Key="MarkNodeItemStyle">
+        <Setter Property="DisplayTemplate" Value="{StaticResource MarkNodeTemplate}" />
+        <Setter Property="ConnectionPoints">
+            <Setter.Value>
+                <ig:DiagramConnectionPointCollection>
+                    <ig:DiagramConnectionPoint Name="*Mark" Position="0,0.5" />
+                    <ig:DiagramConnectionPoint Name="Mark*" Position="1,0.5" />
+                </ig:DiagramConnectionPointCollection>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ShapeType" Value="None" />
+        <Setter Property="Tag" Value="MarkNode" />
+        <Setter Property="MinHeight" Value="50" />
+        <Setter Property="MinWidth" Value="50" />
+    </Style>
+
+    <Style TargetType="ig:DiagramNode" x:Key="DEFNodeItemStyle">
+        <Setter Property="DisplayTemplate" Value="{StaticResource DEFNodeTemplate}" />
+        <Setter Property="ConnectionPoints">
+            <Setter.Value>
+                <ig:DiagramConnectionPointCollection>
+                    <ig:DiagramConnectionPoint Name="DEF*" Position="1,0.5" />
+                </ig:DiagramConnectionPointCollection>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ShapeType" Value="None" />
+        <Setter Property="Tag" Value="DEFNode" />
+        <Setter Property="MinHeight" Value="50" />
+        <Setter Property="MinWidth" Value="50" />
+    </Style>
+
+    <Style TargetType="ig:DiagramNode" x:Key="QMNodeItemStyle">
+        <Setter Property="DisplayTemplate" Value="{StaticResource QMNodeTemplate}" />
+        <Setter Property="ConnectionPoints">
+            <Setter.Value>
+                <ig:DiagramConnectionPointCollection>
+                    <ig:DiagramConnectionPoint Name="*QM" Position="0,0.5" />
+                    <ig:DiagramConnectionPoint Name="QM*" Position="1,0.5" />
+                </ig:DiagramConnectionPointCollection>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ShapeType" Value="None" />
+        <Setter Property="Tag" Value="QMNode" />
+        <Setter Property="MinHeight" Value="50" />
+        <Setter Property="MinWidth" Value="50" />
+    </Style>
+
+    <Style TargetType="ig:DiagramNode" x:Key="QueueNodeItemStyle">
+        <Setter Property="DisplayTemplate" Value="{StaticResource QueueNodeTemplate}" />
+        <Setter Property="ConnectionPoints">
+            <Setter.Value>
+                <ig:DiagramConnectionPointCollection>
+                    <ig:DiagramConnectionPoint Name="*Queue" Position="0,0.5" />
+                    <ig:DiagramConnectionPoint Name="Queue*" Position="1,0.5" />
+                    <ig:DiagramConnectionPoint Name="*QueueRule" Position="0.2,1"/>
+                </ig:DiagramConnectionPointCollection>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ShapeType" Value="None" />
+        <Setter Property="Tag" Value="QueueNode" />
+        <Setter Property="MinHeight" Value="50" />
+        <Setter Property="MinWidth" Value="300" />
+    </Style>
+
+    <Style TargetType="ig:DiagramNode" x:Key="ServerNodeItemStyle">
+        <Setter Property="DisplayTemplate" Value="{StaticResource ServerNodeTemplate}" />
+        <Setter Property="ConnectionPoints">
+            <Setter.Value>
+                <ig:DiagramConnectionPointCollection>
+                    <ig:DiagramConnectionPoint Name="*Server" Position="0,0.5" />
+                    <ig:DiagramConnectionPoint Name="Server*" Position="1,0.5" />
+                </ig:DiagramConnectionPointCollection>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ShapeType" Value="None" />
+        <Setter Property="Tag" Value="ServerNode" />
+        <Setter Property="MinHeight" Value="50" />
+        <Setter Property="MinWidth" Value="50" />
+    </Style>
+
+    <Style TargetType="ig:DiagramNode" x:Key="SchedulerNodeItemStyle">
+        <Setter Property="DisplayTemplate" Value="{StaticResource SchedulerNodeTemplate}" />
+        <Setter Property="ConnectionPoints">
+            <Setter.Value>
+                <ig:DiagramConnectionPointCollection>
+                    <ig:DiagramConnectionPoint Name="*Scheduler" Position="0,0.5" />
+                    <ig:DiagramConnectionPoint Name="Scheduler*" Position="1,0.5" />
+                    <ig:DiagramConnectionPoint Name="*SchedulerRule" Position="0.2,1"/>
+                </ig:DiagramConnectionPointCollection>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ShapeType" Value="None" />
+        <Setter Property="Tag" Value="SchedulerNode" />
+        <Setter Property="MinHeight" Value="50" />
+        <Setter Property="MinWidth" Value="50" />
+    </Style>
+</ResourceDictionary>

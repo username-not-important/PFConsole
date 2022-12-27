@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="PFConsole.Views.DiagramItems.STONodeItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:diagram="clr-namespace:PFConsole.ViewModels.Diagram"
+             xmlns:converters="clr-namespace:PFConsole.Converters"
+             mc:Ignorable="d" 
+             Name="_Control"
+             ToolTip="STO Node"
+             Height="60" MinWidth="50">
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+    <Border Padding="3" BorderBrush="#424242" BorderThickness="1" Background="White">
+        <Grid>
+            <StackPanel>
+                <Viewbox Margin="4" Width="28" VerticalAlignment="Top">
+                    <Path Stretch="Fill" Fill="#FF424242" Data="F1 M 62.0483,53.4806C 60.5095,53.4806 59.0763,53.9272 57.8577,54.6869L 39.0664,33.4526L 39.0664,20.7839C 42.8168,20.1466 45.685,16.8819 45.685,12.9532C 45.685,8.56779 42.1173,5.00008 37.7331,5.00008C 33.3478,5.00008 29.78,8.56779 29.78,12.9532C 29.78,16.8822 32.6483,20.1466 36.3998,20.7839L 36.3998,33.4698L 18.502,54.5977C 17.3154,53.893 15.9358,53.4806 14.4584,53.4806C 10.073,53.4806 6.50522,57.0483 6.50522,61.4337C 6.50522,65.8178 10.073,69.3855 14.4584,69.3855C 18.8425,69.3855 22.4103,65.8178 22.4103,61.4337C 22.4103,59.4864 21.7044,57.7029 20.5386,56.3188L 36.3998,37.5948L 36.3998,53.6013C 32.6483,54.2387 29.78,57.5033 29.78,61.4337C 29.78,65.8178 33.3478,69.3855 37.7331,69.3855C 42.1173,69.3855 45.685,65.8178 45.685,61.4337C 45.685,57.5033 42.8168,54.2387 39.0664,53.6013L 39.0664,37.4766L 55.8578,56.4519C 54.7577,57.8165 54.0951,59.5483 54.0951,61.4337C 54.0951,65.8178 57.6629,69.3855 62.0483,69.3855C 66.4325,69.3855 70,65.8178 70,61.4337C 70,57.0483 66.4325,53.4806 62.0483,53.4806 Z M 14.4584,66.7188C 11.5431,66.7188 9.17189,64.3477 9.17189,61.4337C 9.17189,58.5183 11.5431,56.1472 14.4584,56.1472C 17.3724,56.1472 19.7437,58.5183 19.7437,61.4337C 19.7437,64.3477 17.3724,66.7188 14.4584,66.7188 Z M 43.0183,61.4337C 43.0183,64.3477 40.6472,66.7188 37.7331,66.7188C 34.8178,66.7188 32.4467,64.3477 32.4467,61.4337C 32.4467,58.5183 34.8178,56.1472 37.7331,56.1472C 40.6472,56.1472 43.0183,58.5183 43.0183,61.4337 Z M 37.7331,18.2384C 34.8178,18.2384 32.4467,15.8673 32.4467,12.9532C 32.4467,10.0378 34.8178,7.66675 37.7331,7.66675C 40.6472,7.66675 43.0183,10.0378 43.0183,12.9532C 43.0183,15.8673 40.6472,18.2384 37.7331,18.2384 Z M 62.0483,66.7188C 59.1328,66.7188 56.7618,64.3477 56.7618,61.4337C 56.7618,58.5183 59.1328,56.1472 62.0483,56.1472C 64.9623,56.1472 67.3333,58.5183 67.3333,61.4337C 67.3333,64.3477 64.9623,66.7188 62.0483,66.7188 Z " Grid.RowSpan="2"/>
+                </Viewbox>
+                <TextBlock Text="{Binding TCPFlags.Code}" Foreground="#FF424242" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+            </StackPanel>
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Margin="-35,-10,0,0" Name="_ExtractGrid" Visibility="{Binding ExtractOptions.ExtractAsMacro, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Viewbox Width="50" Height="20" Stretch="Fill">
+                    <Canvas Height="75" Width="75">
+                        <Path Width="75" Height="75" Stretch="Fill" Fill="#2962A8" Data="F1 M 470.88,149.272C 471.601,148.552 471.998,147.595 471.998,146.579L 471.998,114.999C 471.998,112.901 470.291,111.195 468.193,111.195L 410.051,111.197C 408.51,111.193 407.129,112.114 406.532,113.546C 405.953,114.947 406.285,116.614 407.356,117.688L 420.435,130.791L 407.359,143.89C 406.639,144.609 406.243,145.564 406.243,146.581C 406.243,147.082 406.341,147.572 406.533,148.035C 406.724,148.498 407.001,148.913 407.359,149.271C 408.078,149.989 409.035,150.385 410.05,150.382L 468.188,150.384C 469.19,150.387 470.172,149.981 470.88,149.272 Z " Canvas.Left="0.122"/>
+                    </Canvas>
+                </Viewbox>
+                <TextBlock HorizontalAlignment="Right" Text="{Binding ExtractOptions.Text}"  FontSize="7" VerticalAlignment="Center" Margin="0,0,2,0" Foreground="White"/>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

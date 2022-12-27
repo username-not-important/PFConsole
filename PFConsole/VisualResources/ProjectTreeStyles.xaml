@@ -1,0 +1,127 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ig="http://schemas.infragistics.com/xaml" xmlns:System="clr-namespace:System;assembly=mscorlib"
+                    xmlns:data="clr-namespace:PFModels.Data;assembly=PFModels"
+                    xmlns:views="clr-namespace:PFConsole.Views"
+                    xmlns:nodes="clr-namespace:PFConsole.Views.Nodes"
+                    x:Class="PFConsole.VisualResources.Behaviors.ProjectTreeStyles">
+    <DataTemplate x:Key="MoveCursorTemplate">
+        <Viewbox Width="17" Height="17">
+            <Canvas Width="77.3412" Height="70.9765">
+                <Ellipse Width="64.625" Height="64.625" Canvas.Left="6.13266" Canvas.Top="3.19244" Stretch="Fill" Fill="#FFFFFFFF"/>
+                <Path Width="66.9409" Height="66.9765" Canvas.Left="5.19972" Canvas.Top="2.00001" Stretch="Fill" StrokeThickness="1.33333" StrokeMiterLimit="2.75" Stroke="#FF424242" Fill="#FF424242" Data="F1 M 61.8737,12.2787C 55.6751,6.08067 47.4343,2.66667 38.6699,2.66667C 29.9049,2.66667 21.664,6.08067 15.4648,12.2787C 2.668,25.0781 2.66669,45.8997 15.4623,58.694C 21.6608,64.8945 29.9036,68.3085 38.6739,68.3099C 47.4395,68.3099 55.6804,64.8957 61.8789,58.6965C 74.6746,45.9023 74.6719,25.0793 61.8737,12.2787 Z M 58.4804,55.2981C 53.1885,60.5893 46.1555,63.5035 38.6742,63.5035L 38.6724,63.5035C 31.1874,63.5022 24.1519,60.5882 18.8606,55.2956C 7.93893,44.3747 7.94028,26.6019 18.8631,15.6772C 24.1543,10.3872 31.1886,7.47308 38.6699,7.47308C 46.1507,7.47308 53.1844,10.3872 58.4756,15.6772C 69.3997,26.6043 69.402,44.3771 58.4804,55.2981 Z "/>
+                <Path Width="34.9185" Height="26.9281" Canvas.Left="21.2097" Canvas.Top="23.9572" Stretch="Fill" StrokeThickness="2.66667" StrokeMiterLimit="2.75" Stroke="#FF29A870" Fill="#FF29A870" Data="F1 M 52.4876,25.7123L 33.2584,46.2663L 24.8503,37.2787C 24.3444,36.7408 23.5027,36.7123 22.9655,37.2161C 22.4277,37.72 22.3997,38.5637 22.9024,39.1015L 32.3476,49.1927C 32.4264,49.2663 32.5208,49.3072 32.6107,49.358C 32.6612,49.3867 32.7041,49.4287 32.7572,49.4501C 32.9183,49.5156 33.0876,49.552 33.2584,49.552C 33.4294,49.552 33.5987,49.5156 33.7598,49.4501C 33.8128,49.4287 33.8557,49.3867 33.9063,49.358C 33.9961,49.3072 34.0905,49.2663 34.2324,49.1301L 54.4356,27.5351C 54.9381,26.9973 54.9102,26.1536 54.3724,25.6497C 53.8353,25.1471 52.9921,25.1757 52.4876,25.7123 Z "/>
+            </Canvas>
+        </Viewbox>
+    </DataTemplate>
+    
+    <DataTemplate x:Key="DropNotAllowedTemplate">
+        <Viewbox Width="17" Height="17">
+            <Canvas Width="77.3412" Height="70.9765">
+                <Ellipse Width="64.625" Height="64.625" Canvas.Left="6.27954" Canvas.Top="2.91254" Stretch="Fill" Fill="#FFFFFFFF"/>
+                <Path Width="66.9409" Height="66.9765" Canvas.Left="5.19971" Canvas.Top="2" Stretch="Fill" StrokeThickness="1.33333" StrokeMiterLimit="2.75" Stroke="#FF424242" Fill="#FF424242" Data="F1 M 61.8737,12.2787C 55.6751,6.08066 47.4343,2.66666 38.6699,2.66666C 29.9049,2.66666 21.664,6.08066 15.4648,12.2787C 2.668,25.0781 2.66666,45.8997 15.4622,58.694C 21.6608,64.8945 29.9036,68.3085 38.6739,68.3099C 47.4395,68.3099 55.6804,64.8957 61.8789,58.6965C 74.6745,45.9023 74.6718,25.0793 61.8737,12.2787 Z M 58.4804,55.2981C 53.1885,60.5893 46.1555,63.5035 38.6743,63.5035L 38.6724,63.5035C 31.1875,63.5021 24.1519,60.5881 18.8607,55.2957C 7.93893,44.3747 7.94028,26.602 18.8632,15.6772C 24.1543,10.3872 31.1887,7.47306 38.6699,7.47306C 46.1507,7.47306 53.1844,10.3872 58.4756,15.6772C 69.3997,26.6043 69.4021,44.3771 58.4804,55.2981 Z "/>
+                <Path Width="31.0046" Height="31.0051" Canvas.Left="23.9004" Canvas.Top="19.9857" Stretch="Fill" StrokeThickness="2.66667" StrokeMiterLimit="2.75" Stroke="#FFA82929" Fill="#FFA82929" Data="F1 M 53.1809,21.7096C 52.6601,21.1888 51.8164,21.1888 51.2956,21.7096L 39.4027,33.6028L 27.5097,21.7096C 26.9889,21.1888 26.1452,21.1888 25.6244,21.7096C 25.1035,22.2304 25.1035,23.0741 25.6244,23.5951L 37.5172,35.4883L 25.6244,47.3815C 25.1035,47.9023 25.1035,48.746 25.6244,49.2669C 25.8848,49.5273 26.2259,49.6575 26.5671,49.6575C 26.9081,49.6575 27.2493,49.5273 27.5097,49.2669L 39.4027,37.3736L 51.2956,49.2669C 51.556,49.5273 51.8971,49.6575 52.2383,49.6575C 52.5795,49.6575 52.9205,49.5273 53.1809,49.2669C 53.7019,48.746 53.7019,47.9023 53.1809,47.3815L 41.2881,35.4883L 53.1809,23.5951C 53.7019,23.0741 53.7019,22.2304 53.1809,21.7096 Z "/>
+            </Canvas>
+        </Viewbox>
+    </DataTemplate>
+    
+    <Style TargetType="{x:Type TreeViewItem}" x:Key="ProjectItemStyle">
+        <Setter Property="HeaderTemplate">
+            <Setter.Value>
+                <HierarchicalDataTemplate>
+                    <Border Padding="2" Margin="3,0,3,0">
+                        <StackPanel Orientation="Horizontal" Margin="2,0,2,0">
+                            <Viewbox Width="16" Height="16" VerticalAlignment="Center">
+                                <Canvas Width="67.6323" Height="65.1627">
+                                    <Path Width="44.4966" Height="62.8269" Canvas.Left="2.01521" Canvas.Top="0.0884424"
+										Stretch="Fill" Fill="#FF424242"
+										Data="F1 M 33.9981,29.6301C 35.0645,25.6509 37.9527,19.082 42.5541,16.7799C 40.1036,20.608 39.7221,24.8397 41.2847,30.1835C 41.4916,30.8892 42.2287,31.2916 42.9383,31.0897C 43.6453,30.8828 44.0516,30.1419 43.8445,29.4361C 42.2677,24.0443 42.9292,20.1875 46.0516,16.5455C 46.5737,15.9413 46.6609,15.0664 46.2651,14.3632C 45.8628,13.6549 45.062,13.2773 44.2964,13.4257C 37.9708,14.4791 34.3145,21.1952 32.5984,25.4791C 30.9981,20.4127 30.2169,12.6705 30.2169,1.98946C 30.2169,1.29947 29.8419,0.662666 29.2585,0.339737C 28.6661,0 27.9304,0.0038681 27.3328,0.356667C 20.5907,4.40493 18.0008,14.2487 17.1921,18.3345C 16.9369,19.8828 16.7429,21.7903 16.5372,23.8112C 16.2183,26.9621 15.8445,30.6419 15.1519,33.3776C 13.5841,29.1367 10.8107,23.0937 7.64267,20.9831C 6.7768,20.4061 5.88093,19.8085 5.04893,19.1835C 4.3732,18.6875 3.46427,18.6875 2.78333,19.1888C 2.11013,19.6875 1.84187,20.5845 2.12973,21.3684C 3.62187,25.4673 3.1024,30.4492 2.59973,35.2708C 1.97973,41.2163 0,54.734 11.9448,59.8411C 15.5437,61.8528 19.7625,62.9153 24.144,62.9153C 24.4448,62.9153 24.7404,62.9088 24.9396,62.8971C 25.2391,62.9088 25.5347,62.9153 25.8341,62.9153C 26.4617,62.9153 27.0815,62.8932 27.6973,62.8515C 28.4317,62.8007 28.9864,62.164 28.9357,61.4283C 28.8836,60.694 28.2364,60.1523 27.5125,60.19C 26.9591,60.2291 26.3992,60.2487 25.8341,60.2487C 25.5685,60.2487 25.3041,60.2421 24.9396,60.2331C 18.7669,60.44 15.0616,58.4323 11.9421,56.9036C 3.562,51.75 4.38227,43.8801 5.25213,35.5443C 5.7052,31.1913 6.17267,26.7121 5.25467,22.5937C 5.56333,22.802 5.87187,23.0077 6.1792,23.2121C 9.006,25.0949 12.3745,32.7331 13.7195,37.5233C 13.8211,37.8828 14.114,38.164 14.4473,38.3333C 14.7807,38.5012 15.2143,38.5064 15.5645,38.3736C 15.8276,38.2747 16.0528,38.0949 16.2091,37.8593C 18.0803,35.0247 18.67,29.2096 19.1909,24.0807C 19.3915,22.1028 19.5815,20.2343 19.8145,18.8112C 20.3484,16.1184 22.4136,7.496 27.5555,3.4388C 27.6415,16.4856 28.9109,24.9167 31.5295,29.9049C 31.786,30.3905 32.3003,30.6692 32.8576,30.6107C 33.4031,30.5495 33.8563,30.1601 33.9981,29.6301 Z " />
+                                    <Path Width="35.1055" Height="29.8112" Canvas.Left="32.5268" Canvas.Top="35.3515"
+										Stretch="Fill" Fill="#FF424242"
+										Data="F1 M 66.2989,47.0664C 67.036,47.0664 67.6323,46.47 67.6323,45.7331C 67.6323,44.996 67.036,44.3997 66.2989,44.3997L 51.4123,44.3997L 51.4123,38.0181L 66.2989,38.0181C 67.036,38.0181 67.6323,37.4219 67.6323,36.6848C 67.6323,35.9479 67.036,35.3515 66.2989,35.3515L 50.0789,35.3515L 33.8601,35.3515C 33.1232,35.3515 32.5268,35.9479 32.5268,36.6848L 32.5268,63.8293C 32.5268,64.5664 33.1232,65.1627 33.8601,65.1627L 50.0789,65.1627L 66.2989,65.1627C 67.036,65.1627 67.6323,64.5664 67.6323,63.8293C 67.6323,63.0924 67.036,62.496 66.2989,62.496L 51.4123,62.496L 51.4123,56.1145L 66.2989,56.1145C 67.036,56.1145 67.6323,55.5181 67.6323,54.7812C 67.6323,54.0443 67.036,53.4479 66.2989,53.4479L 59.5216,53.4479L 59.5216,47.0664L 66.2989,47.0664 Z M 35.1935,38.0181L 48.7456,38.0181L 48.7456,44.3997L 35.1935,44.3997L 35.1935,38.0181 Z M 40.6349,53.4479L 35.1935,53.4479L 35.1935,47.0664L 40.6349,47.0664L 40.6349,53.4479 Z M 48.7456,62.496L 35.1935,62.496L 35.1935,56.1145L 48.7456,56.1145L 48.7456,62.496 Z M 56.8549,53.4479C 48.2253,53.4479 51.9296,53.4479 43.3016,53.4479L 43.3016,47.0664C 51.9379,47.0664 48.2269,47.0664 56.8549,47.0664L 56.8549,53.4479 Z " />
+                                </Canvas>
+                            </Viewbox>
+                            <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="3,0,0,0" />
+                            <TextBlock Text="(Configuration Project)" VerticalAlignment="Center" Margin="5,0,0,0"
+								FontStyle="Italic" />
+                        </StackPanel>
+                    </Border>
+                </HierarchicalDataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <HierarchicalDataTemplate x:Key="InterfaceNodeTemplate" DataType="data:Interface">
+        <Border Padding="2,0,2,0" Margin="3,0,3,0" Background="Transparent" Tag="{Binding}">
+            <ig:DragDropManager.DragSource>
+                <ig:DragSource IsDraggable="True" DragEnd="_OnDragEnd" DragEnter="_OnDragEnter" DragLeave="_OnDragLeave"
+                               MoveCursorTemplate="{StaticResource MoveCursorTemplate}" DropNotAllowedCursorTemplate="{StaticResource DropNotAllowedTemplate}">
+                    <ig:DragSource.DragChannels>
+                        <System:String>Interface</System:String>
+                    </ig:DragSource.DragChannels>
+                </ig:DragSource>
+            </ig:DragDropManager.DragSource>
+            <nodes:InterfaceNodeView DataContext="{Binding}"/>
+            <Border.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Edit" Tag="{Binding}" Click="_Interface_EditClick" />
+                    <MenuItem Header="Remove" Tag="{Binding}" Click="_Interface_RemoveClick" />
+                </ContextMenu>
+            </Border.ContextMenu>
+        </Border>
+    </HierarchicalDataTemplate>
+
+    <HierarchicalDataTemplate x:Key="MacroNodeTemplate" DataType="data:Macro">
+        <Border Padding="2,0,2,0" Margin="3,0,3,0" Background="Transparent" Tag="{Binding}">
+            <ig:DragDropManager.DragSource>
+                <ig:DragSource IsDraggable="True" DragEnd="_OnDragEnd" DragEnter="_OnDragEnter" DragLeave="_OnDragLeave" DragStart="Macro_OnDragStart"
+                               MoveCursorTemplate="{StaticResource MoveCursorTemplate}" DropNotAllowedCursorTemplate="{StaticResource DropNotAllowedTemplate}">
+                    <ig:DragSource.DragChannels>
+                        <System:String>Macro</System:String>
+                    </ig:DragSource.DragChannels>
+                </ig:DragSource>
+            </ig:DragDropManager.DragSource>
+            <nodes:MacroNodeView DataContext="{Binding}"/>
+            <Border.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Edit" Tag="{Binding}" Click="_Macro_EditClick" />
+                    <MenuItem Header="Remove" Tag="{Binding}" Click="_Macro_RemoveClick" />
+                </ContextMenu>
+            </Border.ContextMenu>
+        </Border>
+    </HierarchicalDataTemplate>
+
+    <HierarchicalDataTemplate x:Key="DefaultNodeDataTemplate">
+        <Border Padding="1" Margin="3,0,3,0">
+            <StackPanel Orientation="Horizontal" Margin="1,0,1,0">
+                <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="3,0,0,0" />
+            </StackPanel>
+        </Border>
+    </HierarchicalDataTemplate>
+
+    <HierarchicalDataTemplate x:Key="TableNodeTemplate" DataType="data:Table">
+        <Border Padding="2,0,2,0" Margin="3,0,3,0" Background="Transparent" >
+            <nodes:TableNodeView DataContext="{Binding}"/>
+            <Border.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Edit" Tag="{Binding}" />
+                    <MenuItem Header="Remove" Tag="{Binding}" />
+                </ContextMenu>
+            </Border.ContextMenu>
+        </Border>
+    </HierarchicalDataTemplate>
+
+    <HierarchicalDataTemplate x:Key="DiagramNodeTemplate" DataType="data:DiagramInfo">
+        <Border Padding="2,0,2,0" Margin="3,0,3,0" Background="Transparent" >
+            <nodes:DiagramNodeView DataContext="{Binding}"/>
+            <Border.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Open" Tag="{Binding}" Click="_Diagram_OpenClick"/>
+                    <MenuItem Header="Edit" Tag="{Binding}" />
+                    <MenuItem Header="Remove" Tag="{Binding}" />
+                </ContextMenu>
+            </Border.ContextMenu>
+        </Border>
+    </HierarchicalDataTemplate>
+
+</ResourceDictionary>

@@ -1,0 +1,18 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="PFConsole.Controls.SelectiveInput"
+	x:Name="UserControl"
+	d:DesignWidth="250" d:DesignHeight="31">
+<UserControl.Resources>
+
+</UserControl.Resources>
+    <Grid x:Name="LayoutRoot" DataContext="{Binding ElementName=UserControl}" ToolTip="{Binding DefaultValue}">
+        <TextBox Name="_TB" Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" />
+        <ComboBox Name="_CB" Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" Visibility="Collapsed" IsEditable="{Binding FreeInput}" ItemsPanel="{Binding PanelTemplate}" ItemsSource="{Binding Options}"
+                  ItemTemplate="{Binding ItemTemplate}" DisplayMemberPath="{Binding DisplayMemberPath}" />
+    </Grid>
+</UserControl>

@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="PFConsole.Views.Nodes.FileNodeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="25" d:DesignWidth="200">
+    <Grid>
+        <StackPanel Orientation="Horizontal" Margin="2">
+
+            <Path Stretch="Fill" Fill="#FF424242" Data="F1 M 169.812,37.3576L 160.521,28.1975C 159.853,27.54 158.969,27.1767 158.027,27.1767L 121.247,27.1767C 119.29,27.1767 117.697,28.7691 117.697,30.7262L 117.697,90.0217C 117.697,91.98 119.29,93.5725 121.247,93.5725L 167.318,93.5725C 169.277,93.5725 170.87,91.98 170.87,90.0217L 170.87,39.8837C 170.87,38.9397 170.484,38.0191 169.812,37.3576 Z M 167.225,38.5516L 159.372,38.5516L 159.364,30.8024L 167.225,38.5516 Z M 167.318,90.9059L 121.247,90.9059C 120.76,90.9059 120.364,90.5087 120.364,90.0217L 120.364,30.7262C 120.364,30.2392 120.76,29.8433 121.247,29.8433L 156.697,29.8433L 156.707,39.8863C 156.707,40.622 157.305,41.2183 158.04,41.2183L 168.204,41.2183L 168.204,90.0217C 168.204,90.5087 167.806,90.9059 167.318,90.9059 Z " Width="13" Height="16" VerticalAlignment="Center"/>
+
+            <TextBlock VerticalAlignment="Center" Margin="6,0,0,0"><Italic><Run Text="&quot;" /></Italic><Run Text=" "/><Bold FontWeight="SemiBold"><Run Text="{Binding FileName}" /></Bold><Run Text=" "/><Italic><Run Text="&quot;" /></Italic></TextBlock>
+        </StackPanel>
+
+
+    </Grid>
+</UserControl>

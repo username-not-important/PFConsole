@@ -1,0 +1,17 @@
+﻿<Application x:Class="PFConsole.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ArtWindow/ArtDictionary.xaml"/>
+                <ResourceDictionary Source="VisualResources/ProjectTreeStyles.xaml" />
+                <ResourceDictionary Source="VisualResources/ControlStyles.xaml"/>
+                <ResourceDictionary Source="VisualResources/ListboxStyles.xaml"/>
+                <ResourceDictionary Source="VisualResources/DiagramStyles.xaml"/>
+                <ResourceDictionary Source="VisualResources/DiagramItemsStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

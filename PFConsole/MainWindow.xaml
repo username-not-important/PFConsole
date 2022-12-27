@@ -1,0 +1,715 @@
+﻿<Window xmlns:igWPF="http://schemas.infragistics.com/xaml/wpf" x:Class="PFConsole.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:visualResources="clr-namespace:PFConsole.VisualResources"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:project="clr-namespace:PFConsole.Project"
+        xmlns:ig="http://schemas.infragistics.com/xaml"
+        xmlns:diagram="clr-namespace:PFConsole.Util.Diagram"
+        xmlns:views="clr-namespace:PFConsole.Views"
+        xmlns:converters="clr-namespace:PFConsole.Converters"
+        Name="_Window"
+        WindowState="Maximized" ResizeMode="CanResizeWithGrip"
+        Title="PF Firewall Console" Height="595.62" Width="878.832" Style="{DynamicResource ArtParentWindowStyle}" FlowDirection="LeftToRight" MinWidth="400" MinHeight="250" Loaded="_Window_Loaded" Closing="_Window_Closing" ContentRendered="_Window_ContentRendered">
+    <Window.CommandBindings>
+        <CommandBinding Command="Close" Executed="CloseCommand_OnExecuted"/>
+        <CommandBinding Command="New" Executed="NewCommand_OnExecuted" />
+        <CommandBinding Command="Save" Executed="SaveCommand_OnExecuted" CanExecute="SaveCommand_CanExecute"/>
+        <CommandBinding Command="Open" Executed="OpenCommand_OnExecuted" />
+    </Window.CommandBindings>
+    <Window.Resources>
+        <DataTemplate x:Key="UndoRedoToolItem">
+            <TextBlock Text="{Binding ShortDescription}"
+                                   Margin="-30,-5"
+                                   Padding="30,5">
+                <ig:Commanding.Command>
+                        <ig:UndoManagerCommandSource EventName="MouseLeftButtonDown"
+                                                     CommandType="UndoRedoHistoryItem"
+                                                     ParameterBinding="{Binding }" />    
+                    </ig:Commanding.Command>
+            </TextBlock>
+        </DataTemplate>
+        
+        <converters:MacrosListToStringConverter x:Key="MacrosListToStringConverter"/>
+
+    </Window.Resources>
+    <Grid igWPF:ApplicationMenu2010.IsConstrainingElement="True">
+        <ScrollViewer VerticalScrollBarVisibility="Disabled">
+            <DockPanel LastChildFill="True">
+                <igWPF:XamRibbon AllowMinimize="False" Theme="Office2013" ApplicationMenuMode="Office2010" DockPanel.Dock="Top" x:Name="_Ribbon">
+                    <igWPF:XamRibbon.TabItemAreaToolbar>
+                        <igWPF:TabItemAreaToolbar>
+                            <Border />
+                        </igWPF:TabItemAreaToolbar>
+                    </igWPF:XamRibbon.TabItemAreaToolbar>
+                    <igWPF:XamRibbon.ApplicationMenu2010>
+                        <igWPF:ApplicationMenu2010 Caption="Firewall" KeyTip="F">
+                            <igWPF:ApplicationMenu2010.Items>
+                                <igWPF:ApplicationMenu2010Item Header="Info" />
+                                <igWPF:ApplicationMenu2010Item Header="New Configuration" Command="New" CommandTarget="{Binding ElementName=_Window}"/>
+                                <igWPF:ApplicationMenu2010Item Header="Open" Command="Open" CommandTarget="{Binding ElementName=_Window}"/>
+                                <igWPF:ApplicationMenu2010Item Header="Save" Command="Save" CommandTarget="{Binding ElementName=_Window}"/>
+                                <igWPF:ApplicationMenu2010Item Header="Save As" />
+                                <igWPF:ApplicationMenu2010Item Header="Print"/>
+                                <igWPF:SeparatorTool />
+                                <igWPF:ApplicationMenu2010Item Header="Close" Click="_Button_CloseProject" IsEnabled="{Binding Source={x:Static project:PFProject.Instance}, Path=ProjectLoaded}"/>
+                            </igWPF:ApplicationMenu2010.Items>
+                        </igWPF:ApplicationMenu2010>
+                    </igWPF:XamRibbon.ApplicationMenu2010>
+                    <igWPF:RibbonTabItem Header="Macros" KeyTip="M" IsEnabled="{Binding Source={x:Static project:PFProject.Instance}, Path=ProjectLoaded}">
+                        <igWPF:RibbonGroup Caption="Assign" IsEnabled="{Binding Source={x:Static project:PFProject.Instance}, Path=ProjectLoaded}">
+                            <igWPF:ButtonTool Caption="Assign Macro" Click="_Button_AssignMacro_Clicked" igWPF:RibbonGroup.MinimumSize="ImageAndTextLarge" igWPF:RibbonGroup.MaximumSize="ImageAndTextLarge" ToolTip="Assign A macro to an interface, ip address, etc...">
+                                <igWPF:ButtonTool.LargeImage>
+                                    <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Ribbon_Macros_Add.png"/>
+                                </igWPF:ButtonTool.LargeImage>
+                            </igWPF:ButtonTool>
+                        </igWPF:RibbonGroup>
+                    </igWPF:RibbonTabItem>
+                    <igWPF:RibbonTabItem Header="Tables" KeyTip="T" IsEnabled="{Binding Source={x:Static project:PFProject.Instance}, Path=ProjectLoaded}" >
+                        <igWPF:RibbonGroup Caption="Create" IsEnabled="{Binding Source={x:Static project:PFProject.Instance}, Path=ProjectLoaded}">
+                            <igWPF:ButtonTool Caption="Create Table" Click="_Button_CreateTable_Clicked" igWPF:RibbonGroup.MinimumSize="ImageAndTextLarge" igWPF:RibbonGroup.MaximumSize="ImageAndTextLarge" ToolTip="Create a new table.">
+                                <igWPF:ButtonTool.LargeImage>
+                                    <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Ribbon_Tables_Create.png"/>
+                                </igWPF:ButtonTool.LargeImage>
+                            </igWPF:ButtonTool>
+                        </igWPF:RibbonGroup>
+                    </igWPF:RibbonTabItem>
+                    <igWPF:RibbonTabItem Header="Options" KeyTip="O" IsEnabled="{Binding Source={x:Static project:PFProject.Instance}, Path=ProjectLoaded}">
+                        <igWPF:RibbonGroup Caption="View" IsEnabled="{Binding Source={x:Static project:PFProject.Instance}, Path=ProjectLoaded}">
+                            <igWPF:ButtonTool Caption="View Options" igWPF:RibbonGroup.MinimumSize="ImageAndTextLarge" igWPF:RibbonGroup.MaximumSize="ImageAndTextLarge" ToolTip="View, Edit or Delete Options." Click="_Button_ViewOptions_Clicked">
+                                <igWPF:ButtonTool.LargeImage>
+                                    <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Ribbon_Options_View.png"/>
+                                </igWPF:ButtonTool.LargeImage>
+                            </igWPF:ButtonTool>
+                            <igWPF:MenuTool Caption="" ToolTip="Options Text Size" igWPF:RibbonGroup.MaximumSize="ImageOnly">
+                                <igWPF:MenuTool.SmallImage>
+                                    <BitmapImage UriSource="VisualResources/Images/Ribbon/Ribbon_Options_FontSize.png"/>
+                                </igWPF:MenuTool.SmallImage>
+                                <igWPF:MenuTool.Items>
+                                    <igWPF:ButtonTool Content="Small" Tag="13" Click="Ribbon_Options_FontSize_ItemClicked" />
+                                    <igWPF:ButtonTool Content="Medium" Tag="15" Click="Ribbon_Options_FontSize_ItemClicked" />
+                                    <igWPF:ButtonTool Content="Large" Tag="17" Click="Ribbon_Options_FontSize_ItemClicked" />
+                                </igWPF:MenuTool.Items>
+                            </igWPF:MenuTool>
+                            <igWPF:MenuTool Caption="" ToolTip="Options Display Mode" igWPF:RibbonGroup.MaximumSize="ImageOnly">
+                                <igWPF:MenuTool.SmallImage>
+                                    <BitmapImage UriSource="VisualResources/Images/Ribbon/Ribbon_Options_DisplayMode.png"/>
+                                </igWPF:MenuTool.SmallImage>
+                                <igWPF:MenuTool.Items>
+                                    <igWPF:ButtonTool Content="List" Tag="List" Click="Ribbon_Options_DisplayMode_ItemClicked" />
+                                    <igWPF:ButtonTool Content="Cards" Tag="Cards" Click="Ribbon_Options_DisplayMode_ItemClicked" />
+                                </igWPF:MenuTool.Items>
+                            </igWPF:MenuTool>
+                            <igWPF:MenuTool Caption="" ToolTip="Cards Grouping Mode" igWPF:RibbonGroup.MaximumSize="ImageOnly">
+                                <igWPF:MenuTool.SmallImage>
+                                    <BitmapImage UriSource="VisualResources/Images/Ribbon/Ribbon_Options_GrouppingMode.png"/>
+                                </igWPF:MenuTool.SmallImage>
+                                <igWPF:MenuTool.Items>
+                                    <igWPF:ButtonTool Content="Not Groupped" Tag="None" Click="Ribbon_Options_GrouppingMode_ItemClicked" />
+                                    <igWPF:ButtonTool Content="Groupped by Option Kind" Tag="Group" Click="Ribbon_Options_GrouppingMode_ItemClicked" />
+                                </igWPF:MenuTool.Items>
+                            </igWPF:MenuTool>
+                        </igWPF:RibbonGroup>
+                        <igWPF:RibbonGroup Caption="Manage" IsEnabled="{Binding Source={x:Static project:PFProject.Instance}, Path=ProjectLoaded}">
+                            <igWPF:MenuTool Caption="Modify Option" MenuItemDescriptionMinWidth="50" ToolTip="Add new option settings, or modify the existing ones.">
+                                <igWPF:MenuTool.LargeImage>
+                                    <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Ribbon_Options_Add.png"/>
+                                </igWPF:MenuTool.LargeImage>
+                                <igWPF:GalleryTool PreferredDropDownColumns="5" ItemClicked="_ModifyOption_ItemClicked">
+                                    <igWPF:GalleryTool.Resources>
+                                        <ResourceDictionary Source="VisualResources/Images/Ribbon/Options_Gallery/OptionsGalleryDictionary.xaml" />
+                                    </igWPF:GalleryTool.Resources>
+                                    <igWPF:GalleryTool.Groups>
+                                        <igWPF:GalleryItemGroup Title="Common">
+                                            <igWPF:GalleryItemGroup.ItemKeys>
+                                                <system:String>Block Policy</system:String>
+                                                <system:String>State Policy</system:String>
+                                                <system:String>Debug Level</system:String>
+                                                <system:String>Fingerprints</system:String>
+                                            </igWPF:GalleryItemGroup.ItemKeys>
+                                        </igWPF:GalleryItemGroup>
+                                        <igWPF:GalleryItemGroup Title="Limits">
+                                            <igWPF:GalleryItemGroup.ItemKeys>
+                                                <system:String>Frags</system:String>
+                                                <system:String>Src-Nodes</system:String>
+                                                <system:String>States</system:String>
+                                                <system:String>Tables</system:String>
+                                                <system:String>Table-Entries</system:String>
+                                            </igWPF:GalleryItemGroup.ItemKeys>
+                                        </igWPF:GalleryItemGroup>
+                                        <igWPF:GalleryItemGroup Title="Optimization">
+                                            <igWPF:GalleryItemGroup.ItemKeys>
+                                                <system:String>Optimization</system:String>
+                                                <system:String>Ruleset-Optimization</system:String>
+                                            </igWPF:GalleryItemGroup.ItemKeys>
+                                        </igWPF:GalleryItemGroup>
+                                        <igWPF:GalleryItemGroup Title="Interface">
+                                            <igWPF:GalleryItemGroup.ItemKeys>
+                                                <system:String>Loginterface</system:String>
+                                                <system:String>SkipOn</system:String>
+                                            </igWPF:GalleryItemGroup.ItemKeys>
+                                        </igWPF:GalleryItemGroup>
+                                        <igWPF:GalleryItemGroup Title="Timeouts">
+                                            <igWPF:GalleryItemGroup.ItemKeys>
+                                                <system:String>Interval</system:String>
+                                                <system:String>Frag</system:String>
+                                                <system:String>SrcTrack</system:String>
+                                            </igWPF:GalleryItemGroup.ItemKeys>
+                                        </igWPF:GalleryItemGroup>
+                                    </igWPF:GalleryTool.Groups>
+                                    <igWPF:GalleryTool.Items>
+                                        <igWPF:GalleryItem Key="Block Policy" Text="Block Policy" Image="VisualResources/Images/Ribbon/Options_Gallery/Ribbon_Options_Gallery_BlockPolicy.png" />
+                                        <igWPF:GalleryItem Key="State Policy" Text="State Policy" Image="VisualResources/Images/Ribbon/Options_Gallery/Ribbon_Options_Gallery_StatePolicy.png" />
+                                        <igWPF:GalleryItem Key="Debug Level" Text="Debugging Level" Image="VisualResources/Images/Ribbon/Options_Gallery/Ribbon_Options_Gallery_DebugLevel.png" />
+                                        <igWPF:GalleryItem Key="Fingerprints" Text="Fingerprints File" Image="VisualResources/Images/Ribbon/Options_Gallery/Ribbon_Options_Gallery_FingerPrints.png" />
+
+                                        <igWPF:GalleryItem Key="Frags" Text="Frags Limit" Image="VisualResources/Images/Ribbon/Options_Gallery/Ribbon_Options_Gallery_Frags.png" />
+                                        <igWPF:GalleryItem Key="Src-Nodes" Text="Source Nodes" Image="VisualResources/Images/Ribbon/Options_Gallery/Ribbon_Options_Gallery_Src-Nodes.png" />
+                                        <igWPF:GalleryItem Key="States" Text="States" Image="VisualResources/Images/Ribbon/Options_Gallery/Ribbon_Options_Gallery_States.png" />
+                                        <igWPF:GalleryItem Key="Tables" Text="Tables" Image="VisualResources/Images/Ribbon/Options_Gallery/Ribbon_Options_Gallery_Tables.png" />
+                                        <igWPF:GalleryItem Key="Table-Entries" Text="Table Entries" Image="VisualResources/Images/Ribbon/Options_Gallery/Ribbon_Options_Gallery_Table-Entries.png" />
+
+                                        <igWPF:GalleryItem Key="Optimization" Text="Optimization Mode" Image="VisualResources/Images/Ribbon/Options_Gallery/Ribbon_Options_Gallery_Optimization.png" />
+                                        <igWPF:GalleryItem Key="Ruleset-Optimization" Text="Ruleset Optimization" Image="VisualResources/Images/Ribbon/Options_Gallery/Ribbon_Options_Gallery_Ruleset-Optimization.png" />
+
+                                        <igWPF:GalleryItem Key="Loginterface" Text="Loginterface" Image="VisualResources/Images/Ribbon/Options_Gallery/Ribbon_Options_Gallery_Loginterface.png" />
+                                        <igWPF:GalleryItem Key="SkipOn" Text="Skip On" Image="VisualResources/Images/Ribbon/Options_Gallery/Ribbon_Options_Gallery_SkipOn.png" />
+
+                                        <igWPF:GalleryItem Key="Interval" Text="Interval" Image="VisualResources/Images/Ribbon/Options_Gallery/Ribbon_Options_Gallery_Interval.png" />
+                                        <igWPF:GalleryItem Key="Frag" Text="Fragment Expiration" Image="VisualResources/Images/Ribbon/Options_Gallery/Ribbon_Options_Gallery_Frag.png" />
+                                        <igWPF:GalleryItem Key="SrcTrack" Text="Source Tracking" Image="VisualResources/Images/Ribbon/Options_Gallery/Ribbon_Options_Gallery_SrcTrack.png" />
+
+                                    </igWPF:GalleryTool.Items>
+                                </igWPF:GalleryTool>
+                            </igWPF:MenuTool>
+                            <igWPF:MenuTool Caption="Option Sets" ToolTip="Save or Load presets of modified options.">
+                                <igWPF:MenuTool.LargeImage>
+                                    <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Ribbon_Options_OptionSets.png"/>
+                                </igWPF:MenuTool.LargeImage>
+                                <igWPF:LabelTool Content="Custom Presets" />
+                                <igWPF:ButtonTool Content="All Default" />
+                                <igWPF:LabelTool Content="Manage Presets" />
+                                <igWPF:ButtonTool Content="Add Current State as Preset" />
+                            </igWPF:MenuTool>
+                        </igWPF:RibbonGroup>
+                    </igWPF:RibbonTabItem>
+                    <igWPF:RibbonTabItem Header="Filtering" KeyTip="F" IsEnabled="{Binding Source={x:Static project:PFProject.Instance}, Path=ProjectLoaded}">
+                        <igWPF:RibbonGroup Caption="Manage">
+                            <igWPF:ButtonTool Caption="New Filtering Diagram" igWPF:RibbonGroup.MinimumSize="ImageAndTextLarge" igWPF:RibbonGroup.MaximumSize="ImageAndTextLarge" Click="_Button_NewDiagram_Click">
+                                <igWPF:ButtonTool.LargeImage>
+                                    <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Ribbon_Filtering_NewDiagram.png"/>
+                                </igWPF:ButtonTool.LargeImage>
+                            </igWPF:ButtonTool>
+                        </igWPF:RibbonGroup>
+                    </igWPF:RibbonTabItem>
+                    <igWPF:RibbonTabItem Header="Queing" KeyTip="Q" IsEnabled="{Binding Source={x:Static project:PFProject.Instance}, Path=ProjectLoaded}"/>
+
+                    <igWPF:XamRibbon.ContextualTabGroups>
+                        <igWPF:ContextualTabGroup Key="DiagramGroup" Caption="PF Diagram" IsVisible="{Binding Source={x:Static visualResources:DiagramManager.Instance}, Path=IsDiagramInView}" x:Name="_DiagramContextualGroup">
+                            <igWPF:ContextualTabGroup.Tabs>
+                                <igWPF:RibbonTabItem Header="Diagram Tools" KeyTip="D" IsEnabled="{Binding Source={x:Static project:PFProject.Instance}, Path=ProjectLoaded}"
+                                                     DataContext="{Binding Source={x:Static visualResources:DiagramManager.Instance}, Path=ActiveDiagram}">
+                                    <igWPF:RibbonGroup Caption="History">
+                                        <igWPF:MenuTool Caption="Undo" igWPF:RibbonGroup.MaximumSize="ImageAndTextLarge" ButtonType="Segmented" 
+                                                        Command="Undo" CommandTarget="{Binding}" ItemsSource="{Binding UndoManager.UndoHistory}"
+                                                        ItemTemplate="{StaticResource UndoRedoToolItem}">
+                                            <igWPF:MenuTool.LargeImage>
+                                                <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Diagram_Tools/Ribbon_Diagram_Tools_Undo.png"/>
+                                            </igWPF:MenuTool.LargeImage>
+                                        </igWPF:MenuTool>
+                                        <igWPF:MenuTool Caption="Redo" igWPF:RibbonGroup.MaximumSize="ImageAndTextLarge" ButtonType="Segmented"
+                                                        Command="Redo" CommandTarget="{Binding}" ItemsSource="{Binding UndoManager.RedoHistory}"
+                                                        ItemTemplate="{StaticResource UndoRedoToolItem}">
+                                            <igWPF:MenuTool.LargeImage>
+                                                <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Diagram_Tools/Ribbon_Diagram_Tools_Redo.png"/>
+                                            </igWPF:MenuTool.LargeImage>
+                                        </igWPF:MenuTool>
+                                    </igWPF:RibbonGroup>
+                                    <igWPF:RibbonGroup Caption="Selection">
+                                        <igWPF:ButtonTool Caption="Paste" igWPF:RibbonGroup.MaximumSize="ImageAndTextLarge"
+                                                          Command="Paste" CommandTarget="{Binding}">
+                                            <igWPF:ButtonTool.LargeImage>
+                                                <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Diagram_Tools/Ribbon_Diagram_Tools_Paste.png"/>
+                                            </igWPF:ButtonTool.LargeImage>
+                                        </igWPF:ButtonTool>
+                                        <igWPF:ButtonTool Caption="Cut"
+                                                          Command="Cut" CommandTarget="{Binding}">
+                                            <igWPF:ButtonTool.LargeImage>
+                                                <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Diagram_Tools/Ribbon_Diagram_Tools_Cut.png"/>
+                                            </igWPF:ButtonTool.LargeImage>
+                                        </igWPF:ButtonTool>
+                                        <igWPF:ButtonTool Caption="Copy"
+                                                          Command="Copy" CommandTarget="{Binding}">
+                                            <igWPF:ButtonTool.LargeImage>
+                                                <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Diagram_Tools/Ribbon_Diagram_Tools_Copy.png"/>
+                                            </igWPF:ButtonTool.LargeImage>
+                                        </igWPF:ButtonTool>
+                                        <igWPF:ButtonTool Caption="Delete"
+                                                          Command="Delete" CommandTarget="{Binding}">
+                                            <igWPF:ButtonTool.LargeImage>
+                                                <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Diagram_Tools/Ribbon_Diagram_Tools_Delete.png"/>
+                                            </igWPF:ButtonTool.LargeImage>
+                                        </igWPF:ButtonTool>
+                                        <igWPF:ButtonTool Caption="Edit"
+                                                          Command="{x:Static ig:DiagramCommands.EnterEditMode}" CommandTarget="{Binding}">
+                                            <igWPF:ButtonTool.LargeImage>
+                                                <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Diagram_Tools/Ribbon_Diagram_Tools_Edit.png"/>
+                                            </igWPF:ButtonTool.LargeImage>
+                                        </igWPF:ButtonTool>
+                                    </igWPF:RibbonGroup>
+                                    <igWPF:RibbonGroup Caption="ZIndex">
+                                        <igWPF:ButtonTool Caption="Bring Forward"
+                                                          Command="{x:Static ig:DiagramCommands.BringForward}" CommandTarget="{Binding}">
+                                            <igWPF:ButtonTool.LargeImage>
+                                                <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Diagram_Tools/Ribbon_Diagram_Tools_BringForward.png"/>
+                                            </igWPF:ButtonTool.LargeImage>
+                                        </igWPF:ButtonTool>
+
+                                        <igWPF:ButtonTool Caption="Bring To Front"
+                                                          Command="{x:Static ig:DiagramCommands.BringToFront}" CommandTarget="{Binding}">
+                                            <igWPF:ButtonTool.LargeImage>
+                                                <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Diagram_Tools/Ribbon_Diagram_Tools_BringToFront.png"/>
+                                            </igWPF:ButtonTool.LargeImage>
+                                        </igWPF:ButtonTool>
+                                        <igWPF:ButtonTool Caption="Send Backward"
+                                                          Command="{x:Static ig:DiagramCommands.SendBackward}" CommandTarget="{Binding}">
+                                            <igWPF:ButtonTool.LargeImage>
+                                                <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Diagram_Tools/Ribbon_Diagram_Tools_SendBackward.png"/>
+                                            </igWPF:ButtonTool.LargeImage>
+                                        </igWPF:ButtonTool>
+                                        <igWPF:ButtonTool Caption="Send To Back"
+                                                          Command="{x:Static ig:DiagramCommands.SendToBack}" CommandTarget="{Binding}">
+                                            <igWPF:ButtonTool.LargeImage>
+                                                <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Diagram_Tools/Ribbon_Diagram_Tools_SendToBack.png"/>
+                                            </igWPF:ButtonTool.LargeImage>
+                                        </igWPF:ButtonTool>
+                                    </igWPF:RibbonGroup>
+                                    <igWPF:RibbonGroup Caption="Tools">
+                                        <igWPF:RadioButtonTool Caption="Select Tool" IsChecked="True" Checked="Ribbon_DiagramTools_ToolChanged" Tag="Select">
+                                            <igWPF:RadioButtonTool.LargeImage>
+                                                <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Diagram_Tools/Ribbon_Diagram_Tools_SelectTool.png"/>
+                                            </igWPF:RadioButtonTool.LargeImage>
+                                        </igWPF:RadioButtonTool>
+                                        <igWPF:RadioButtonTool Caption="Connect Tool" Checked="Ribbon_DiagramTools_ToolChanged" Tag="Connect">
+                                            <igWPF:RadioButtonTool.LargeImage>
+                                                <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Diagram_Tools/Ribbon_Diagram_Tools_ConnectTool.png"/>
+                                            </igWPF:RadioButtonTool.LargeImage>
+                                        </igWPF:RadioButtonTool>
+                                    </igWPF:RibbonGroup>
+                                    <igWPF:RibbonGroup Caption="Drag Interaction">
+                                        <igWPF:RadioButtonTool Caption="Select" IsChecked="True" Checked="Ribbon_DiagramTools_DragInteractionChanged">
+                                            <igWPF:RadioButtonTool.LargeImage>
+                                                <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Diagram_Tools/Ribbon_Diagram_Tools_DragSelect.png"/>
+                                            </igWPF:RadioButtonTool.LargeImage>
+                                        </igWPF:RadioButtonTool>
+                                        <igWPF:RadioButtonTool Caption="Pan" Checked="Ribbon_DiagramTools_DragInteractionChanged">
+                                            <igWPF:RadioButtonTool.LargeImage>
+                                                <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Diagram_Tools/Ribbon_Diagram_Tools_DragPan.png"/>
+                                            </igWPF:RadioButtonTool.LargeImage>
+                                        </igWPF:RadioButtonTool>
+                                        <igWPF:RadioButtonTool Caption="Zoom" Checked="Ribbon_DiagramTools_DragInteractionChanged">
+                                            <igWPF:RadioButtonTool.LargeImage>
+                                                <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Diagram_Tools/Ribbon_Diagram_Tools_DragZoom.png"/>
+                                            </igWPF:RadioButtonTool.LargeImage>
+                                        </igWPF:RadioButtonTool>
+                                        <igWPF:RadioButtonTool Caption="None" Checked="Ribbon_DiagramTools_DragInteractionChanged">
+                                            <igWPF:RadioButtonTool.LargeImage>
+                                                <BitmapImage UriSource="/PFConsole;component/VisualResources/Images/Ribbon/Diagram_Tools/Ribbon_Diagram_Tools_DragNone.png"/>
+                                            </igWPF:RadioButtonTool.LargeImage>
+                                        </igWPF:RadioButtonTool>
+                                    </igWPF:RibbonGroup>
+                                </igWPF:RibbonTabItem>
+                            </igWPF:ContextualTabGroup.Tabs>
+
+                        </igWPF:ContextualTabGroup>
+                    </igWPF:XamRibbon.ContextualTabGroups>
+                </igWPF:XamRibbon>
+                <igWPF:XamDockManager Theme="Office2013" Name="_DockManager">
+                    <igWPF:XamDockManager.Panes>
+                        <igWPF:SplitPane>
+                            <igWPF:ContentPane Header="Firewall Explorer" CloseButtonVisibility="Collapsed" AllowClose="False" MinWidth="250" IsPinned="False" x:Name="_Pane_FirewallExplorer">
+                                <DockPanel LastChildFill="True">
+                                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" />
+                                    <TreeView FontWeight="Thin">
+                                        <TreeView.Items>
+                                            <TreeViewItem Header="{Binding Source={x:Static project:PFProject.Instance}, Path=Title}" IsExpanded="True" Style="{DynamicResource ProjectItemStyle}" IsEnabled="{Binding ProjectLoaded, Source={x:Static project:PFProject.Instance}}">
+                                                <TreeViewItem.ContextMenu>
+                                                    <ContextMenu MinWidth="200">
+                                                        <MenuItem Header="Build Configuration File" />
+                                                        <MenuItem Header="Add">
+                                                            <MenuItem Header="Interface" Click="_MenuItem_AddInterface_Clicked"/>
+                                                            <MenuItem Header="Macro" />
+                                                            <MenuItem Header="Table" />
+                                                            <MenuItem Header="Diagram" />
+                                                        </MenuItem>
+                                                    </ContextMenu>
+                                                </TreeViewItem.ContextMenu>
+                                                <TreeViewItem Header="Interfaces" IsExpanded="True" x:Name="TreeItem_Interfaces" HeaderTemplate="{StaticResource DefaultNodeDataTemplate}" ItemTemplate="{StaticResource InterfaceNodeTemplate}" ItemsSource="{Binding Source={x:Static project:PFProject.Instance}, Path=Interfaces.Interfaces}" />
+                                                <TreeViewItem Header="Options" MouseDoubleClick="_FirewallExplorer_Options_DoubleClick" HeaderTemplate="{StaticResource DefaultNodeDataTemplate}"/>
+                                                <TreeViewItem Header="Macros" HeaderTemplate="{StaticResource DefaultNodeDataTemplate}" ItemsSource="{Binding Source={x:Static project:PFProject.Instance}, Path=Macros.Macros}" ItemTemplate="{StaticResource MacroNodeTemplate}"/>
+                                                <TreeViewItem Header="Tables" HeaderTemplate="{StaticResource DefaultNodeDataTemplate}" ItemsSource="{Binding Source={x:Static project:PFProject.Instance}, Path=Tables.Tables}" ItemTemplate="{StaticResource TableNodeTemplate}"/>
+                                                <TreeViewItem Header="Diagrams" HeaderTemplate="{StaticResource DefaultNodeDataTemplate}" ItemsSource="{Binding Source={x:Static project:PFProject.Instance}, Path=Diagrams.Diagrams}" ItemTemplate="{StaticResource DiagramNodeTemplate}"/>
+                                              
+                                            </TreeViewItem>
+                                        </TreeView.Items>
+                                        <TreeView.ItemContainerStyle>
+                                            <Style TargetType="{x:Type TreeViewItem}">
+                                                <!-- Style for the selected item -->
+                                                <Setter Property="BorderThickness" Value="1"/>
+                                                <Style.Triggers>
+                                                    <!-- Selected and has focus -->
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter Property="BorderBrush" Value="#7DA2CE"/>
+                                                    </Trigger>
+                                                    <!-- Mouse over -->
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background">
+                                                            <Setter.Value>
+                                                                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                                                    <GradientStop Color="#FFFAFBFD" Offset="0"/>
+                                                                    <GradientStop Color="#FFEBF3FD" Offset="1"/>
+                                                                </LinearGradientBrush>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Setter Property="BorderBrush" Value="#B8D6FB"/>
+                                                    </Trigger>
+                                                    <!-- Selected but does not have the focus -->
+                                                    <MultiTrigger>
+                                                        <MultiTrigger.Conditions>
+                                                            <Condition Property="IsSelected" Value="True"/>
+                                                            <Condition Property="IsSelectionActive" Value="False"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="BorderBrush" Value="#D9D9D9"/>
+                                                    </MultiTrigger>
+                                                </Style.Triggers>
+                                                <Style.Resources>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="CornerRadius" Value="0"/>
+                                                    </Style>
+                                                </Style.Resources>
+                                            </Style>
+                                        </TreeView.ItemContainerStyle>
+                                        <TreeView.Resources>
+                                            <ResourceDictionary>
+                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FFDCEBFC"/>
+                                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#FFF8F8F8"/>
+                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="Black" />
+                                            </ResourceDictionary>
+                                        </TreeView.Resources>
+                                    </TreeView>
+                                </DockPanel>
+                            </igWPF:ContentPane>
+                            <igWPF:ContentPane Header="Toolbox" CloseButtonVisibility="Collapsed" AllowClose="False" AllowDockingFloating="False" MinWidth="300" x:Name="_Pane_Toolbox">
+                                <ig:XamDiagramToolbox x:Name="_DiagramToolbox" IsEnabled="{Binding Source={x:Static visualResources:DiagramManager.Instance}, Path=IsDiagramInView}" Style="{DynamicResource DiagramToolboxStyle}" MaxWidth="300">
+                                    <ig:XamDiagramToolbox.Categories>
+                                        <ig:DiagramToolboxCategory Name="Interfaces">
+                                            <ig:DiagramToolboxItem Title="Interface">
+                                                <ig:DiagramToolboxItem.Item>
+                                                    <ig:DiagramNode Style="{StaticResource InterfaceSelectorItemStyle}" />
+                                                </ig:DiagramToolboxItem.Item>
+                                                <ig:DiagramToolboxItem.Content>
+                                                    <Viewbox Width="30" Height="30">
+                                                        <Canvas Width="65.7148" Height="36.9415">
+                                                            <Path Width="7.23306" Height="7.2344" Canvas.Left="49.9101" Canvas.Top="6.35547" Stretch="Fill" Fill="#FF2962A8" Data="F1 M 53.5273,6.35547C 51.5325,6.35547 49.9101,7.97787 49.9101,9.97147C 49.9101,11.9663 51.5325,13.5899 53.5273,13.5899C 55.5208,13.5899 57.1432,11.9663 57.1432,9.97147C 57.1432,7.97787 55.5208,6.35547 53.5273,6.35547 Z M 53.5273,10.9232C 53.0025,10.9232 52.5768,10.4961 52.5768,9.97147C 52.5768,9.448 53.0025,9.02213 53.5273,9.02213C 54.0508,9.02213 54.4765,9.448 54.4765,9.97147C 54.4765,10.4961 54.0508,10.9232 53.5273,10.9232 Z "/>
+                                                            <Path Width="6" Height="2.66667" Canvas.Left="0" Canvas.Top="31.8048" Stretch="Fill" Fill="#FF424242" Data="F1 M 4.66666,31.8048L 1.33334,31.8048C 0.596252,31.8048 0,32.4011 0,33.1381C 0,33.8751 0.596252,34.4715 1.33334,34.4715L 4.66666,34.4715C 5.40359,34.4715 6,33.8751 6,33.1381C 6,32.4011 5.40359,31.8048 4.66666,31.8048 Z "/>
+                                                            <Path Width="7.37106" Height="2.66667" Canvas.Left="9.91919" Canvas.Top="31.8048" Stretch="Fill" Fill="#FF424242" Data="F1 M 15.9569,31.8048L 11.2525,31.8048C 10.5156,31.8048 9.91919,32.4011 9.91919,33.1381C 9.91919,33.8751 10.5156,34.4715 11.2525,34.4715L 15.9569,34.4715C 16.694,34.4715 17.2903,33.8751 17.2903,33.1381C 17.2903,32.4011 16.694,31.8048 15.9569,31.8048 Z "/>
+                                                            <Path Width="6" Height="2.66667" Canvas.Left="21.2096" Canvas.Top="31.8048" Stretch="Fill" Fill="#FF424242" Data="F1 M 25.8763,31.8048L 22.5429,31.8048C 21.806,31.8048 21.2096,32.4011 21.2096,33.1381C 21.2096,33.8751 21.806,34.4715 22.5429,34.4715L 25.8763,34.4715C 26.6132,34.4715 27.2096,33.8751 27.2096,33.1381C 27.2096,32.4011 26.6132,31.8048 25.8763,31.8048 Z "/>
+                                                            <Path Width="6" Height="2.66667" Canvas.Left="38.4284" Canvas.Top="31.8048" Stretch="Fill" Fill="#FF424242" Data="F1 M 43.0951,31.8048L 39.7617,31.8048C 39.0247,31.8048 38.4284,32.4011 38.4284,33.1381C 38.4284,33.8751 39.0247,34.4715 39.7617,34.4715L 43.0951,34.4715C 43.832,34.4715 44.4284,33.8751 44.4284,33.1381C 44.4284,32.4011 43.832,31.8048 43.0951,31.8048 Z "/>
+                                                            <Path Width="7.39069" Height="2.66667" Canvas.Left="48.3763" Canvas.Top="31.8048" Stretch="Fill" Fill="#FF424242" Data="F1 M 54.4336,31.8048L 49.7096,31.8048C 48.9727,31.8048 48.3763,32.4011 48.3763,33.1381C 48.3763,33.8751 48.9727,34.4715 49.7096,34.4715L 54.4336,34.4715C 55.1705,34.4715 55.7669,33.8751 55.7669,33.1381C 55.7669,32.4011 55.1705,31.8048 54.4336,31.8048 Z "/>
+                                                            <Path Width="6" Height="2.66667" Canvas.Left="59.7148" Canvas.Top="31.8048" Stretch="Fill" Fill="#FF424242" Data="F1 M 64.3815,31.8048L 61.0481,31.8048C 60.3112,31.8048 59.7148,32.4011 59.7148,33.1381C 59.7148,33.8751 60.3112,34.4715 61.0481,34.4715L 64.3815,34.4715C 65.1184,34.4715 65.7148,33.8751 65.7148,33.1381C 65.7148,32.4011 65.1184,31.8048 64.3815,31.8048 Z "/>
+                                                            <Path Width="63.0234" Height="36.9415" Canvas.Left="1.62759" Canvas.Top="0" Stretch="Fill" Fill="#FF424242" Data="F1 M 34.2748,29.6436L 34.276,19.8789C 34.276,19.8184 34.2493,19.7667 34.2416,19.7084L 63.3177,19.7084C 64.0547,19.7084 64.651,19.112 64.651,18.3751L 64.651,1.33334C 64.651,0.596405 64.0547,0 63.3177,0L 2.96091,0C 2.22385,0 1.62759,0.596405 1.62759,1.33334L 1.62759,18.3751C 1.62759,19.112 2.22385,19.7084 2.96091,19.7084L 31.6437,19.7084C 31.636,19.7667 31.6093,19.8184 31.6093,19.8789L 31.6081,29.6427C 30.1845,30.1833 29.1653,31.5521 29.1653,33.1641C 29.1653,35.2475 30.8593,36.9415 32.9427,36.9415C 35.0247,36.9415 36.7187,35.2475 36.7187,33.1655C 36.7187,31.5535 35.6995,30.1849 34.2748,29.6436 Z M 4.29425,2.66667L 61.9844,2.66667L 61.9844,17.0417L 4.29425,17.0417L 4.29425,2.66667 Z M 32.9427,34.2748C 32.3307,34.2748 31.832,33.7761 31.832,33.1641C 31.832,32.8672 31.9478,32.5899 32.1563,32.3803C 32.3659,32.1707 32.6445,32.0548 32.9413,32.0548C 33.5533,32.0548 34.052,32.5535 34.052,33.1655C 34.052,33.7775 33.5547,34.2748 32.9427,34.2748 Z "/>
+                                                        </Canvas>
+                                                    </Viewbox>
+                                                </ig:DiagramToolboxItem.Content>
+                                            </ig:DiagramToolboxItem>
+                                        </ig:DiagramToolboxCategory>
+                                        <ig:DiagramToolboxCategory Name="Filtering" >
+                                            <ig:DiagramToolboxItem Title="Filter">
+                                                <ig:DiagramToolboxItem.Item>
+                                                    <ig:DiagramNode Style="{StaticResource FilterNodeItemStyle}" />
+                                                </ig:DiagramToolboxItem.Item>
+                                                <ig:DiagramToolboxItem.Content>
+                                                    <Viewbox Width="30" Height="30">
+                                                        <Canvas Width="61.0429" Height="64.5664">
+                                                            <Path Width="36.9192" Height="2.66667" Canvas.Left="24.1237" Canvas.Top="54.849" Stretch="Fill" Fill="#FF424242" Data="F1 M 59.7096,54.849L 25.4571,54.849C 24.7207,54.849 24.1237,55.4453 24.1237,56.1823C 24.1237,56.9193 24.7207,57.5156 25.4571,57.5156L 59.7096,57.5156C 60.446,57.5156 61.0429,56.9193 61.0429,56.1823C 61.0429,55.4453 60.446,54.849 59.7096,54.849 Z "/>
+                                                            <Path Width="36.9192" Height="2.66667" Canvas.Left="24.1237" Canvas.Top="31.9102" Stretch="Fill" Fill="#FF424242" Data="F1 M 59.7096,31.9102L 25.4571,31.9102C 24.7207,31.9102 24.1237,32.5065 24.1237,33.2435C 24.1237,33.9805 24.7207,34.5768 25.4571,34.5768L 59.7096,34.5768C 60.446,34.5768 61.0429,33.9805 61.0429,33.2435C 61.0429,32.5065 60.446,31.9102 59.7096,31.9102 Z "/>
+                                                            <Path Width="36.9192" Height="2.66666" Canvas.Left="24.1237" Canvas.Top="8.97136" Stretch="Fill" Fill="#FF424242" Data="F1 M 25.4571,11.638L 59.7096,11.638C 60.446,11.638 61.0429,11.0417 61.0429,10.3047C 61.0429,9.56771 60.446,8.97136 59.7096,8.97136L 25.4571,8.97136C 24.7207,8.97136 24.1237,9.56771 24.1237,10.3047C 24.1237,11.0417 24.7207,11.638 25.4571,11.638 Z "/>
+                                                            <Path Width="16.767" Height="16.7656" Canvas.Left="0.150391" Canvas.Top="24.8607" Stretch="Fill" Fill="#FF424242" Data="F1 M 15.584,24.8607L 1.48372,24.8607C 0.747355,24.8607 0.150391,25.457 0.150391,26.194L 0.150391,40.293C 0.150391,41.0299 0.747355,41.6263 1.48372,41.6263L 15.584,41.6263C 16.3203,41.6263 16.9174,41.0299 16.9174,40.293L 16.9174,26.194C 16.9174,25.457 16.3203,24.8607 15.584,24.8607 Z M 14.2507,38.9596L 2.81706,38.9596L 2.81706,27.5273L 14.2507,27.5273L 14.2507,38.9596 Z "/>
+                                                            <Path Width="16.767" Height="16.7669" Canvas.Left="0.150391" Canvas.Top="47.7995" Stretch="Fill" Fill="#FF424242" Data="F1 M 15.584,47.7995L 1.48372,47.7995C 0.747355,47.7995 0.150391,48.3958 0.150391,49.1328L 0.150391,63.2331C 0.150391,63.9701 0.747355,64.5664 1.48372,64.5664L 15.584,64.5664C 16.3203,64.5664 16.9174,63.9701 16.9174,63.2331L 16.9174,49.1328C 16.9174,48.3958 16.3203,47.7995 15.584,47.7995 Z M 14.2507,61.8997L 2.81706,61.8997L 2.81706,50.4661L 14.2507,50.4661L 14.2507,61.8997 Z "/>
+                                                            <Path Width="20.3262" Height="18.1975" Canvas.Left="0.150323" Canvas.Top="0.164501" Stretch="Fill" Fill="#FF29A870" Data="F1 M 18.112,0.652344L 6.36519,14.9831L 2.47453,10.6628C 1.98242,10.1146 1.13867,10.0703 0.591756,10.5638C 0.044271,11.056 0,11.8997 0.492798,12.4466L 5.42188,17.9206C 5.67509,18.2018 6.0352,18.362 6.44401,18.362C 6.83199,18.3529 7.19722,18.1745 7.44401,17.8737L 20.1746,2.34245C 20.6412,1.77344 20.5579,0.933594 19.9883,0.466148C 19.4192,0 18.5788,0.0833359 18.112,0.652344 Z "/>
+                                                        </Canvas>
+                                                    </Viewbox>
+                                                </ig:DiagramToolboxItem.Content>
+                                            </ig:DiagramToolboxItem>
+                                            <ig:DiagramToolboxItem Title="Action">
+                                                <ig:DiagramToolboxItem.Item>
+                                                    <ig:DiagramNode Style="{StaticResource ActionNodeItemStyle}" />
+                                                </ig:DiagramToolboxItem.Item>
+                                                <ig:DiagramToolboxItem.Content>
+                                                    <Viewbox Width="30" Height="30">
+                                                        <Canvas Width="67.6323" Height="65.1627">
+                                                            <Path Width="44.4966" Height="62.8269" Canvas.Left="2.01522" Canvas.Top="0.0884387" Stretch="Fill" Fill="#FFA82929" Data="F1 M 33.9981,29.6301C 35.0645,25.6509 37.9527,19.082 42.5541,16.7799C 40.1036,20.608 39.7222,24.8397 41.2847,30.1834C 41.4916,30.8892 42.2287,31.2916 42.9383,31.0897C 43.6453,30.8828 44.0516,30.1419 43.8445,29.4361C 42.2677,24.0443 42.9292,20.1875 46.0516,16.5455C 46.5737,15.9413 46.6609,15.0664 46.2651,14.3632C 45.8628,13.6549 45.062,13.2773 44.2964,13.4257C 37.9708,14.4791 34.3145,21.1952 32.5984,25.4791C 30.9981,20.4127 30.2169,12.6705 30.2169,1.98946C 30.2169,1.29945 29.8419,0.662659 29.2585,0.339737C 28.6661,0 27.9304,0.00386047 27.3328,0.356659C 20.5907,4.40492 18.0008,14.2487 17.1921,18.3345C 16.9369,19.8828 16.7429,21.7903 16.5372,23.8112C 16.2182,26.9621 15.8445,30.6419 15.1519,33.3776C 13.5842,29.1367 10.8107,23.0937 7.64268,20.983C 6.77681,20.4061 5.88094,19.8085 5.04893,19.1834C 4.37321,18.6875 3.46428,18.6875 2.78334,19.1888C 2.11015,19.6875 1.84187,20.5845 2.12975,21.3684C 3.62187,25.4673 3.1024,30.4492 2.59972,35.2708C 1.97972,41.2163 0,54.734 11.9448,59.8411C 15.5437,61.8528 19.7625,62.9153 24.144,62.9153C 24.4448,62.9153 24.7404,62.9088 24.9396,62.8971C 25.2391,62.9088 25.5347,62.9153 25.8342,62.9153C 26.4617,62.9153 27.0815,62.8932 27.6973,62.8515C 28.4317,62.8007 28.9864,62.164 28.9357,61.4283C 28.8836,60.694 28.2364,60.1523 27.5125,60.19C 26.9591,60.2291 26.3992,60.2487 25.8342,60.2487C 25.5685,60.2487 25.3041,60.2421 24.9396,60.233C 18.767,60.44 15.0616,58.4323 11.9421,56.9036C 3.562,51.75 4.38228,43.8801 5.25212,35.5443C 5.70518,31.1913 6.17265,26.7121 5.25468,22.5937C 5.56334,22.802 5.87187,23.0077 6.17918,23.2121C 9.006,25.0949 12.3746,32.733 13.7195,37.5233C 13.8211,37.8828 14.114,38.164 14.4473,38.3333C 14.7807,38.5012 15.2143,38.5064 15.5645,38.3736C 15.8276,38.2747 16.0528,38.0949 16.2091,37.8593C 18.0803,35.0247 18.67,29.2096 19.1909,24.0807C 19.3915,22.1028 19.5815,20.2343 19.8145,18.8112C 20.3484,16.1184 22.4136,7.49599 27.5555,3.4388C 27.6415,16.4856 28.9109,24.9167 31.5295,29.9049C 31.786,30.3905 32.3003,30.6692 32.8576,30.6107C 33.4031,30.5495 33.8563,30.1601 33.9981,29.6301 Z "/>
+                                                            <Path Width="35.1055" Height="29.8112" Canvas.Left="32.5268" Canvas.Top="35.3515" Stretch="Fill" Fill="#FF424242" Data="F1 M 66.2989,47.0664C 67.036,47.0664 67.6323,46.47 67.6323,45.733C 67.6323,44.996 67.036,44.3997 66.2989,44.3997L 51.4123,44.3997L 51.4123,38.0181L 66.2989,38.0181C 67.036,38.0181 67.6323,37.4218 67.6323,36.6848C 67.6323,35.9478 67.036,35.3515 66.2989,35.3515L 50.0789,35.3515L 33.8602,35.3515C 33.1232,35.3515 32.5268,35.9478 32.5268,36.6848L 32.5268,63.8293C 32.5268,64.5664 33.1232,65.1627 33.8602,65.1627L 50.0789,65.1627L 66.2989,65.1627C 67.036,65.1627 67.6323,64.5664 67.6323,63.8293C 67.6323,63.0924 67.036,62.496 66.2989,62.496L 51.4123,62.496L 51.4123,56.1145L 66.2989,56.1145C 67.036,56.1145 67.6323,55.5181 67.6323,54.7812C 67.6323,54.0443 67.036,53.4478 66.2989,53.4478L 59.5216,53.4478L 59.5216,47.0664L 66.2989,47.0664 Z M 35.1935,38.0181L 48.7456,38.0181L 48.7456,44.3997L 35.1935,44.3997L 35.1935,38.0181 Z M 40.6349,53.4478L 35.1935,53.4478L 35.1935,47.0664L 40.6349,47.0664L 40.6349,53.4478 Z M 48.7456,62.496L 35.1935,62.496L 35.1935,56.1145L 48.7456,56.1145L 48.7456,62.496 Z M 56.8549,53.4478C 48.2253,53.4478 51.9296,53.4478 43.3016,53.4478L 43.3016,47.0664C 51.9379,47.0664 48.2269,47.0664 56.8549,47.0664L 56.8549,53.4478 Z "/>
+                                                        </Canvas>
+                                                    </Viewbox>
+                                                </ig:DiagramToolboxItem.Content>
+                                            </ig:DiagramToolboxItem>
+                                            <ig:DiagramToolboxItem Title="STO">
+                                                <ig:DiagramToolboxItem.Item>
+                                                    <ig:DiagramNode Style="{StaticResource STONodeItemStyle}" />
+                                                </ig:DiagramToolboxItem.Item>
+                                                <ig:DiagramToolboxItem.Content>
+                                                    <Viewbox Width="30" Height="30">
+                                                        <Path Stretch="Fill" Fill="#FF424242" Data="F1 M 62.0483,53.4806C 60.5095,53.4806 59.0763,53.9272 57.8577,54.6869L 39.0664,33.4526L 39.0664,20.7839C 42.8168,20.1466 45.685,16.8819 45.685,12.9532C 45.685,8.56779 42.1173,5.00008 37.7331,5.00008C 33.3478,5.00008 29.78,8.56779 29.78,12.9532C 29.78,16.8822 32.6483,20.1466 36.3998,20.7839L 36.3998,33.4698L 18.502,54.5977C 17.3154,53.893 15.9358,53.4806 14.4584,53.4806C 10.073,53.4806 6.50522,57.0483 6.50522,61.4337C 6.50522,65.8178 10.073,69.3855 14.4584,69.3855C 18.8425,69.3855 22.4103,65.8178 22.4103,61.4337C 22.4103,59.4864 21.7044,57.7029 20.5386,56.3188L 36.3998,37.5948L 36.3998,53.6013C 32.6483,54.2387 29.78,57.5033 29.78,61.4337C 29.78,65.8178 33.3478,69.3855 37.7331,69.3855C 42.1173,69.3855 45.685,65.8178 45.685,61.4337C 45.685,57.5033 42.8168,54.2387 39.0664,53.6013L 39.0664,37.4766L 55.8578,56.4519C 54.7577,57.8165 54.0951,59.5483 54.0951,61.4337C 54.0951,65.8178 57.6629,69.3855 62.0483,69.3855C 66.4325,69.3855 70,65.8178 70,61.4337C 70,57.0483 66.4325,53.4806 62.0483,53.4806 Z M 14.4584,66.7188C 11.5431,66.7188 9.17189,64.3477 9.17189,61.4337C 9.17189,58.5183 11.5431,56.1472 14.4584,56.1472C 17.3724,56.1472 19.7437,58.5183 19.7437,61.4337C 19.7437,64.3477 17.3724,66.7188 14.4584,66.7188 Z M 43.0183,61.4337C 43.0183,64.3477 40.6472,66.7188 37.7331,66.7188C 34.8178,66.7188 32.4467,64.3477 32.4467,61.4337C 32.4467,58.5183 34.8178,56.1472 37.7331,56.1472C 40.6472,56.1472 43.0183,58.5183 43.0183,61.4337 Z M 37.7331,18.2384C 34.8178,18.2384 32.4467,15.8673 32.4467,12.9532C 32.4467,10.0378 34.8178,7.66675 37.7331,7.66675C 40.6472,7.66675 43.0183,10.0378 43.0183,12.9532C 43.0183,15.8673 40.6472,18.2384 37.7331,18.2384 Z M 62.0483,66.7188C 59.1328,66.7188 56.7618,64.3477 56.7618,61.4337C 56.7618,58.5183 59.1328,56.1472 62.0483,56.1472C 64.9623,56.1472 67.3333,58.5183 67.3333,61.4337C 67.3333,64.3477 64.9623,66.7188 62.0483,66.7188 Z " Grid.RowSpan="2"/>
+                                                    </Viewbox>
+                                                </ig:DiagramToolboxItem.Content>
+                                            </ig:DiagramToolboxItem>
+                                            <ig:DiagramToolboxItem Title="Log">
+                                                <ig:DiagramToolboxItem.Item>
+                                                    <ig:DiagramNode Style="{StaticResource LogNodeItemStyle}" />
+                                                </ig:DiagramToolboxItem.Item>
+                                                <ig:DiagramToolboxItem.Content>
+                                                    <Viewbox Width="30" Height="30">
+                                                        <Canvas Width="58.6265" Height="66.0951">
+                                                            <Path Width="30.8087" Height="2.66666" Canvas.Left="10.1355" Canvas.Top="41.0208" Stretch="Fill" Fill="#FF424242" Data="F1 M 39.6108,41.0208L 11.4688,41.0208C 10.7319,41.0208 10.1355,41.6172 10.1355,42.3542C 10.1355,43.0912 10.7319,43.6875 11.4688,43.6875L 39.6108,43.6875C 40.3477,43.6875 40.9442,43.0912 40.9442,42.3542C 40.9442,41.6172 40.3477,41.0208 39.6108,41.0208 Z "/>
+                                                            <Path Width="30.8087" Height="2.66667" Canvas.Left="10.1355" Canvas.Top="32.8451" Stretch="Fill" Fill="#FF424242" Data="F1 M 39.6108,32.8451L 11.4688,32.8451C 10.7319,32.8451 10.1355,33.4415 10.1355,34.1784C 10.1355,34.9154 10.7319,35.5118 11.4688,35.5118L 39.6108,35.5118C 40.3477,35.5118 40.9442,34.9154 40.9442,34.1784C 40.9442,33.4415 40.3477,32.8451 39.6108,32.8451 Z "/>
+                                                            <Path Width="30.8087" Height="2.66666" Canvas.Left="10.1355" Canvas.Top="24.6694" Stretch="Fill" Fill="#FF424242" Data="F1 M 39.6108,24.6694L 11.4688,24.6694C 10.7319,24.6694 10.1355,25.2656 10.1355,26.0027C 10.1355,26.7396 10.7319,27.336 11.4688,27.336L 39.6108,27.336C 40.3477,27.336 40.9442,26.7396 40.9442,26.0027C 40.9442,25.2656 40.3477,24.6694 39.6108,24.6694 Z "/>
+                                                            <Path Width="58.6265" Height="65.9714" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="#FF424242" Data="F1 M 58.6265,7.58203C 58.6265,3.40108 55.1213,0 50.8126,0L 7.58219,0C 3.40112,0 0,3.40108 0,7.58203L 0,57.6342C 0,57.9961 0.147217,58.3425 0.407634,58.5938L 7.40373,65.3385C 7.92188,65.836 8.73706,65.836 9.25521,65.3385L 17.073,57.8008L 25.1589,65.5977C 25.6772,66.0951 26.4923,66.0951 27.0106,65.5977L 35.0964,57.8008L 43.1825,65.5977C 43.4415,65.8464 43.7748,65.9714 44.1082,65.9714C 44.4415,65.9714 44.7748,65.8464 45.0339,65.5977L 51.7384,59.1328C 51.9989,58.8816 52.1459,58.5352 52.1459,58.1732L 52.1459,15.0454C 55.8203,14.4287 58.6265,11.3212 58.6265,7.58203 Z M 44.1082,62.7852L 36.0221,54.9883C 35.504,54.491 34.6888,54.491 34.1707,54.9883L 26.0847,62.7852L 17.9989,54.9883C 17.4806,54.491 16.6655,54.491 16.1472,54.9883L 8.32951,62.5273L 2.66667,57.0677L 2.66667,7.58203C 2.66667,4.87109 4.87126,2.66666 7.7019,2.66666C 10.5404,2.66666 12.8491,4.87109 12.8491,7.58203C 12.8491,10.293 10.5404,12.4975 7.7019,12.4975C 6.96493,12.4975 6.36857,13.0938 6.36857,13.8308C 6.36857,14.5677 6.96493,15.1641 7.7019,15.1641L 49.4792,15.1641L 49.4792,57.6068L 44.1082,62.7852 Z M 50.8126,12.4975L 13.6472,12.4975C 14.8112,11.1732 15.5158,9.45573 15.5158,7.58203C 15.5158,5.70841 14.8112,3.99097 13.6472,2.66666L 50.8126,2.66666C 53.6511,2.66666 55.9598,4.87109 55.9598,7.58203C 55.9598,10.293 53.6511,12.4975 50.8126,12.4975 Z "/>
+                                                        </Canvas>
+                                                    </Viewbox>
+                                                </ig:DiagramToolboxItem.Content>
+                                            </ig:DiagramToolboxItem>
+                                        </ig:DiagramToolboxCategory>
+                                        <ig:DiagramToolboxCategory Name="Misc">
+                                            <ig:DiagramToolboxItem Title="Mark">
+                                                <ig:DiagramToolboxItem.Item>
+                                                    <ig:DiagramNode Style="{StaticResource MarkNodeItemStyle}" />
+                                                </ig:DiagramToolboxItem.Item>
+                                                <ig:DiagramToolboxItem.Content>
+                                                    <Viewbox Width="30" Height="30">
+                                                        <Canvas Width="47.0839" Height="65.4406">
+                                                            <Path Width="27.1625" Height="16.1879" Canvas.Left="9.96" Canvas.Top="0" Stretch="Fill" Fill="#FF424242" Data="F1 M 15.0948,16.1879L 31.9871,16.1879C 34.8187,16.1879 37.1225,13.8847 37.1225,11.0531L 37.1225,10.7749C 37.1225,7.94348 34.8187,5.64014 31.9871,5.64014L 29.6392,5.64014L 29.6392,5.1348C 29.6392,2.30334 27.336,0 24.5044,0L 22.5789,0C 19.7473,0 17.444,2.30334 17.444,5.1348L 17.444,5.64014L 15.0948,5.64014C 12.2633,5.64014 9.96,7.94348 9.96,10.7749L 9.96,11.0531C 9.96,13.8847 12.2633,16.1879 15.0948,16.1879 Z M 12.5735,10.7749C 12.5735,9.38403 13.7047,8.2535 15.0948,8.2535L 18.7508,8.2535C 19.4724,8.2535 20.0573,7.66907 20.0573,6.94682L 20.0573,5.1348C 20.0573,3.74402 21.1885,2.61337 22.5789,2.61337L 24.5044,2.61337C 25.8947,2.61337 27.0259,3.74402 27.0259,5.1348L 27.0259,6.94682C 27.0259,7.66907 27.6109,8.2535 28.3325,8.2535L 31.9871,8.2535C 33.378,8.2535 34.5092,9.38403 34.5092,10.7749L 34.5092,11.0531C 34.5092,12.444 33.378,13.5747 31.9871,13.5747L 15.0948,13.5747C 13.7047,13.5747 12.5735,12.444 12.5735,11.0531L 12.5735,10.7749 Z "/>
+                                                            <Path Width="2.19188" Height="2.19238" Canvas.Left="22.4459" Canvas.Top="4.79391" Stretch="Fill" Fill="#FF424242" Data="F1 M 23.5421,6.98629C 24.1471,6.98629 24.6377,6.49508 24.6377,5.89014C 24.6377,5.28561 24.1471,4.79391 23.5421,4.79391C 22.9365,4.79391 22.4459,5.28561 22.4459,5.89014C 22.4459,6.49508 22.9365,6.98629 23.5421,6.98629 Z "/>
+                                                            <Path Width="47.0839" Height="58.2921" Canvas.Left="0" Canvas.Top="7.14844" Stretch="Fill" Fill="#FF424242" Data="F1 M 45.7773,7.14844L 39.7601,7.14844C 39.0385,7.14844 38.4535,7.73295 38.4535,8.45508C 38.4535,9.17737 39.0385,9.76176 39.7601,9.76176L 44.4707,9.76176L 44.4707,62.8272L 2.61333,62.8272L 2.61333,9.76176L 7.32306,9.76176C 8.04466,9.76176 8.62986,9.17737 8.62986,8.45508C 8.62986,7.73295 8.04466,7.14844 7.32306,7.14844L 1.30653,7.14844C 0.58493,7.14844 0,7.73295 0,8.45508L 0,64.1339C 0,64.8562 0.58493,65.4406 1.30653,65.4406L 45.7773,65.4406C 46.4989,65.4406 47.0839,64.8562 47.0839,64.1339L 47.0839,8.45508C 47.0839,7.73295 46.4989,7.14844 45.7773,7.14844 Z "/>
+                                                            <Path Width="26.3663" Height="23.5042" Canvas.Left="10.7557" Canvas.Top="27.2184" Stretch="Fill" Fill="#FF424242" Data="F1 M 34.8047,27.6965L 18.6448,47.4113L 13.0333,41.1792C 12.5511,40.642 11.7243,40.5999 11.1883,41.0822C 10.6517,41.5645 10.6084,42.3915 11.0912,42.9274L 17.7203,50.2902C 17.9685,50.5658 18.3213,50.7227 18.7213,50.7227C 19.1023,50.7137 19.4603,50.5389 19.702,50.2443L 36.8259,29.3528C 37.2833,28.7952 37.2017,27.9722 36.6435,27.514C 36.0857,27.0572 35.2633,27.139 34.8047,27.6965 Z "/>
+                                                        </Canvas>
+                                                    </Viewbox>
+
+                                                </ig:DiagramToolboxItem.Content>
+                                            </ig:DiagramToolboxItem>
+                                            <ig:DiagramToolboxItem Title="DEF">
+                                                <ig:DiagramToolboxItem.Item>
+                                                    <ig:DiagramNode Style="{StaticResource DEFNodeItemStyle}" />
+                                                </ig:DiagramToolboxItem.Item>
+                                                <ig:DiagramToolboxItem.Content>
+                                                    <Viewbox Width="30" Height="30">
+                                                        <Canvas Width="55.7034" Height="55.7034">
+                                                            <Path Width="55.7034" Height="55.7034" Canvas.Left="9.53674e-007" Canvas.Top="0" Stretch="Fill" Fill="#FF424242" Data="F1 M 54.5686,0L 1.13474,0C 0.507543,0 9.53674e-007,0.5075 9.53674e-007,1.13479L 9.53674e-007,54.5686C 9.53674e-007,55.1958 0.507543,55.7034 1.13474,55.7034L 54.5686,55.7034C 55.1959,55.7034 55.7034,55.1958 55.7034,54.5686L 55.7034,1.13479C 55.7034,0.5075 55.1959,0 54.5686,0 Z M 53.4338,53.4339L 2.26953,53.4339L 2.26953,2.26957L 53.4338,2.26957L 53.4338,53.4339 Z "/>
+                                                            <Viewbox Width="38.2903" Height="16.0133" Canvas.Left="8.77309" Canvas.Top="19.9402">
+                                                                <Canvas Width="38.2903" Height="16.0133">
+                                                                    <Path Width="14.204" Height="16.0133" Canvas.Left="-1.90735e-006" Canvas.Top="-3.8147e-006" Stretch="Fill" Fill="#FF424242" Data="F1 M -1.90735e-006,16.0133L -1.90735e-006,-3.8147e-006L 5.67268,-3.8147e-006C 11.3601,-3.8147e-006 14.204,2.60196 14.204,7.80561C 14.204,10.2999 13.4278,12.2911 11.8756,13.7798C 10.3235,15.2689 8.25574,16.0133 5.67268,16.0133L -1.90735e-006,16.0133 Z M 3.60666,2.93687L 3.60666,13.0875L 5.39345,13.0875C 6.95685,13.0875 8.18321,12.6187 9.07287,11.6807C 9.96236,10.7427 10.4073,9.46564 10.4073,7.85024C 10.4073,6.32429 9.96626,5.12375 9.08392,4.24899C 8.20184,3.37423 6.96399,2.93687 5.37113,2.93687L 3.60666,2.93687 Z "/>
+                                                                    <Path Width="9.6034" Height="16.0133" Canvas.Left="16.8616" Canvas.Top="-3.8147e-006" Stretch="Fill" Fill="#FF424242" Data="F1 M 26.465,16.0133L 16.8616,16.0133L 16.8616,-3.8147e-006L 26.0967,-3.8147e-006L 26.0967,2.93687L 20.4687,2.93687L 20.4687,6.49913L 25.7059,6.49913L 25.7059,9.42469L 20.4687,9.42469L 20.4687,13.0875L 26.465,13.0875L 26.465,16.0133 Z "/>
+                                                                    <Path Width="9.25699" Height="16.0133" Canvas.Left="29.0334" Canvas.Top="-3.8147e-006" Stretch="Fill" Fill="#FF424242" Data="F1 M 38.2903,2.93687L 32.6402,2.93687L 32.6402,6.86758L 37.8324,6.86758L 37.8324,9.79319L 32.6402,9.79319L 32.6402,16.0133L 29.0334,16.0133L 29.0334,-3.8147e-006L 38.2903,-3.8147e-006L 38.2903,2.93687 Z "/>
+                                                                </Canvas>
+                                                            </Viewbox>
+                                                        </Canvas>
+                                                    </Viewbox>
+
+                                                </ig:DiagramToolboxItem.Content>
+                                            </ig:DiagramToolboxItem>
+                                        </ig:DiagramToolboxCategory>
+                                        <ig:DiagramToolboxCategory Name="Queues">
+
+                                            <ig:DiagramToolboxItem Title="QM">
+                                                <ig:DiagramToolboxItem.Item>
+                                                    <ig:DiagramNode Style="{StaticResource QMNodeItemStyle}" />
+                                                </ig:DiagramToolboxItem.Item>
+                                                <ig:DiagramToolboxItem.Content>
+                                                    <Viewbox Width="30" Height="30">
+                                                        <Canvas Width="57.5186" Height="59.8255">
+                                                            <Path Width="27.3464" Height="27.3411" Canvas.Left="30.1722" Canvas.Top="32.4844" Stretch="Fill" Fill="#FF231F20" Data="F1 M 56.2013,52.6702C 49.7385,50.1725 48.3482,49.0555 48.0771,48.7793L 48.0771,48.2568C 48.8252,47.3805 49.4173,46.2816 49.811,45.038C 50.4499,44.4366 50.8208,43.5889 50.8208,42.6908C 50.8208,42.109 50.6576,41.5339 50.3552,41.0318L 50.3552,38.5695C 50.3552,34.7596 47.922,32.4844 43.8457,32.4844C 39.8298,32.4844 37.335,34.8155 37.335,38.5695L 37.335,41.033C 37.0332,41.5339 36.87,42.109 36.87,42.6908C 36.87,43.5877 37.2409,44.4366 37.8792,45.0368C 38.2723,46.2816 38.8646,47.3805 39.6137,48.2568L 39.6137,48.7531C 39.2536,49.1434 37.7486,50.249 31.4867,52.6714C 30.688,52.9817 30.1722,53.7394 30.1722,54.5997L 30.1722,57.758C 30.1722,58.8979 31.0936,59.8255 32.2261,59.8255L 55.4648,59.8255C 56.5972,59.8255 57.5186,58.8979 57.5186,57.758L 57.5186,54.5997C 57.5186,53.7496 56.9891,52.9738 56.2013,52.6702 Z M 55.1817,57.4887L 32.509,57.4887L 32.509,54.7812C 40.6064,51.6365 41.603,50.3619 41.8975,49.4149C 41.9328,49.3031 41.9505,49.1856 41.9505,49.068L 41.9505,47.805C 41.9505,47.4991 41.8307,47.2059 41.6173,46.9879C 40.9087,46.2633 40.3576,45.2467 40.0233,44.0499C 39.9509,43.7896 39.7905,43.5638 39.5703,43.4086C 39.3427,43.2477 39.2068,42.9796 39.2068,42.6908C 39.2068,42.4375 39.3176,42.2482 39.4106,42.133C 39.5794,41.9252 39.6718,41.6651 39.6718,41.3969L 39.6718,38.5695C 39.6718,36.0821 41.0759,34.8213 43.8457,34.8213C 46.6537,34.8213 48.0184,36.0479 48.0184,38.5695L 48.0184,41.3969C 48.0184,41.6651 48.1109,41.9264 48.2803,42.134C 48.3733,42.2482 48.484,42.4375 48.484,42.6908C 48.484,42.9796 48.3482,43.2477 48.1211,43.4074C 47.9004,43.5626 47.7401,43.7896 47.6676,44.0487C 47.332,45.2479 46.781,46.2646 46.0729,46.9879C 45.8596,47.207 45.7403,47.4991 45.7403,47.805L 45.7403,49.068C 45.7403,49.1856 45.7581,49.3031 45.7935,49.4161C 46.089,50.3643 47.0856,51.6388 55.1817,54.7812L 55.1817,57.4887 Z "/>
+                                                            <Path Width="41.1252" Height="58.0667" Canvas.Left="1.86256" Canvas.Top="0.0817282" Stretch="Fill" Fill="#FFA82929" Data="F1 M 31.4223,27.3852C 32.4079,23.7075 35.0771,17.6362 39.33,15.5085C 37.0651,19.0466 36.7126,22.9577 38.1567,27.8966C 38.348,28.5488 39.0292,28.9208 39.685,28.7341C 40.3385,28.543 40.714,27.8581 40.5226,27.2059C 39.0653,22.2225 39.6767,18.658 42.5625,15.2918C 43.045,14.7335 43.1257,13.9249 42.7598,13.275C 42.3879,12.6203 41.6478,12.2714 40.9402,12.4085C 35.0939,13.3821 31.7147,19.5893 30.1286,23.5486C 28.6495,18.8661 27.9275,11.7105 27.9275,1.83871C 27.9275,1.201 27.5809,0.612473 27.0417,0.313972C 26.4943,0 25.8142,0.00354004 25.2619,0.329666C 19.0306,4.07123 16.637,13.1691 15.8896,16.9454C 15.6537,18.3763 15.4744,20.1393 15.2843,22.0071C 14.9895,24.9193 14.6441,28.3202 14.0039,30.8487C 12.555,26.9291 9.99164,21.344 7.06365,19.3932C 6.26338,18.86 5.43536,18.3077 4.66641,17.73C 4.04186,17.2716 3.20183,17.2716 2.57252,17.7349C 1.95029,18.1958 1.70233,19.0249 1.96844,19.7494C 3.34747,23.5378 2.8674,28.1422 2.4028,32.5985C 1.82974,38.0934 0,50.587 11.0398,55.3071C 14.3661,57.1665 18.2653,58.1484 22.3147,58.1484C 22.5927,58.1484 22.8659,58.1424 23.05,58.1316C 23.3268,58.1424 23.6,58.1484 23.8768,58.1484C 24.4568,58.1484 25.0296,58.128 25.5988,58.0894C 26.2776,58.0425 26.7902,57.454 26.7434,56.774C 26.6952,56.0954 26.097,55.5947 25.428,55.6296C 24.9165,55.6657 24.3991,55.6838 23.8768,55.6838C 23.6313,55.6838 23.3869,55.6778 23.05,55.6694C 17.3451,55.8607 13.9205,54.005 11.0373,52.5922C 3.29215,47.8291 4.05025,40.5555 4.8542,32.8512C 5.27295,28.8281 5.705,24.6882 4.85659,20.8819C 5.14185,21.0744 5.42704,21.2645 5.71108,21.4534C 8.32365,23.1936 11.437,30.253 12.68,34.6803C 12.7739,35.0126 13.0447,35.2724 13.3528,35.4289C 13.6608,35.5841 14.0616,35.5889 14.3853,35.4662C 14.6284,35.3747 14.8366,35.2086 14.981,34.9909C 16.7104,32.371 17.2554,26.9965 17.7369,22.2561C 17.9223,20.4281 18.0979,18.7012 18.3133,17.386C 18.8067,14.8972 20.7154,6.92806 25.4677,3.17826C 25.5472,15.2365 26.7205,23.0288 29.1406,27.6391C 29.3777,28.088 29.8531,28.3455 30.3681,28.2914C 30.8723,28.2348 31.2912,27.875 31.4223,27.3852 Z "/>
+                                                        </Canvas>
+                                                    </Viewbox>
+                                                </ig:DiagramToolboxItem.Content>
+                                            </ig:DiagramToolboxItem>
+                                            <ig:DiagramToolboxItem Title="Queue">
+                                                <ig:DiagramToolboxItem.Item>
+                                                    <ig:DiagramNode Style="{StaticResource QueueNodeItemStyle}" />
+                                                </ig:DiagramToolboxItem.Item>
+                                                <ig:DiagramToolboxItem.Content>
+                                                    <Viewbox Height="15" Width="30">
+                                                        <Canvas Width="196.107" Height="66.5305">
+                                                            <Path Width="130.568" Height="66.1212" Canvas.Left="65.5385" Canvas.Top="0.409332" Stretch="Fill" Fill="#FF424242" Data="F1 M 81.0351,0.445328C 80.9424,0.457733 80.8524,0.467728 80.7631,0.5C 80.672,0.533066 80.5951,0.583862 80.5144,0.634933C 80.4637,0.666664 80.406,0.679863 80.3588,0.71933L 66.0178,12.6828C 65.7143,12.9355 65.5385,13.3104 65.5385,13.7063L 65.5385,53.2336C 65.5385,53.6295 65.7143,54.0044 66.0178,54.2571L 80.3588,66.2205C 80.4062,66.2601 80.464,66.2732 80.5148,66.3052C 80.5952,66.356 80.672,66.4067 80.763,66.4397C 80.8524,66.4721 80.9424,66.4821 81.0353,66.4947C 81.096,66.5032 81.15,66.5305 81.2131,66.5305L 189.647,66.5305C 193.21,66.5305 196.107,63.6333 196.107,60.0708L 196.107,6.86906C 196.107,3.30653 193.21,0.409332 189.647,0.409332L 81.2131,0.409332C 81.1499,0.409332 81.0959,0.436798 81.0351,0.445328 Z M 110.924,45.136L 110.924,63.8639L 97.5907,63.8639L 97.5907,46.4693L 102.091,46.4693C 105.382,46.4693 108.061,43.7909 108.061,40.4992L 108.061,26.4407C 108.061,23.1489 105.382,20.4705 102.091,20.4705L 97.5907,20.4705L 97.5907,3.076L 110.924,3.076L 110.924,21.8039C 110.924,22.5409 111.52,23.1372 112.257,23.1372L 118.091,23.1372C 119.912,23.1372 121.394,24.6191 121.394,26.4407L 121.394,40.4992C 121.394,42.3208 119.912,43.8027 118.091,43.8027L 112.257,43.8027C 111.52,43.8027 110.924,44.3989 110.924,45.136 Z M 127.257,45.136L 127.257,63.8639L 113.924,63.8639L 113.924,46.4693L 118.424,46.4693C 121.716,46.4693 124.394,43.7909 124.394,40.4992L 124.394,26.4407C 124.394,23.1489 121.716,20.4705 118.424,20.4705L 113.924,20.4705L 113.924,3.076L 127.257,3.076L 127.257,21.8039C 127.257,22.5409 127.854,23.1372 128.591,23.1372L 134.424,23.1372C 136.246,23.1372 137.727,24.6191 137.727,26.4407L 137.727,40.4992C 137.727,42.3208 136.246,43.8027 134.424,43.8027L 128.591,43.8027C 127.854,43.8027 127.257,44.3989 127.257,45.136 Z M 143.424,45.136L 143.424,63.8639L 130.091,63.8639L 130.091,46.4693L 134.591,46.4693C 137.882,46.4693 140.561,43.7909 140.561,40.4992L 140.561,26.4407C 140.561,23.1489 137.882,20.4705 134.591,20.4705L 130.091,20.4705L 130.091,3.076L 143.424,3.076L 143.424,21.8039C 143.424,22.5409 144.02,23.1372 144.757,23.1372L 150.591,23.1372C 152.412,23.1372 153.894,24.6191 153.894,26.4407L 153.894,40.4992C 153.894,42.3208 152.412,43.8027 150.591,43.8027L 144.757,43.8027C 144.02,43.8027 143.424,44.3989 143.424,45.136 Z M 159.107,45.136L 159.107,63.8639L 145.774,63.8639L 145.774,46.4693L 150.274,46.4693C 153.565,46.4693 156.244,43.7909 156.244,40.4992L 156.244,26.4407C 156.244,23.1489 153.565,20.4705 150.274,20.4705L 145.774,20.4705L 145.774,3.076L 159.107,3.076L 159.107,21.8039C 159.107,22.5409 159.703,23.1372 160.44,23.1372L 166.274,23.1372C 168.095,23.1372 169.577,24.6191 169.577,26.4407L 169.577,40.4992C 169.577,42.3208 168.095,43.8027 166.274,43.8027L 160.44,43.8027C 159.703,43.8027 159.107,44.3989 159.107,45.136 Z M 175.274,45.136L 175.274,63.8639L 161.94,63.8639L 161.94,46.4693L 166.44,46.4693C 169.732,46.4693 172.41,43.7909 172.41,40.4992L 172.41,26.4407C 172.41,23.1489 169.732,20.4705 166.44,20.4705L 161.94,20.4705L 161.94,3.076L 175.274,3.076L 175.274,21.8039C 175.274,22.5409 175.87,23.1372 176.607,23.1372L 182.44,23.1372C 184.262,23.1372 185.744,24.6191 185.744,26.4407L 185.744,40.4992C 185.744,42.3208 184.262,43.8027 182.44,43.8027L 176.607,43.8027C 175.87,43.8027 175.274,44.3989 175.274,45.136 Z M 93.0151,40.4992L 93.0151,26.4407C 93.0151,23.1489 90.338,20.4705 87.0464,20.4705L 82.5464,20.4705L 82.5464,3.076L 94.924,3.076L 94.924,21.8039C 94.924,22.5409 95.5203,23.1372 96.2574,23.1372L 102.091,23.1372C 103.912,23.1372 105.394,24.6191 105.394,26.4407L 105.394,40.4992C 105.394,42.3208 103.912,43.8027 102.091,43.8027L 96.2574,43.8027C 95.5203,43.8027 94.924,44.3989 94.924,45.136L 94.924,63.8639L 82.5464,63.8639L 82.5464,46.4693L 87.0464,46.4693C 90.338,46.4693 93.0151,43.7909 93.0151,40.4992 Z M 68.2052,52.6099L 68.2052,14.33L 79.8797,4.59106L 79.8797,21.8039C 79.8797,22.5409 80.476,23.1372 81.2131,23.1372L 87.0464,23.1372C 88.8667,23.1372 90.3484,24.6191 90.3484,26.4407L 90.3484,40.4992C 90.3484,42.3208 88.8667,43.8027 87.0464,43.8027L 81.2131,43.8027C 80.476,43.8027 79.8797,44.3989 79.8797,45.136L 79.8797,62.3488L 68.2052,52.6099 Z M 192.94,6.86906L 192.94,60.0708C 192.94,62.162 191.238,63.8639 189.147,63.8639L 178.274,63.8639L 178.274,46.4693L 182.774,46.4693C 186.065,46.4693 188.744,43.7909 188.744,40.4992L 188.744,26.4407C 188.744,23.1489 186.065,20.4705 182.774,20.4705L 178.274,20.4705L 178.274,3.076L 189.147,3.076C 191.238,3.076 192.94,4.77786 192.94,6.86906 Z "/>
+                                                            <Path Width="8.83334" Height="8.83333" Canvas.Left="71.9403" Canvas.Top="29.576" Stretch="Fill" Fill="#FF424242" Data="F1 M 71.9403,33.9927C 71.9403,36.4319 73.9178,38.4093 76.357,38.4093C 78.7962,38.4093 80.7736,36.4319 80.7736,33.9927C 80.7736,31.5535 78.7962,29.576 76.357,29.576C 73.9178,29.576 71.9403,31.5535 71.9403,33.9927 Z "/>
+                                                            <Path Width="8.83334" Height="8.83333" Canvas.Left="51.9403" Canvas.Top="29.576" Stretch="Fill" Fill="#FF424242" Data="F1 M 51.9403,33.9927C 51.9403,36.4319 53.9178,38.4093 56.357,38.4093C 58.7962,38.4093 60.7736,36.4319 60.7736,33.9927C 60.7736,31.5535 58.7962,29.576 56.357,29.576C 53.9178,29.576 51.9403,31.5535 51.9403,33.9927 Z "/>
+                                                            <Path Width="8.83331" Height="8.83333" Canvas.Left="38.607" Canvas.Top="29.576" Stretch="Fill" Fill="#FF424242" Data="F1 M 38.607,33.9927C 38.607,36.4319 40.5844,38.4093 43.0236,38.4093C 45.4628,38.4093 47.4403,36.4319 47.4403,33.9927C 47.4403,31.5535 45.4628,29.576 43.0236,29.576C 40.5844,29.576 38.607,31.5535 38.607,33.9927 Z "/>
+                                                            <Path Width="8.83331" Height="8.83333" Canvas.Left="19.9403" Canvas.Top="29.576" Stretch="Fill" Fill="#FF424242" Data="F1 M 19.9403,33.9927C 19.9403,36.4319 21.9177,38.4093 24.357,38.4093C 26.7962,38.4093 28.7736,36.4319 28.7736,33.9927C 28.7736,31.5535 26.7962,29.576 24.357,29.576C 21.9177,29.576 19.9403,31.5535 19.9403,33.9927 Z "/>
+                                                            <Path Width="35.1264" Height="66.1212" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="#FF424242" Data="F1 M 19.6299,66.0852C 19.7225,66.0728 19.8126,66.0628 19.9019,66.0305C 19.9929,65.9975 20.0699,65.9467 20.1506,65.8956C 20.2014,65.8639 20.259,65.8507 20.3062,65.8112L 34.6472,53.8477C 34.9507,53.5951 35.1264,53.2201 35.1264,52.8243L 35.1264,13.2969C 35.1264,12.9011 34.9507,12.5261 34.6472,12.2735L 20.3062,0.309998C 20.2588,0.270401 20.2009,0.257332 20.1501,0.225327C 20.0698,0.17453 19.9929,0.123863 19.902,0.0907974C 19.8126,0.0583954 19.7225,0.0484009 19.6296,0.0358582C 19.569,0.0273285 19.515,0 19.4519,0L 6.45972,0C 2.89722,0 0,2.89719 0,6.45973L 0,59.6615C 0,63.224 2.89722,66.1212 6.45972,66.1212L 19.4519,66.1212C 19.5151,66.1212 19.5691,66.0937 19.6299,66.0852 Z M 32.4597,13.9207L 32.4597,52.2005L 20.7852,61.9395L 20.7852,44.7267C 20.7852,43.9896 20.189,43.3933 19.4519,43.3933L 13.6185,43.3933C 11.7983,43.3933 10.3165,41.9115 10.3165,40.0899L 10.3165,26.0313C 10.3165,24.2097 11.7983,22.7279 13.6185,22.7279L 19.4519,22.7279C 20.189,22.7279 20.7852,22.1316 20.7852,21.3945L 20.7852,4.18173L 32.4597,13.9207 Z M 3.1264,59.6615L 3.1264,6.45973C 3.1264,4.36853 4.82831,2.66666 6.91949,2.66666L 17.7931,2.66666L 17.7931,20.0612L 13.2931,20.0612C 10.0015,20.0612 7.32312,22.7396 7.32312,26.0313L 7.32312,40.0899C 7.32312,43.3816 10.0015,46.06 13.2931,46.06L 17.7931,46.06L 17.7931,63.4545L 6.91949,63.4545C 4.82831,63.4545 3.1264,61.7527 3.1264,59.6615 Z "/>
+                                                            <Path Width="9.33334" Height="55.3023" Canvas.Left="181.44" Canvas.Top="6.10703" Stretch="Fill" Fill="#FFA82929" Data="F1 M 181.44,61.4093L 181.44,49.4093L 182.274,49.4093C 185.479,49.4093 189.44,46.8131 190.774,44.2115L 190.774,59.5037C 190.774,60.1248 189.268,61.4093 188.647,61.4093L 181.44,61.4093 Z M 190.774,21.5943C 189.44,18.9927 185.479,18.7427 182.274,18.7427L 181.44,18.7427L 181.44,6.74266L 188.647,6.74266C 189.268,6.74266 190.774,5.68079 190.774,6.302L 190.774,21.5943 Z "/>
+                                                            <Path Width="18.6667" Height="56" Canvas.Left="164.107" Canvas.Top="5.40933" Stretch="Fill" Fill="#FFA82929" Data="F1 M 164.107,61.4093L 164.107,49.4093L 165.662,49.4093C 168.075,49.4093 170.774,48.49 172.107,46.8891L 172.107,61.4093L 164.107,61.4093 Z M 174.483,41.7739C 174.518,41.4575 174.774,41.1736 174.774,40.848L 174.774,26.7895C 174.774,26.4639 174.518,25.7707 174.483,25.4541C 174.969,25.6645 175.266,25.4093 175.829,25.4093L 181.662,25.4093C 182.014,25.4093 182.774,26.4385 182.774,26.7895L 182.774,40.848C 182.774,41.1989 182.014,41.4093 181.662,41.4093L 175.829,41.4093C 175.266,41.4093 174.969,41.5636 174.483,41.7739 Z M 172.107,20.7484C 170.774,19.1475 168.075,17.4093 165.662,17.4093L 164.107,17.4093L 164.107,5.40933L 172.107,5.40933L 172.107,20.7484 Z "/>
+                                                            <Path Width="18.6667" Height="56" Canvas.Left="148.107" Canvas.Top="5.40933" Stretch="Fill" Fill="#FFA82929" Data="F1 M 148.107,61.4093L 148.107,49.4093L 149.995,49.4093C 152.408,49.4093 154.774,48.49 156.107,46.8891L 156.107,61.4093L 148.107,61.4093 Z M 158.65,41.7739C 158.685,41.4575 158.774,41.1736 158.774,40.848L 158.774,26.7895C 158.774,26.4639 158.685,25.7707 158.65,25.4541C 159.135,25.6645 159.6,25.4093 160.162,25.4093L 165.995,25.4093C 166.347,25.4093 166.774,26.4385 166.774,26.7895L 166.774,40.848C 166.774,41.1989 166.347,41.4093 165.995,41.4093L 160.162,41.4093C 159.6,41.4093 159.135,41.5636 158.65,41.7739 Z M 156.107,20.7484C 154.774,19.1475 152.408,17.4093 149.995,17.4093L 148.107,17.4093L 148.107,5.40933L 156.107,5.40933L 156.107,20.7484 Z "/>
+                                                        </Canvas>
+                                                    </Viewbox>
+                                                </ig:DiagramToolboxItem.Content>
+                                            </ig:DiagramToolboxItem>
+                                            <ig:DiagramToolboxItem Title="Scheduler">
+                                                <ig:DiagramToolboxItem.Item>
+                                                    <ig:DiagramNode Style="{StaticResource SchedulerNodeItemStyle}" />
+                                                </ig:DiagramToolboxItem.Item>
+                                                <ig:DiagramToolboxItem.Content>
+                                                    <Viewbox Width="30" Height="30">
+                                                        <Canvas Width="61.7807" Height="55.4727">
+                                                            <Path Width="61.7807" Height="46.0091" Canvas.Left="0" Canvas.Top="0.130207" Stretch="Fill" Fill="#FF424242" Data="F1 M 46.2911,13.1771L 57.2284,13.1771L 49.1237,21.2812C 48.6029,21.8021 48.6029,22.6458 49.1237,23.1667C 49.3842,23.4271 49.7253,23.5573 50.0664,23.5573C 50.4076,23.5573 50.7487,23.4271 51.0092,23.1667L 61.39,12.7865C 61.64,12.5365 61.7807,12.1979 61.7807,11.8437C 61.7807,11.4896 61.64,11.151 61.39,10.901L 51.0092,0.520828C 50.4883,0 49.6445,0 49.1237,0.520828C 48.6029,1.04166 48.6029,1.88541 49.1237,2.40625L 57.2284,10.5104L 46.2911,10.5104C 36.741,10.5104 28.9713,18.2799 28.9713,27.8294L 28.9713,28.8203C 28.9713,36.8997 22.3979,43.4727 14.3184,43.4727L 1.33331,43.4727C 0.597076,43.4727 0,44.069 0,44.806C 0,45.543 0.597076,46.1393 1.33331,46.1393L 14.3184,46.1393C 23.8685,46.1393 31.638,38.3698 31.638,28.8203L 31.638,27.8294C 31.638,19.75 38.2116,13.1771 46.2911,13.1771 Z "/>
+                                                            <Path Width="27.3432" Height="23.4271" Canvas.Left="34.4375" Canvas.Top="32.0456" Stretch="Fill" Fill="#FF424242" Data="F1 M 51.0092,32.4362C 50.4883,31.9154 49.6445,31.9154 49.1237,32.4362C 48.6029,32.957 48.6029,33.8008 49.1237,34.3216L 57.2284,42.4258L 46.2911,42.4258C 42.752,42.4258 39.3282,41.1328 36.6497,38.7864C 36.0938,38.3008 35.252,38.3555 34.7682,38.9102C 34.2825,39.4649 34.3385,40.306 34.892,40.7917C 38.0573,43.5651 42.1055,45.0924 46.2911,45.0924L 57.2284,45.0924L 49.1237,53.1966C 48.6029,53.7174 48.6029,54.5612 49.1237,55.082C 49.3842,55.3424 49.7253,55.4727 50.0664,55.4727C 50.4076,55.4727 50.7487,55.3424 51.0092,55.082L 61.39,44.7018C 61.64,44.4518 61.7807,44.1133 61.7807,43.7591C 61.7807,43.4049 61.64,43.0664 61.39,42.8164L 51.0092,32.4362 Z "/>
+                                                            <Path Width="26.1719" Height="6.63542" Canvas.Left="0" Canvas.Top="9.46354" Stretch="Fill" Fill="#FF424242" Data="F1 M 1.33331,12.1302L 14.3184,12.1302C 17.8575,12.1302 21.2813,13.4219 23.9603,15.7682C 24.2129,15.9896 24.5262,16.099 24.8379,16.099C 25.209,16.099 25.5782,15.9453 25.8419,15.6445C 26.3268,15.0898 26.2708,14.2474 25.7168,13.763C 22.5522,10.9909 18.504,9.46354 14.3184,9.46354L 1.33331,9.46354C 0.597076,9.46354 0,10.0599 0,10.7969C 0,11.5339 0.597076,12.1302 1.33331,12.1302 Z "/>
+                                                        </Canvas>
+                                                    </Viewbox>
+                                                </ig:DiagramToolboxItem.Content>
+                                            </ig:DiagramToolboxItem>
+                                        </ig:DiagramToolboxCategory>
+                                        <ig:DiagramToolboxCategory Name="Server">
+                                            <ig:DiagramToolboxItem Title="Server">
+                                                <ig:DiagramToolboxItem.Item>
+                                                    <ig:DiagramNode Style="{StaticResource ServerNodeItemStyle}" />
+                                                </ig:DiagramToolboxItem.Item>
+                                                <ig:DiagramToolboxItem.Content>
+                                                    <Viewbox Width="30" Height="30">
+                                                        <Canvas Width="64.3035" Height="65.6432">
+                                                            <Path Width="2.48665" Height="2.53939" Canvas.Left="48.0205" Canvas.Top="31.5514" Stretch="Fill" Fill="#FF424242" Data="F1 M 48.0205,32.821C 48.0205,33.5225 48.5771,34.0908 49.2638,34.0908C 49.9505,34.0908 50.5072,33.5225 50.5072,32.821C 50.5072,32.1198 49.9505,31.5514 49.2638,31.5514C 48.5771,31.5514 48.0205,32.1198 48.0205,32.821 Z "/>
+                                                            <Path Width="2.48673" Height="2.53939" Canvas.Left="13.9661" Canvas.Top="31.5514" Stretch="Fill" Fill="#FF424242" Data="F1 M 13.9661,32.821C 13.9661,33.5225 14.5228,34.0908 15.2093,34.0908C 15.896,34.0908 16.4528,33.5225 16.4528,32.821C 16.4528,32.1198 15.896,31.5514 15.2093,31.5514C 14.5228,31.5514 13.9661,32.1198 13.9661,32.821 Z "/>
+                                                            <Path Width="30.0794" Height="65.6432" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="#FF424242" Data="F1 M 28.7461,0L 1.33333,0C 0.596354,0 0,0.596352 0,1.33334L 0,64.3099C 0,65.0469 0.596354,65.6432 1.33333,65.6432L 28.7461,65.6432C 29.4831,65.6432 30.0794,65.0469 30.0794,64.3099L 30.0794,1.33334C 30.0794,0.596352 29.4831,0 28.7461,0 Z M 27.4128,62.9766L 2.66667,62.9766L 2.66667,2.66666L 27.4128,2.66666L 27.4128,62.9766 Z "/>
+                                                            <Path Width="19.9128" Height="2.66666" Canvas.Left="5.08333" Canvas.Top="8.01823" Stretch="Fill" Fill="#FF424242" Data="F1 M 6.41667,10.6849L 23.6628,10.6849C 24.3997,10.6849 24.9961,10.0885 24.9961,9.35156C 24.9961,8.61458 24.3997,8.01823 23.6628,8.01823L 6.41667,8.01823C 5.67969,8.01823 5.08333,8.61458 5.08333,9.35156C 5.08333,10.0885 5.67969,10.6849 6.41667,10.6849 Z "/>
+                                                            <Path Width="19.9128" Height="2.66667" Canvas.Left="5.08333" Canvas.Top="13.3125" Stretch="Fill" Fill="#FF424242" Data="F1 M 6.41667,15.9792L 23.6628,15.9792C 24.3997,15.9792 24.9961,15.3828 24.9961,14.6458C 24.9961,13.9089 24.3997,13.3125 23.6628,13.3125L 6.41667,13.3125C 5.67969,13.3125 5.08333,13.9089 5.08333,14.6458C 5.08333,15.3828 5.67969,15.9792 6.41667,15.9792 Z "/>
+                                                            <Path Width="19.9128" Height="2.66667" Canvas.Left="5.08333" Canvas.Top="18.6068" Stretch="Fill" Fill="#FF424242" Data="F1 M 6.41667,21.2734L 23.6628,21.2734C 24.3997,21.2734 24.9961,20.6771 24.9961,19.9401C 24.9961,19.2031 24.3997,18.6068 23.6628,18.6068L 6.41667,18.6068C 5.67969,18.6068 5.08333,19.2031 5.08333,19.9401C 5.08333,20.6771 5.67969,21.2734 6.41667,21.2734 Z "/>
+                                                            <Path Width="19.9128" Height="2.66667" Canvas.Left="5.08333" Canvas.Top="23.9023" Stretch="Fill" Fill="#FF424242" Data="F1 M 6.41667,26.569L 23.6628,26.569C 24.3997,26.569 24.9961,25.9727 24.9961,25.2357C 24.9961,24.4987 24.3997,23.9023 23.6628,23.9023L 6.41667,23.9023C 5.67969,23.9023 5.08333,24.4987 5.08333,25.2357C 5.08333,25.9727 5.67969,26.569 6.41667,26.569 Z "/>
+                                                            <Path Width="30.0795" Height="65.6432" Canvas.Left="34.224" Canvas.Top="0" Stretch="Fill" Fill="#FF424242" Data="F1 M 62.9701,0L 35.5573,0C 34.8204,0 34.224,0.596352 34.224,1.33334L 34.224,64.3099C 34.224,65.0469 34.8204,65.6432 35.5573,65.6432L 62.9701,65.6432C 63.707,65.6432 64.3035,65.0469 64.3035,64.3099L 64.3035,1.33334C 64.3035,0.596352 63.707,0 62.9701,0 Z M 61.6368,62.9766L 36.8906,62.9766L 36.8906,2.66666L 61.6368,2.66666L 61.6368,62.9766 Z "/>
+                                                            <Path Width="19.9128" Height="2.66666" Canvas.Left="39.3073" Canvas.Top="8.01823" Stretch="Fill" Fill="#FF424242" Data="F1 M 40.6406,10.6849L 57.8868,10.6849C 58.6237,10.6849 59.2201,10.0885 59.2201,9.35156C 59.2201,8.61458 58.6237,8.01823 57.8868,8.01823L 40.6406,8.01823C 39.9037,8.01823 39.3073,8.61458 39.3073,9.35156C 39.3073,10.0885 39.9037,10.6849 40.6406,10.6849 Z "/>
+                                                            <Path Width="19.9128" Height="2.66667" Canvas.Left="39.3073" Canvas.Top="13.3125" Stretch="Fill" Fill="#FF424242" Data="F1 M 40.6406,15.9792L 57.8868,15.9792C 58.6237,15.9792 59.2201,15.3828 59.2201,14.6458C 59.2201,13.9089 58.6237,13.3125 57.8868,13.3125L 40.6406,13.3125C 39.9037,13.3125 39.3073,13.9089 39.3073,14.6458C 39.3073,15.3828 39.9037,15.9792 40.6406,15.9792 Z "/>
+                                                            <Path Width="19.9128" Height="2.66667" Canvas.Left="39.3073" Canvas.Top="18.6068" Stretch="Fill" Fill="#FF424242" Data="F1 M 40.6406,21.2734L 57.8868,21.2734C 58.6237,21.2734 59.2201,20.6771 59.2201,19.9401C 59.2201,19.2031 58.6237,18.6068 57.8868,18.6068L 40.6406,18.6068C 39.9037,18.6068 39.3073,19.2031 39.3073,19.9401C 39.3073,20.6771 39.9037,21.2734 40.6406,21.2734 Z "/>
+                                                            <Path Width="19.9128" Height="2.66667" Canvas.Left="39.3073" Canvas.Top="23.9023" Stretch="Fill" Fill="#FF424242" Data="F1 M 40.6406,26.569L 57.8868,26.569C 58.6237,26.569 59.2201,25.9727 59.2201,25.2357C 59.2201,24.4987 58.6237,23.9023 57.8868,23.9023L 40.6406,23.9023C 39.9037,23.9023 39.3073,24.4987 39.3073,25.2357C 39.3073,25.9727 39.9037,26.569 40.6406,26.569 Z "/>
+                                                            <Path Width="19.9128" Height="2.66666" Canvas.Left="5.08333" Canvas.Top="39.0742" Stretch="Fill" Fill="#FF424242" Data="F1 M 6.41667,41.7409L 23.6628,41.7409C 24.3997,41.7409 24.9961,41.1445 24.9961,40.4076C 24.9961,39.6706 24.3997,39.0742 23.6628,39.0742L 6.41667,39.0742C 5.67969,39.0742 5.08333,39.6706 5.08333,40.4076C 5.08333,41.1445 5.67969,41.7409 6.41667,41.7409 Z "/>
+                                                            <Path Width="19.9128" Height="2.66666" Canvas.Left="5.08333" Canvas.Top="44.3685" Stretch="Fill" Fill="#FF424242" Data="F1 M 6.41667,47.0352L 23.6628,47.0352C 24.3997,47.0352 24.9961,46.4388 24.9961,45.7018C 24.9961,44.9648 24.3997,44.3685 23.6628,44.3685L 6.41667,44.3685C 5.67969,44.3685 5.08333,44.9648 5.08333,45.7018C 5.08333,46.4388 5.67969,47.0352 6.41667,47.0352 Z "/>
+                                                            <Path Width="19.9128" Height="2.66667" Canvas.Left="5.08333" Canvas.Top="49.6628" Stretch="Fill" Fill="#FF424242" Data="F1 M 6.41667,52.3294L 23.6628,52.3294C 24.3997,52.3294 24.9961,51.7331 24.9961,50.9961C 24.9961,50.2591 24.3997,49.6628 23.6628,49.6628L 6.41667,49.6628C 5.67969,49.6628 5.08333,50.2591 5.08333,50.9961C 5.08333,51.7331 5.67969,52.3294 6.41667,52.3294 Z "/>
+                                                            <Path Width="19.9128" Height="2.66667" Canvas.Left="5.08333" Canvas.Top="54.957" Stretch="Fill" Fill="#FF424242" Data="F1 M 6.41667,57.6237L 23.6628,57.6237C 24.3997,57.6237 24.9961,57.0273 24.9961,56.2904C 24.9961,55.5534 24.3997,54.957 23.6628,54.957L 6.41667,54.957C 5.67969,54.957 5.08333,55.5534 5.08333,56.2904C 5.08333,57.0273 5.67969,57.6237 6.41667,57.6237 Z "/>
+                                                            <Path Width="19.9128" Height="2.66666" Canvas.Left="39.3073" Canvas.Top="39.0742" Stretch="Fill" Fill="#FF424242" Data="F1 M 40.6406,41.7409L 57.8868,41.7409C 58.6237,41.7409 59.2201,41.1445 59.2201,40.4076C 59.2201,39.6706 58.6237,39.0742 57.8868,39.0742L 40.6406,39.0742C 39.9037,39.0742 39.3073,39.6706 39.3073,40.4076C 39.3073,41.1445 39.9037,41.7409 40.6406,41.7409 Z "/>
+                                                            <Path Width="19.9128" Height="2.66666" Canvas.Left="39.3073" Canvas.Top="44.3685" Stretch="Fill" Fill="#FF424242" Data="F1 M 40.6406,47.0352L 57.8868,47.0352C 58.6237,47.0352 59.2201,46.4388 59.2201,45.7018C 59.2201,44.9648 58.6237,44.3685 57.8868,44.3685L 40.6406,44.3685C 39.9037,44.3685 39.3073,44.9648 39.3073,45.7018C 39.3073,46.4388 39.9037,47.0352 40.6406,47.0352 Z "/>
+                                                            <Path Width="19.9128" Height="2.66667" Canvas.Left="39.3073" Canvas.Top="49.6628" Stretch="Fill" Fill="#FF424242" Data="F1 M 40.6406,52.3294L 57.8868,52.3294C 58.6237,52.3294 59.2201,51.7331 59.2201,50.9961C 59.2201,50.2591 58.6237,49.6628 57.8868,49.6628L 40.6406,49.6628C 39.9037,49.6628 39.3073,50.2591 39.3073,50.9961C 39.3073,51.7331 39.9037,52.3294 40.6406,52.3294 Z "/>
+                                                            <Path Width="19.9128" Height="2.66667" Canvas.Left="39.3073" Canvas.Top="54.957" Stretch="Fill" Fill="#FF424242" Data="F1 M 40.6406,57.6237L 57.8868,57.6237C 58.6237,57.6237 59.2201,57.0273 59.2201,56.2904C 59.2201,55.5534 58.6237,54.957 57.8868,54.957L 40.6406,54.957C 39.9037,54.957 39.3073,55.5534 39.3073,56.2904C 39.3073,57.0273 39.9037,57.6237 40.6406,57.6237 Z "/>
+                                                        </Canvas>
+                                                    </Viewbox>
+                                                </ig:DiagramToolboxItem.Content>
+                                            </ig:DiagramToolboxItem>
+                                            
+                                        </ig:DiagramToolboxCategory>
+                                    </ig:XamDiagramToolbox.Categories>
+                                </ig:XamDiagramToolbox>
+                            </igWPF:ContentPane>
+                        </igWPF:SplitPane>
+                        <igWPF:SplitPane igWPF:XamDockManager.InitialLocation="DockedRight" Width="250" >
+                            <igWPF:ContentPane Header="Properties" CloseButtonVisibility="Collapsed" AllowClose="False" AllowDockingFloating="False" MinWidth="100" x:Name="_Pane_Properties">
+                                <ig:XamPropertyGrid MinWidth="100" Name="_Prop">
+                                    <ig:XamPropertyGrid.EditorDefinitions>
+                                        <ig:PropertyGridEditorDefinition>
+                                            <ig:PropertyGridEditorDefinition.TargetProperties>
+                                                <system:String>MaxSrcConnRate</system:String>
+                                            </ig:PropertyGridEditorDefinition.TargetProperties>
+                                            <ig:PropertyGridEditorDefinition.EditTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <ig:XamMaskedInput BorderBrush="Transparent" PromptChar=" " InvalidValueBehavior="RevertValue" Value="{Binding Path=Value}" BorderThickness="0" SectionTabNavigation="NextSection">
+                                                            <ig:XamMaskedInput.Mask>
+                                                                <system:String>{number}/{number}</system:String>
+                                                            </ig:XamMaskedInput.Mask>
+                                                        </ig:XamMaskedInput>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ig:PropertyGridEditorDefinition.EditTemplate>
+                                        </ig:PropertyGridEditorDefinition>
+                                        <ig:PropertyGridEditorDefinition>
+                                            <ig:PropertyGridEditorDefinition.TargetProperties>
+                                                <system:String>TCPFlags</system:String>
+                                            </ig:PropertyGridEditorDefinition.TargetProperties>
+                                            <ig:PropertyGridEditorDefinition.EditTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <views:FlagCheckMaskView />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ig:PropertyGridEditorDefinition.EditTemplate>
+                                        </ig:PropertyGridEditorDefinition>
+                                        <ig:PropertyGridEditorDefinition>
+                                            <ig:PropertyGridEditorDefinition.TargetProperties>
+                                                <system:String>SourceAddress</system:String>
+                                                <system:String>DestinationAddress</system:String>
+                                            </ig:PropertyGridEditorDefinition.TargetProperties>
+                                            <ig:PropertyGridEditorDefinition.EditTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <TextBox Margin="0,0,25,0" Text="{Binding Value, Converter={StaticResource MacrosListToStringConverter}}" IsReadOnly="True" />
+                                                        <Button Style="{StaticResource FlatButton}" Content="..." Width="25" HorizontalAlignment="Right" Click="PropertyGrid_IPAddressList_Edit" Tag="{Binding Value}" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ig:PropertyGridEditorDefinition.EditTemplate>
+                                        </ig:PropertyGridEditorDefinition>
+                                        <ig:PropertyGridEditorDefinition>
+                                            <ig:PropertyGridEditorDefinition.TargetProperties>
+                                                <system:String>SourcePort</system:String>
+                                                <system:String>DestinationPort</system:String>
+                                            </ig:PropertyGridEditorDefinition.TargetProperties>
+                                            <ig:PropertyGridEditorDefinition.EditTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <TextBox Margin="0,0,25,0" Text="{Binding Value, Converter={StaticResource MacrosListToStringConverter}}" IsReadOnly="True" />
+                                                        <Button Style="{StaticResource FlatButton}" Content="..." Width="25" HorizontalAlignment="Right" Click="PropertyGrid_PortList_Edit" Tag="{Binding Value}" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ig:PropertyGridEditorDefinition.EditTemplate>
+                                        </ig:PropertyGridEditorDefinition>
+                                    </ig:XamPropertyGrid.EditorDefinitions>
+                                    <ig:XamPropertyGrid.PropertyGenerator>
+                                        <diagram:DiagramItemPropertyGenerator />
+                                    </ig:XamPropertyGrid.PropertyGenerator>
+                                </ig:XamPropertyGrid>
+                            </igWPF:ContentPane>
+                        </igWPF:SplitPane>
+                        <igWPF:SplitPane SplitterOrientation="Horizontal" igWPF:XamDockManager.InitialLocation="DockedBottom">
+                            <igWPF:TabGroupPane>
+                                <igWPF:ContentPane x:Name="_Pane_Output" Header="Output" CloseButtonVisibility="Collapsed" MinHeight="150" AllowClose="False">
+                                    <DockPanel LastChildFill="True" Margin="3">
+                                        <Grid DockPanel.Dock="Top">
+                                            <Button x:Name="_Button_OutputClear" Content="Clear" HorizontalAlignment="Left" Style="{DynamicResource FlatButton}" Click="_Button_OutputClear_Click" />
+                                        </Grid>
+                                        <RichTextBox IsReadOnly="True" Margin="0,3,0,0" Name="_OutputBox" Block.LineHeight="10" VerticalScrollBarVisibility="Auto">
+                                            <RichTextBox.Document>
+                                                <FlowDocument />
+                                            </RichTextBox.Document>
+                                        </RichTextBox>
+                                    </DockPanel>
+                                </igWPF:ContentPane>
+                                <igWPF:ContentPane x:Name="_Pane_Preview" Header="Preview" CloseButtonVisibility="Collapsed" MinHeight="150" AllowClose="False">
+                                    <DockPanel LastChildFill="True">
+                                        <Button Content="Generate Preview" HorizontalAlignment="Left" Click="_Button_GenPreview_Click" DockPanel.Dock="Top"></Button>
+                                        <RichTextBox Name="_PreviewBox" IsReadOnly="True" FontFamily="Courier New" FontSize="16" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto">
+
+                                        </RichTextBox>
+                                    </DockPanel>
+                                </igWPF:ContentPane>
+                            </igWPF:TabGroupPane>
+                        </igWPF:SplitPane>
+                    </igWPF:XamDockManager.Panes>
+                    <igWPF:DocumentContentHost Background="{Binding Source={x:Static visualResources:ThemeManager.Instance}, Path=ThemeBackgroundColor}">
+                        <igWPF:SplitPane>
+                            <igWPF:TabGroupPane Name="_MainContentPane" >
+                                <igWPF:ContentPane x:Name="_Pane_Dashboard" Header="Dashboard" AllowClose="False" AllowDocking="False" CloseButtonVisibility="Collapsed" AllowFloatingOnly="False">
+                                    <Frame Source="ContentPages/DashboardPage.xaml" NavigationUIVisibility="Hidden" />
+                                </igWPF:ContentPane>
+                            </igWPF:TabGroupPane>
+                        </igWPF:SplitPane>
+                    </igWPF:DocumentContentHost>
+                </igWPF:XamDockManager>
+            </DockPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

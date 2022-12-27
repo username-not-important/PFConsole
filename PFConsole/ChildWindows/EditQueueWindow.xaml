@@ -1,0 +1,75 @@
+﻿<Window x:Class="PFConsole.ChildWindows.EditQueueWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:editors="http://infragistics.com/Editors"
+        xmlns:data="clr-namespace:PFModels.Data;assembly=PFModels"
+        xmlns:ig="http://schemas.infragistics.com/xaml"
+        xmlns:converters="clr-namespace:PFConsole.Converters"
+        xmlns:controls="clr-namespace:PFConsole.Controls"
+        xmlns:queueContent="clr-namespace:PFConsole.Controls.QueueContent"
+        x:Name="Window"
+	Title="New Queue" SizeToContent="Height"
+	Width="550" Style="{DynamicResource ArtChildWindowStyle}">
+    <Window.CommandBindings>
+        <CommandBinding Command="Save" CanExecute="SaveCommand_CanExecute" Executed="SaveCommand_Executed" />
+    </Window.CommandBindings>
+    <Window.Resources>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64.8"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <DockPanel Margin="30,0,0,0" LastChildFill="True">
+            <TextBlock Text="Edit Queue" FontSize="16" DockPanel.Dock="Top"/>
+            <ScrollViewer Margin="10,0,0,0" VerticalScrollBarVisibility="Auto">
+                <TextBlock FontSize="12" FontWeight="Light" TextWrapping="Wrap" Text="Choose a unique name and a type, Then enter the required parameters." />
+            </ScrollViewer>
+        </DockPanel>
+        <Border BorderThickness="0,0.7,0,0" BorderBrush="Gray" Grid.Row="1" Background="#FFFAFAFA">
+            <Grid Margin="5" DataContext="{Binding ElementName=Window, Path=QueueModel}">
+                <StackPanel VerticalAlignment="Top">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="54*"/>
+                            <ColumnDefinition Width="199*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Name" FontSize="16" />
+                        <TextBox x:Name="_TB_Name" FontSize="16" Width="245" HorizontalAlignment="Left"
+			                                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1"/>
+                    </Grid>
+                    <Grid Margin="0,2,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="54*"/>
+                            <ColumnDefinition Width="199*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Scheduler" FontSize="16" />
+                        <editors:XamComboEditor x:Name="_CB_Type" FontSize="16" Width="245" HorizontalAlignment="Left"
+			                                     SelectedItem="{Binding SchedulerType}" Grid.Column="1" Theme="Office2013">
+                            <editors:XamComboEditor.ItemsProvider>
+                                <editors:ComboBoxItemsProvider>
+                                    <editors:ComboBoxItemsProvider.Items>
+                                        <data:SchedulerType>HFSC</data:SchedulerType>
+                                        <data:SchedulerType>CBQ</data:SchedulerType>
+                                        <data:SchedulerType>PriQ</data:SchedulerType>
+                                    </editors:ComboBoxItemsProvider.Items>
+                                </editors:ComboBoxItemsProvider>
+                            </editors:XamComboEditor.ItemsProvider>
+                        </editors:XamComboEditor>
+                    </Grid>
+                    
+                    <Grid Margin="0,20,0,30">
+                        <queueContent:QueueContentProperties SchedulerType="{Binding ElementName=Window, Path=QueueModel.SchedulerType}" DataContext="{Binding ElementName=Window, Path=QueueModel.Content}"  FontSize="16"/>
+                    </Grid>
+                    
+                    <TextBlock Margin="110,10,0,0" Foreground="DarkRed" VerticalAlignment="Top" x:Name="_ErrorBlock" Visibility="Collapsed"><Italic ><Run Text="Error:" /></Italic><Run Text=" "/><Run x:Name="_ErrorText" /></TextBlock>
+
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                    <Button Content="Save" Margin="0,0,5,0" Style="{DynamicResource FlatButton}" IsDefault="True" Command="Save" CommandTarget="{Binding ElementName=_Window}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>

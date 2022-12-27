@@ -1,0 +1,7 @@
+C:\Users\Alireza\documents\visual studio 2013\Projects\PFConsole\PFModels\bin\Debug\PFModels.dll
+C:\Users\Alireza\documents\visual studio 2013\Projects\PFConsole\PFModels\bin\Debug\PFModels.pdb
+C:\Users\Alireza\documents\visual studio 2013\Projects\PFConsole\PFModels\obj\Debug\PFModels.Properties.Resources.resources
+C:\Users\Alireza\documents\visual studio 2013\Projects\PFConsole\PFModels\obj\Debug\PFModels.csproj.GenerateResource.Cache
+C:\Users\Alireza\documents\visual studio 2013\Projects\PFConsole\PFModels\obj\Debug\PFModels.dll
+C:\Users\Alireza\documents\visual studio 2013\Projects\PFConsole\PFModels\obj\Debug\PFModels.pdb
+C:\Users\Alireza\documents\visual studio 2013\Projects\PFConsole\PFModels\obj\Debug\PFModels.csprojResolveAssemblyReference.cache

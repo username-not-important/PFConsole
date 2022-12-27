@@ -1,0 +1,309 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:visualResources="clr-namespace:PFConsole.VisualResources"
+                    xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
+                    xmlns:converters1="clr-namespace:PFConsole.ArtWindow.Converters"
+                    x:Class="ArtWindow.ArtDictionary">
+	<Style TargetType="{x:Type Window}" x:Key="ArtChildWindowStyle">
+		<Setter Property="Foreground" Value="{Binding ThemeAccentColor, Source={x:Static visualResources:ThemeManager.Instance}}"/>
+		<Setter Property="BorderBrush" Value="{Binding ThemeColor, Source={x:Static visualResources:ThemeManager.Instance}}"/>
+		<Setter Property="AllowsTransparency" Value="True" />
+        <Setter Property="Topmost" Value="True" />
+	    <Setter Property="WindowStyle" Value="None" />
+		<Setter Property="Template" Value="{DynamicResource ArtChildWindowTemplate}" />
+		<Setter Property="Effect">
+			<Setter.Value>
+				<DropShadowEffect BlurRadius="3.0" ShadowDepth="0" Opacity="0.7" Color="Black" Direction="-30" />
+			</Setter.Value>
+		</Setter>
+		<Setter Property="MinWidth" Value="200" />
+        <Setter Property="MinHeight" Value="100" />
+    </Style>
+	<Style TargetType="{x:Type Window}" x:Key="ArtParentWindowStyle">
+		<Setter Property="Foreground" Value="{Binding ThemeAccentColor, Source={x:Static visualResources:ThemeManager.Instance}}"/>
+		<Setter Property="BorderBrush" Value="{Binding ThemeColor, Source={x:Static visualResources:ThemeManager.Instance}}"/>
+		<Setter Property="AllowsTransparency" Value="True" />
+		<Setter Property="WindowStyle" Value="None" />
+		<Setter Property="Template" Value="{DynamicResource ArtParentWindowTemplate}" />
+		<Setter Property="Effect">
+			<Setter.Value>
+				<DropShadowEffect BlurRadius="3.0" ShadowDepth="0" Opacity="0.8" Color="Black" Direction="-30" />
+			</Setter.Value>
+		</Setter>
+		<Setter Property="MinWidth" Value="200" />
+		<Setter Property="MinHeight" Value="100" />
+	</Style>
+	
+	<ControlTemplate TargetType="{x:Type Window}" x:Key="ArtChildWindowTemplate">
+		<ControlTemplate.Resources>
+			<converters1:DoubleToTopMarginConverter x:Key="ToTopMarginConverter"/>
+			<converters1:SolidBrushToColorConverter x:Key="ToColorConverter"/>
+		</ControlTemplate.Resources>
+		<Grid MouseDown="BorderMouseDown" Tag="{Binding ElementName=_titleborder}" Margin="15,15,15,15">
+			<Border BorderThickness="1" Margin="0,0,1,1">
+				<Border.BorderBrush>
+					<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+						<GradientStop Color="Transparent" Offset="0" />
+						<GradientStop Color="Transparent" Offset="0.1" x:Name="_gStop" />
+						<GradientStop Color="Transparent" Offset="1" />
+					</LinearGradientBrush>
+				</Border.BorderBrush>
+			</Border>
+			<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0.4" Margin="0,0,3,3">
+				<Grid Background= "{TemplateBinding Background}">
+					<ContentPresenter Margin="{Binding ActualHeight, Converter={StaticResource ToTopMarginConverter}, ElementName=_titleborder}" />
+					<ResizeGrip x:Name="WindowResizeGrip" IsTabStop="False" Visibility="Collapsed" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" />
+				</Grid>
+			</Border>
+			<Border x:Name="_titleborder" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="0" Padding="4,0,4,0" Cursor="Hand">
+				<StackPanel Orientation="Horizontal">
+					<Image Source="{TemplateBinding Icon}" Stretch="Uniform" Height="{Binding ActualHeight, ElementName=_title}" />
+					<TextBlock x:Name="_title" Margin="8,5,20,5" Text="{TemplateBinding Title}" Foreground="{TemplateBinding Foreground}" FontFamily="{TemplateBinding FontFamily}" FontSize="16" FontWeight="Light" />
+				</StackPanel>
+			</Border>
+
+			<Button Command="Close" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,9,0" Width="17" Height="17" Template="{DynamicResource CloseButtonTemplate}" Foreground="{TemplateBinding BorderBrush}" />
+			<Button x:Name="_MaximizeButton" Click="MaximizeClick" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,28,0" Width="17" Height="17" Template="{DynamicResource MaximizeButtonTemplate}" Foreground="{TemplateBinding BorderBrush}" />
+			<CheckBox ToolTip="Stay on top" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,47,0" Width="17" Height="17" Foreground="{TemplateBinding BorderBrush}" IsChecked="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Topmost}" Style="{DynamicResource CheckBoxStyle1}" Template="{DynamicResource OnTopBoxTemplate}" />
+		</Grid>
+		<ControlTemplate.Triggers>
+			<MultiTrigger>
+				<MultiTrigger.Conditions>
+					<Condition Property="ResizeMode" Value="CanResizeWithGrip"/>
+					<Condition Property="WindowState" Value="Normal"/>
+				</MultiTrigger.Conditions>
+				<Setter Property="Visibility" TargetName="WindowResizeGrip" Value="Visible"/>
+			</MultiTrigger>
+			<Trigger Property="ResizeMode" Value="NoResize">
+				<Setter TargetName="_MaximizeButton" Property="Visibility" Value="Collapsed" />
+			</Trigger>
+            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                <BeginStoryboard>
+					<Storyboard Storyboard.TargetName="_gStop" BeginTime="0:0:0.6" SpeedRatio="0.1" x:Name="_ImpressStoryboard">
+						<DoubleAnimation From="0.1" To="0.9" DecelerationRatio="0.2" AccelerationRatio="0.2" Duration="0:0:0.1" Storyboard.TargetProperty="Offset" />
+						<ColorAnimation From="Transparent" To="White" Duration="0:0:0.05" Storyboard.TargetProperty="Color" />
+						<ColorAnimation To="Transparent" From="White" Duration="0:0:0.05" BeginTime="0:0:0.05" Storyboard.TargetProperty="Color" />
+					</Storyboard>
+				</BeginStoryboard>
+			</EventTrigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+	<ControlTemplate x:Key="ArtParentWindowTemplate" TargetType="{x:Type Window}">
+		<ControlTemplate.Resources>
+			<converters1:DoubleToTopMarginConverter x:Key="ToTopMarginConverter"/>
+			<converters1:SolidBrushToColorConverter x:Key="ToColorConverter"/>
+		</ControlTemplate.Resources>
+		<Grid MouseDown="BorderMouseDown" Tag="{Binding ElementName=_titleborder}" Margin="0,2,0,0" Opacity="1.0">
+			<Border BorderThickness="1" Margin="6,0,1,1">
+				<Border.BorderBrush>
+					<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+						<GradientStop Color="Transparent" Offset="0"/>
+						<GradientStop Color="Transparent" Offset="0.1" x:Name="_gStop"/>
+						<GradientStop Color="Transparent" Offset="1"/>
+					</LinearGradientBrush>
+				</Border.BorderBrush>
+			</Border>
+			<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0.7" Margin="7,0,3,3">
+				<Grid Background="{TemplateBinding Background}" Margin="-1,0" >
+					<ContentPresenter Margin="{Binding ActualHeight, Converter={StaticResource ToTopMarginConverter}, ElementName=_titleborder}"/>
+					<ResizeGrip x:Name="WindowResizeGrip" IsTabStop="False" Visibility="Collapsed" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE"/>
+				</Grid>
+			</Border>
+			<Border x:Name="_titleborder" HorizontalAlignment="Stretch" VerticalAlignment="Top" BorderThickness="0" Padding="4,0,4,0" Margin="7,0,90,0" Cursor="Hand">
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Image Source="{TemplateBinding Icon}" Stretch="Uniform" Height="{Binding ActualHeight, ElementName=_title}" Margin="0,0,5,0"/>
+                    <TextBlock x:Name="_title" Margin="8,5,20,5" Text="{TemplateBinding Title}" FontFamily="{TemplateBinding FontFamily}" FontSize="16" FontWeight="Light" />
+				</StackPanel>
+			</Border>
+
+			<Button Command="Close" HorizontalAlignment="Right" Foreground="{TemplateBinding Foreground}"  VerticalAlignment="Top" Margin="0,10,15,0" Width="17" Height="17" Template="{DynamicResource CloseButtonTemplate}"/>
+            <Button Click="MaximizeClick" HorizontalAlignment="Right" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Top" Margin="0,10,37,0" Width="17" Height="17" Template="{DynamicResource MaximizeButtonTemplate}"/>
+            <Button Click="MinimizeClick" HorizontalAlignment="Right" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Top" Margin="0,10,59,0" Width="17" Height="17" Template="{DynamicResource MinimizeButtonTemplate}"/>
+
+		</Grid>
+		<ControlTemplate.Triggers>
+			<MultiTrigger>
+				<MultiTrigger.Conditions>
+					<Condition Property="ResizeMode" Value="CanResizeWithGrip"/>
+					<Condition Property="WindowState" Value="Normal"/>
+				</MultiTrigger.Conditions>
+				<Setter Property="Visibility" TargetName="WindowResizeGrip" Value="Visible"/>
+			</MultiTrigger>
+			<EventTrigger RoutedEvent="FrameworkElement.Loaded">
+				<BeginStoryboard>
+					<Storyboard Storyboard.TargetName="_gStop" BeginTime="0:0:0.6" SpeedRatio="0.1">
+						<DoubleAnimation From="0.1" To="0.9" DecelerationRatio="0.2" AccelerationRatio="0.2" Duration="0:0:0.1" Storyboard.TargetProperty="Offset"/>
+						<ColorAnimation From="Transparent" To="White" Duration="0:0:0.05" Storyboard.TargetProperty="Color"/>
+						<ColorAnimation To="Transparent" From="White" Duration="0:0:0.05" BeginTime="0:0:0.05" Storyboard.TargetProperty="Color"/>
+					</Storyboard>
+				</BeginStoryboard>
+			</EventTrigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+
+	<ControlTemplate x:Key="CloseButtonTemplate" TargetType="{x:Type Button}">
+		<Border x:Name="border" BorderThickness="0" Background="#00707070">
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualState x:Name="Normal"/>
+					<VisualState x:Name="MouseOver">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="border">
+								<EasingColorKeyFrame KeyTime="0" Value="#2BAFAFAF"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Pressed">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="border">
+								<EasingColorKeyFrame KeyTime="0" Value="#529A9A9A"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Disabled"/>
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<Grid Height="Auto" Margin="2">
+				<Rectangle Fill="{TemplateBinding Foreground}" HorizontalAlignment="Center" Height="10" VerticalAlignment="Center" Width="2" RenderTransformOrigin="0.5,0.5">
+					<Rectangle.RenderTransform>
+						<TransformGroup>
+							<ScaleTransform/>
+							<SkewTransform/>
+							<RotateTransform Angle="45"/>
+							<TranslateTransform/>
+						</TransformGroup>
+					</Rectangle.RenderTransform>
+				</Rectangle>
+				<Rectangle Fill="{TemplateBinding Foreground}" HorizontalAlignment="Center" Height="10" VerticalAlignment="Center" Width="2" RenderTransformOrigin="0.5,0.5">
+					<Rectangle.RenderTransform>
+						<TransformGroup>
+							<ScaleTransform/>
+							<SkewTransform/>
+							<RotateTransform Angle="-45"/>
+							<TranslateTransform/>
+						</TransformGroup>
+					</Rectangle.RenderTransform>
+				</Rectangle>
+			</Grid>
+		</Border>
+	</ControlTemplate>
+	<ControlTemplate x:Key="MaximizeButtonTemplate" TargetType="{x:Type Button}">
+		<Border x:Name="border" BorderThickness="0" Background="#00707070">
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualState x:Name="Normal"/>
+					<VisualState x:Name="MouseOver">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="border">
+								<EasingColorKeyFrame KeyTime="0" Value="#2B707070"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Pressed">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="border">
+								<EasingColorKeyFrame KeyTime="0" Value="#52707070"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Disabled"/>
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<Grid Height="Auto" Margin="2">
+				<Rectangle Stroke="{TemplateBinding Foreground}" HorizontalAlignment="Center" Height="7" VerticalAlignment="Center" Width="9" RenderTransformOrigin="0.5,0.5" StrokeThickness="2" />
+			</Grid>
+		</Border>
+	</ControlTemplate>
+	<ControlTemplate x:Key="MinimizeButtonTemplate" TargetType="{x:Type Button}">
+		<Border x:Name="border" BorderThickness="0" Background="#00707070">
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualState x:Name="Normal"/>
+					<VisualState x:Name="MouseOver">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="border">
+								<EasingColorKeyFrame KeyTime="0" Value="#2B707070"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Pressed">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="border">
+								<EasingColorKeyFrame KeyTime="0" Value="#52707070"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Disabled"/>
+				</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<Grid Height="Auto" Margin="2">
+				<Rectangle Stroke="#FF292929" HorizontalAlignment="Center" Height="2" VerticalAlignment="Center" Width="9" RenderTransformOrigin="0.5,0.5" StrokeThickness="2" />
+			</Grid>
+		</Border>
+	</ControlTemplate>
+ <ControlTemplate x:Key="OnTopBoxTemplate" TargetType="{x:Type CheckBox}">
+		<Border x:Name="border" BorderThickness="0" Background="#00707070">
+			<VisualStateManager.VisualStateGroups>
+				<VisualStateGroup x:Name="CommonStates">
+					<VisualState x:Name="Normal"/>
+					<VisualState x:Name="MouseOver">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="border">
+								<EasingColorKeyFrame KeyTime="0" Value="#2B707070"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Pressed">
+						<Storyboard>
+							<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="border">
+								<EasingColorKeyFrame KeyTime="0" Value="#52707070"/>
+							</ColorAnimationUsingKeyFrames>
+						</Storyboard>
+					</VisualState>
+					<VisualState x:Name="Disabled"/>
+				</VisualStateGroup>
+				<VisualStateGroup x:Name="CheckStates">
+								<VisualState x:Name="Checked" />
+				    <VisualState x:Name="Unchecked"/>
+								<VisualState x:Name="Indeterminate"/>
+							</VisualStateGroup>
+			</VisualStateManager.VisualStateGroups>
+			<Grid Height="Auto" Margin="2" Background="Transparent" x:Name="ArroyBG">
+				<ed:BlockArrow x:Name="blockArrow" HorizontalAlignment="Center" Height="9" Orientation="Up" Stroke="{TemplateBinding Foreground}" StrokeThickness="2" VerticalAlignment="Center" Width="8" ArrowheadAngle="76" Fill="{TemplateBinding Foreground}" RenderTransformOrigin="0.5,0.5">
+					<ed:BlockArrow.RenderTransform>
+						<TransformGroup>
+							<ScaleTransform/>
+							<SkewTransform/>
+							<RotateTransform Angle="180" x:Name="OntopMarkTransform"/>
+							<TranslateTransform/>
+						</TransformGroup>
+					</ed:BlockArrow.RenderTransform>
+				</ed:BlockArrow>
+			</Grid>
+		</Border>
+		<ControlTemplate.Triggers>
+			<Trigger Property="IsMouseOver" Value="True">
+				<Setter Property="BorderBrush" Value="{DynamicResource BulletToggleItemMouseOverBorderBrush}"/>
+			</Trigger>
+			<Trigger Property="IsChecked" Value="True">
+				<Setter Property="RenderTransform" TargetName="blockArrow">
+					<Setter.Value>
+						<TransformGroup>
+							<ScaleTransform/>
+							<SkewTransform/>
+							<RotateTransform Angle="0"/>
+							<TranslateTransform/>
+						</TransformGroup>
+					</Setter.Value>
+				</Setter>
+                <Setter Property="Background" TargetName="ArroyBG" Value="DarkGray" />
+			</Trigger>
+			<Trigger Property="IsChecked" Value="{x:Null}"/>
+			<Trigger Property="HasContent" Value="True">
+				<Setter Property="FocusVisualStyle" Value="{DynamicResource CheckRadioFocusVisual}"/>
+				<Setter Property="Padding" Value="4,0,0,0"/>
+			</Trigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+
+</ResourceDictionary>

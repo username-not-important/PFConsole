@@ -1,0 +1,20 @@
+﻿PFConsole
+
+
+winexe
+C#
+.cs
+C:\Users\Alireza\Documents\Visual Studio 2013\Projects\PFConsole\PFConsole\obj\Debug\
+PFConsole
+none
+false
+DEBUG;TRACE
+C:\Users\Alireza\Documents\Visual Studio 2013\Projects\PFConsole\PFConsole\App.xaml
+54-169203677
+
+127-2081547857
+29-1066051712
+ArtWindow\ArtDictionary.xaml;ChildWindows\AssignIPAddressesWindow.xaml;ChildWindows\AssignMacroWindow.xaml;ChildWindows\AssignPortsWindow.xaml;ChildWindows\CreateTableWindow.xaml;ChildWindows\EnterDiagramNameWindow.xaml;ChildWindows\ModifyOptionWindow.xaml;ChildWindows\NewInterfaceWindow.xaml;ChildWindows\NewProjectWindow.xaml;ChildWindows\EditQueueWindow.xaml;ChildWindows\RemoveMacroPrompt.xaml;ContentPages\DashboardPage.xaml;ContentPages\PFDiagramPage.xaml;ContentPages\ViewOptionsPage.xaml;Controls\BandwidthEndNode.xaml;Controls\BusyIcon.xaml;Controls\ListInput.xaml;Controls\QueueContent\CBQProperties.xaml;Controls\QueueContent\HFSCProperties.xaml;Controls\QueueContent\PriqProperties.xaml;Controls\QueueContent\QueueContentProperties.xaml;Controls\SelectiveInput.xaml;Views\DiagramItems\ActionNodeItem.xaml;Views\DiagramItems\DEFNodeItem.xaml;Views\DiagramItems\InterfaceItem.xaml;Views\DiagramItems\FilterNodeItem.xaml;Views\DiagramItems\LogNodeItem.xaml;Views\DiagramItems\MarkNodeItem.xaml;Views\DiagramItems\QMNodeItem.xaml;Views\DiagramItems\QueueNodeItem.xaml;Views\DiagramItems\ServerNodeItem.xaml;Views\DiagramItems\SchedulerNodeItem.xaml;Views\DiagramItems\STONodeItem.xaml;Views\FlagCheckMaskView.xaml;Views\Nodes\DiagramNodeView.xaml;VisualResources\DiagramItemsStyles.xaml;VisualResources\DiagramStyles.xaml;MainWindow.xaml;SplashWindow.xaml;Views\MacroContentView.xaml;Views\Nodes\FileNodeView.xaml;Views\Nodes\HostNodeView.xaml;Views\Nodes\InterfaceNodeView.xaml;Views\Nodes\IPAddressNodeView.xaml;Views\Nodes\MacroNodeView.xaml;Views\Nodes\NegatedMacroNodeView.xaml;Views\Nodes\PFListNodeView.xaml;Views\Nodes\PortValueNodeView.xaml;Views\Nodes\TableNodeView.xaml;VisualResources\ControlStyles.xaml;VisualResources\Images\Ribbon\Options_Gallery\OptionsGalleryDictionary.xaml;VisualResources\JMessageBox.xaml;VisualResources\ListboxStyles.xaml;VisualResources\ProjectTreeStyles.xaml;
+
+False
+

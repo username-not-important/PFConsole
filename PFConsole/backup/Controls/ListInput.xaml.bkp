@@ -1,0 +1,92 @@
+﻿<UserControl x:Class="PFConsole.Controls.ListInput"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:PFConsole.Controls"
+             xmlns:ig="http://schemas.infragistics.com/xaml"
+             xmlns:visualResources="clr-namespace:PFConsole.VisualResources"
+             xmlns:views="clr-namespace:PFConsole.Views"
+             xmlns:ribbon="http://infragistics.com/Ribbon"
+             xmlns:data="clr-namespace:PFModels.Data;assembly=PFModels"
+             mc:Ignorable="d" 
+             Name="_Control"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <RoutedUICommand Text="Add to List" x:Key="AddCommand"/>
+        
+        <DataTemplate x:Key="MacroContentItemTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="30px"/>
+                </Grid.ColumnDefinitions>
+                <views:MacroContentView MacroContentModel="{Binding}"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
+                    <Button Style="{StaticResource FlatButton}" Width="23" Height="23" Tag="{Binding}" Click="_ListItem_Remove_Click">
+                        <Path Stretch="Fill" Height="17" Fill="#FF424242" Data="F1 M -0.608154,-150.145L -6.29175,-150.145L -20.5972,-150.145L -23.1798,-156.979C -23.3765,-157.497 -23.8725,-157.841 -24.4271,-157.841L -36.8477,-157.841C -37.4024,-157.841 -37.8986,-157.497 -38.0951,-156.979L -40.6777,-150.145L -54.9845,-150.145L -60.6667,-150.145C -61.4038,-150.145 -62,-149.547 -62,-148.811C -62,-148.075 -61.4038,-147.478 -60.6667,-147.478L -56.2238,-147.478L -52.4871,-96.2363C -52.4363,-95.5397 -51.8569,-95 -51.1576,-95L -10.1186,-95C -9.41935,-95 -8.83992,-95.5397 -8.78914,-96.2363L -5.05241,-147.478L -0.608154,-147.478C 0.128743,-147.478 0.725179,-148.075 0.725179,-148.811C 0.725179,-149.547 0.128743,-150.145 -0.608154,-150.145 Z M -35.9259,-155.174L -25.349,-155.174L -23.6016,-150.549L -37.6733,-150.549L -35.9259,-155.174 Z M -11.3582,-97.6667L -49.918,-97.6667L -53.5509,-147.478L -7.72534,-147.478L -11.3582,-97.6667 Z " Width="17" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            
+        </DataTemplate>
+
+    </UserControl.Resources>
+    <UserControl.CommandBindings>
+        <CommandBinding Command="{StaticResource AddCommand}" CanExecute="AddCommand_CanExecute" Executed="AddCommand_Executed" />
+    </UserControl.CommandBindings>
+    <Grid>
+        <DockPanel LastChildFill="True">
+            <Grid DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="33"/>
+                    <ColumnDefinition Width="31" />
+                </Grid.ColumnDefinitions>
+                <Border Height="31" Margin="0,0,2,0" Tag="{Binding ElementName=_InputBox}">
+                    <controls:SelectiveInput  x:Name="_InputBox" FontSize="16" Tag="AssignMacro">
+                        <controls:SelectiveInput.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.ContainerStyle>
+                                    <Style TargetType="GroupItem">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="GroupItem">
+                                                    <GroupBox Header="{Binding Name}" Margin="5,2,0,0">
+                                                        <GroupBox.HeaderTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding}" FontSize="12" />
+                                                            </DataTemplate>
+                                                        </GroupBox.HeaderTemplate>
+                                                        <ItemsPresenter />
+                                                    </GroupBox>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
+                            </GroupStyle>
+                        </controls:SelectiveInput.GroupStyle>
+                    </controls:SelectiveInput>
+                    <ig:DragDropManager.DropTarget>
+                        <ig:DropTarget x:Name="_inputDropTarget" HighlightOnDragStart="True" />
+                    </ig:DragDropManager.DropTarget>
+                </Border>
+                <CheckBox Grid.Column="1" Margin="0,0,2,0" Style="{DynamicResource FlatCheckbox}" ToolTip="Negate this Item" Name="_CB_Negate">
+                	<Path Stretch="Fill" Fill="#FFA82929" Data="F1 M 61.418,14.5807C 55.2396,8.40228 47.0129,5.00001 38.2539,5.00001C 29.4935,5.00001 21.2669,8.40228 15.0885,14.5807C 8.91014,20.7591 5.50774,28.9856 5.50774,37.7461C 5.50774,46.5052 8.91014,54.7317 15.0885,60.9101C 21.2669,67.0885 29.4948,70.4921 38.2591,70.4921C 47.0183,70.4921 55.2435,67.0899 61.4205,60.9128C 67.5989,54.7344 71.0013,46.5077 71,37.7461C 71,28.9856 67.5963,20.7591 61.418,14.5807 Z M 17.7448,17.2369C 23.1523,11.8292 30.354,8.85134 38.0236,8.85134C 45.2639,8.85134 52.0683,11.5347 57.3591,16.3823L 16.8903,56.8511C 12.0425,51.5604 9.35907,44.756 9.35907,37.5159C 9.35907,29.8461 12.3371,22.6445 17.7448,17.2369 Z M 58.7639,58.2561C 53.3565,63.6635 46.1573,66.6401 38.4892,66.6401L 38.4879,66.6401C 31.2444,66.6401 24.4389,63.9556 19.148,59.1079L 59.6159,18.64C 64.4636,23.9309 67.148,30.7363 67.148,37.9776C 67.1492,45.6471 64.1713,52.8487 58.7639,58.2561 Z " Height="15" Width="15"/>
+                </CheckBox>
+                <Button Style="{StaticResource FlatButton}" Grid.Column="2" Height="Auto" Width="Auto" Command="{StaticResource AddCommand}">
+                    <Viewbox Width="15" Height="15" Stretch="Fill">
+                        <Path Stretch="Fill" Fill="#FF424242" Data="F1 M 66,38.4394C 66,37.2169 65.0095,36.2264 63.7867,36.2264L 39.7733,36.2264L 39.7733,12.213C 39.7733,10.9905 38.7828,9.99999 37.5603,9.99999C 36.3378,9.99999 35.3473,10.9902 35.3473,12.213L 35.3473,36.2264L 11.3338,36.2264C 10.1111,36.2264 9.12081,37.2167 9.12055,38.4394C 9.12055,39.0508 9.36851,39.6039 9.76878,40.0045C 10.1693,40.405 10.7224,40.6527 11.3338,40.6527L 35.3473,40.6527L 35.3473,64.6662C 35.3473,65.2773 35.595,65.8307 35.9955,66.2312C 36.3958,66.6315 36.9489,66.8792 37.5603,66.8792C 38.783,66.8789 39.7733,65.8887 39.7733,64.6662L 39.7733,40.6524L 63.787,40.6524C 65.0095,40.6524 66,39.6622 66,38.4394 Z "/>
+                    </Viewbox>
+                </Button>
+            </Grid >
+            <TextBlock Margin="0,2,0,0" Foreground="DarkRed" VerticalAlignment="Top" x:Name="_ErrorBlock" Visibility="Collapsed" DockPanel.Dock="Top"><Italic ><Run Text="Warning:" /></Italic><Run Text=" "/><Run x:Name="_ErrorText" /></TextBlock>
+
+            <Grid Margin="0,2,0,0" DockPanel.Dock="Top">
+                <ListBox FontSize="16" Name="_Listbox" ItemsSource="{Binding ElementName=_Control, Path=SelectedItems}" ItemTemplate="{StaticResource MacroContentItemTemplate}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+            </Grid>
+            
+        </DockPanel>
+    </Grid>
+</UserControl>

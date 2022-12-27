@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{852E6662-AF0B-41C2-8D5A-A1CD8E33ED12}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PFModels</RootNamespace>
+    <AssemblyName>PFModels</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>JeyARTSign.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\DiagramInfo.cs" />
+    <Compile Include="Data\FileIPAddressList.cs" />
+    <Compile Include="Data\HostName.cs" />
+    <Compile Include="Data\Interface.cs" />
+    <Compile Include="Data\IPAddress.cs" />
+    <Compile Include="Data\IPv4Address.cs" />
+    <Compile Include="Data\Macro.cs" />
+    <Compile Include="Data\MacroContent.cs" />
+    <Compile Include="Data\NegatedMacroContent.cs" />
+    <Compile Include="Data\Option.cs" />
+    <Compile Include="Data\PFList.cs" />
+    <Compile Include="Data\PortValue.cs" />
+    <Compile Include="Data\QM.cs" />
+    <Compile Include="Data\Queue.cs" />
+    <Compile Include="Data\QueueContent.cs" />
+    <Compile Include="Data\Scheduler.cs" />
+    <Compile Include="Data\Table.cs" />
+    <Compile Include="Data\Validation\Rules\InterfaceNameValidator.cs" />
+    <Compile Include="Data\Validation\Rules\IPv4SubnetValidator.cs" />
+    <Compile Include="Data\Validation\Rules\IValidator.cs" />
+    <Compile Include="Data\Validation\Rules\MacroNameValidator.cs" />
+    <Compile Include="Data\Validation\Rules\NonEmptyTextValidator.cs" />
+    <Compile Include="Data\Validation\Rules\NonNegativeIntValidator.cs" />
+    <Compile Include="Data\Validation\Rules\PositveIntValidator.cs" />
+    <Compile Include="Data\Validation\Rules\QueueNameValidator.cs" />
+    <Compile Include="Data\Validation\Rules\RangedIntValidator.cs" />
+    <Compile Include="Data\Validation\Rules\TextValidator.cs" />
+    <Compile Include="Data\Validation\Validator.cs" />
+    <Compile Include="Data\Validation\ValidatorFactory.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Meta\OptionMeta.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Repositories\OptionsMetaRepository.cs" />
+    <Compile Include="TextSerializer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="JeyARTSign.pfx" />
+    <None Include="PFModelsClassDiagram.cd" />
+    <None Include="Resources\OptionsRepository.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="PFConsole.Controls.QueueContent.CBQProperties"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:data="clr-namespace:PFModels.Data;assembly=PFModels"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" FontSize="16" d:DesignWidth="420">
+    <StackPanel Margin="3">
+        <GroupBox Header="Properties" FontSize="16">
+            <StackPanel Margin="10,5,5,5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="133*"/>
+                        <ColumnDefinition Width="85"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Bandwidth" />
+                    <TextBox Grid.Column="1" Text="{Binding Bandwidth.Value}" />
+                    <ComboBox Grid.Column="2" Margin="3,0,0,0" SelectedItem="{Binding Bandwidth.Unit}">
+                        <ComboBox.Items>
+                            <data:BandwidthUnit>bps</data:BandwidthUnit>
+                            <data:BandwidthUnit>Kbps</data:BandwidthUnit>
+                            <data:BandwidthUnit>Mbps</data:BandwidthUnit>
+                            <data:BandwidthUnit>Gbps</data:BandwidthUnit>
+                            <data:BandwidthUnit>Percent</data:BandwidthUnit>
+                        </ComboBox.Items>
+                    </ComboBox>
+                </Grid>
+                <Grid Margin="0,2,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="133*"/>
+                        <ColumnDefinition Width="85"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Length" />
+                    <TextBox Grid.Column="1" Text="{Binding Length}" />
+                    <TextBlock Grid.Column="2" Text="(packets)" HorizontalAlignment="Center" />
+                </Grid>
+                <Grid Margin="0,2,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="133*"/>
+                        <ColumnDefinition Width="85"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Priority" />
+                    <ComboBox Grid.Column="1" SelectedItem="{Binding Priority}">
+                        <ComboBox.Items>
+                            <system:Int32>0</system:Int32>
+                            <system:Int32>1</system:Int32>
+                            <system:Int32>2</system:Int32>
+                            <system:Int32>3</system:Int32>
+                            <system:Int32>4</system:Int32>
+                            <system:Int32>5</system:Int32>
+                            <system:Int32>6</system:Int32>
+                            <system:Int32>7</system:Int32>
+                        </ComboBox.Items>
+                    </ComboBox>
+                </Grid>
+                <Grid Margin="0,2,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="133*"/>
+                        <ColumnDefinition Width="85"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Borrow" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <RadioButton VerticalContentAlignment="Center" Content="Enabled" IsChecked="{Binding Borrow}" />
+                        <RadioButton VerticalContentAlignment="Center" Content="Disabled" IsChecked="True" />
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </GroupBox>
+    </StackPanel>
+</UserControl>

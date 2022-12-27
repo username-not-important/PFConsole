@@ -1,0 +1,35 @@
+﻿<Page xmlns:ig="http://schemas.infragistics.com/xaml"  x:Class="PFConsole.ContentPages.PFDiagramPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:data="clr-namespace:PFModels.Data;assembly=PFModels"
+      xmlns:diagramItems="clr-namespace:PFConsole.Views.DiagramItems"
+      xmlns:diagram="clr-namespace:PFConsole.Util.Diagram"
+      mc:Ignorable="d" 
+      Name="Window"
+      MinWidth="500" MinHeight="350" Background="White"
+	Title="" IsVisibleChanged="Window_IsVisibleChanged" LostFocus="PFDiagramPage_OnLostFocus" GotFocus="PFDiagramPage_OnGotFocus" GotMouseCapture="PFDiagramPage_OnGotMouseCapture">
+    <Page.Resources>
+
+        <DataTemplate x:Key="InterfaceSelectorTemplate">
+            <Grid Background="Red">
+                <diagramItems:InterfaceItem Selection="{Binding MacroModel}"></diagramItems:InterfaceItem>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30px"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Margin="5,7,0,0" FontSize="14" FontWeight="Light" Foreground="#FF2C2C2C"><Run Text="PF Diagram"/></TextBlock>
+        <ig:XamDiagram x:Name="_Diagram" Grid.Row="1" Margin="5" NavigationPaneVisibility="Visible" x:FieldModifier="public" 
+                       ConnectionConnected="_Diagram_ConnectionConnected" ConnectionConnecting="_Diagram_ConnectionConnecting" EditModeEntering="_Diagram_EditModeEntering"
+                       ItemAdded="_Diagram_OnItemAdded" ItemAdding="_Diagram_OnItemAdding" SelectionChanged="_Diagram_OnSelectionChanged">
+
+        </ig:XamDiagram>
+        
+
+    </Grid>
+</Page>

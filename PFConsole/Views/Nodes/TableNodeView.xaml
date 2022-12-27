@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="PFConsole.Views.Nodes.TableNodeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:views="clr-namespace:PFConsole.Views"
+             Name="_Control"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="ToVisConverter"/>
+
+        <SolidColorBrush x:Key="TreeViewItem.TreeArrow.Static.Checked.Fill" Color="#FF595959"/>
+        <SolidColorBrush x:Key="TreeViewItem.TreeArrow.Static.Checked.Stroke" Color="#FF262626"/>
+        <SolidColorBrush x:Key="TreeViewItem.TreeArrow.MouseOver.Stroke" Color="#FF1BBBFA"/>
+        <SolidColorBrush x:Key="TreeViewItem.TreeArrow.MouseOver.Fill" Color="Transparent"/>
+        <SolidColorBrush x:Key="TreeViewItem.TreeArrow.MouseOver.Checked.Stroke" Color="#FF262626"/>
+        <SolidColorBrush x:Key="TreeViewItem.TreeArrow.MouseOver.Checked.Fill" Color="#FF595959"/>
+        <PathGeometry x:Key="TreeArrow" Figures="M0,0 L0,6 L6,0 z"/>
+        <SolidColorBrush x:Key="TreeViewItem.TreeArrow.Static.Fill" Color="Transparent"/>
+        <SolidColorBrush x:Key="TreeViewItem.TreeArrow.Static.Stroke" Color="#FF989898"/>
+        <Style x:Key="ExpandCollapseToggleStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Width" Value="16"/>
+            <Setter Property="Height" Value="16"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border Background="Transparent" Height="16" Padding="5,5,5,5" Width="16">
+                            <Path x:Name="ExpandPath" Data="{StaticResource TreeArrow}" Fill="{StaticResource TreeViewItem.TreeArrow.Static.Fill}" Stroke="{StaticResource TreeViewItem.TreeArrow.Static.Stroke}">
+                                <Path.RenderTransform>
+                                    <RotateTransform Angle="135" CenterY="3" CenterX="3"/>
+                                </Path.RenderTransform>
+                            </Path>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="RenderTransform" TargetName="ExpandPath">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="180" CenterY="3" CenterX="3"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Fill" TargetName="ExpandPath" Value="{StaticResource TreeViewItem.TreeArrow.Static.Checked.Fill}"/>
+                                <Setter Property="Stroke" TargetName="ExpandPath" Value="{StaticResource TreeViewItem.TreeArrow.Static.Checked.Stroke}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Stroke" TargetName="ExpandPath" Value="{StaticResource TreeViewItem.TreeArrow.MouseOver.Stroke}"/>
+                                <Setter Property="Fill" TargetName="ExpandPath" Value="{StaticResource TreeViewItem.TreeArrow.MouseOver.Fill}"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                    <Condition Property="IsChecked" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Stroke" TargetName="ExpandPath" Value="{StaticResource TreeViewItem.TreeArrow.MouseOver.Checked.Stroke}"/>
+                                <Setter Property="Fill" TargetName="ExpandPath" Value="{StaticResource TreeViewItem.TreeArrow.MouseOver.Checked.Fill}"/>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <StackPanel MinWidth="150">
+        <StackPanel Height="21" Orientation="Horizontal">
+            <ToggleButton x:Name="Expander" ClickMode="Press" Style="{StaticResource ExpandCollapseToggleStyle}"/>
+            <StackPanel Orientation="Horizontal" Margin="4,0,0,0">
+                <Viewbox Width="16" Height="16">
+                    <Canvas Width="53.1732" Height="66.3959">
+                        <Path Width="53.1732" Height="66.3959" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="#FF424242" Data="F1 M 52.1152,10.1809L 42.8236,1.02079C 42.1563,0.363319 41.2715,0 40.3302,0L 3.55013,0C 1.59258,0 0,1.59241 0,3.54948L 0,62.8451C 0,64.8033 1.59258,66.3959 3.55013,66.3959L 49.6211,66.3959C 51.5795,66.3959 53.1732,64.8033 53.1732,62.8451L 53.1732,12.7071C 53.1732,11.7631 52.7872,10.8424 52.1152,10.1809 Z M 49.5277,11.3749L 41.6752,11.3749L 41.6671,3.62573L 49.5277,11.3749 Z M 49.6211,63.7292L 3.55013,63.7292C 3.06323,63.7292 2.66667,63.332 2.66667,62.8451L 2.66667,3.54948C 2.66667,3.06254 3.06323,2.66666 3.55013,2.66666L 38.9995,2.66666L 39.0098,12.7096C 39.0104,13.4454 39.6075,14.0416 40.3431,14.0416L 50.5066,14.0416L 50.5066,62.8451C 50.5066,63.332 50.1093,63.7292 49.6211,63.7292 Z "/>
+                        <Path Width="34.797" Height="34.5339" Canvas.Left="9.52214" Canvas.Top="19.5169" Stretch="Fill" Fill="#FF424242" Data="F1 M 42.9858,19.5169L 32.276,19.5169L 21.5651,19.5169L 10.8555,19.5169C 10.1192,19.5169 9.52214,20.1133 9.52214,20.8503L 9.52214,28.8177L 9.52214,36.7839L 9.52214,44.7513L 9.52214,52.7175C 9.52214,53.4544 10.1192,54.0508 10.8555,54.0508L 21.5651,54.0508L 32.276,54.0508L 42.9858,54.0508C 43.722,54.0508 44.3191,53.4544 44.3191,52.7175L 44.3191,44.7513L 44.3191,36.7839L 44.3191,28.8177L 44.3191,20.8503C 44.3191,20.1133 43.722,19.5169 42.9858,19.5169 Z M 41.6524,35.4505L 33.6093,35.4505L 33.6093,30.1511L 41.6524,30.1511L 41.6524,35.4505 Z M 30.9427,35.4505L 22.8984,35.4505L 22.8984,30.1511L 30.9427,30.1511L 30.9427,35.4505 Z M 20.2317,35.4505L 12.1888,35.4505L 12.1888,30.1511L 20.2317,30.1511L 20.2317,35.4505 Z M 12.1888,38.1172L 20.2317,38.1172L 20.2317,43.418L 12.1888,43.418L 12.1888,38.1172 Z M 22.8984,38.1172L 30.9427,38.1172L 30.9427,43.418L 22.8984,43.418L 22.8984,38.1172 Z M 33.6093,38.1172L 41.6524,38.1172L 41.6524,43.418L 33.6093,43.418L 33.6093,38.1172 Z M 41.6524,27.4844L 33.6093,27.4844L 33.6093,22.1836L 41.6524,22.1836L 41.6524,27.4844 Z M 30.9427,27.4844L 22.8984,27.4844L 22.8984,22.1836L 30.9427,22.1836L 30.9427,27.4844 Z M 12.1888,22.1836L 20.2317,22.1836L 20.2317,27.4844L 12.1888,27.4844L 12.1888,22.1836 Z M 12.1888,46.0847L 20.2317,46.0847L 20.2317,51.3842L 12.1888,51.3842L 12.1888,46.0847 Z M 22.8984,46.0847L 30.9427,46.0847L 30.9427,51.3842L 22.8984,51.3842L 22.8984,46.0847 Z M 41.6524,51.3842L 33.6093,51.3842L 33.6093,46.0847L 41.6524,46.0847L 41.6524,51.3842 Z "/>
+                    </Canvas>
+                </Viewbox>
+                <TextBlock VerticalAlignment="Center" Margin="6,0,0,0"><Run Text="&lt;"/><Run Text=" "/><Bold FontWeight="SemiBold"><Run Text="{Binding Name}"/></Bold><Run Text="&gt;"/></TextBlock>
+                
+            </StackPanel>
+        </StackPanel>
+        <views:MacroContentView Visibility="{Binding ElementName=Expander, Path=IsChecked, Converter={StaticResource ToVisConverter}}" x:Name="_ContentView" MacroContentModel="{Binding Content}" Background="#05424242" VerticalAlignment="Center" Margin="40,2,0,0"/>
+    </StackPanel>
+</UserControl>
